@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Noto Sans" , Arial, Helvetica, sans-serif;
+  background: black;
+  --swiper-navigation-size: 28px;
+  --swiper-navigation-color: #fff;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.swiper {
+  width: 100%;
+  height: auto;
+}
+.swiper-animation {
+    .swiper-wrapper {
+      -webkit-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
+    }
+  }
+  
+.swiper-slide {
+  text-align: center;
+  font-size: 25px;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide .ContainerLayout {
+  position: absolute;
+  bottom: 0px;
+  background: linear-gradient(to top, #000000fb 20%, #00000000, #00000000);
+  width: 100%;
+  height: 100vh;
+}
+.InfoContainer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+.swiper-slide .container {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: 0px;
+  padding: 0px;
+}
+.swiper-slide .container img {
+  display: block;
+  width: 100%;
+  max-height: 60vh;
+  object-fit: cover;
+}
+.NavBarLayout {
+  background: linear-gradient(to bottom, #000 3%, #000000df, #00000000);
+}
+
+.InfoContainer .Addtion {
+  display: flex;
+  width: 100%;
+  font-size: 14px;
+  justify-items: center;
+  content: center;
+}
+.InfoContainer .Trending {
+  font-size: 1rem;
+  font-weight: 480;
+}
+
+.InfoContainer .Title {
+  font-size: 1.4rem;
+  margin-top: 0px;
+  font-weight: 500;
+  word-wrap: break-word;
+}
+.InfoContainer h1 {
+  display: flex;
+}
+
+.InfoContainer > .Addtion > .State {
+  font-weight: 470;
+}
+
+.container .Geners {
+  font-size: 1.3rem;
+  font-weight: 401;
+  font-family: Sans-Serif;
+  letter-spacing: 2;
+}
+
+.Listcontainer > img {
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 50vh;
+}
+.Listcontainer .Title {
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+  bottom: 13px;
+  color: white;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: auto;
+  width: 100%;
+}
+.Listcontainer .MoreInfo {
+  font-size: 10px;
+  text-align: center;
+  bottom: 0px;
+  height: auto;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    #000000f3 1%,
+    #00000000,
+    #00000000,
+    #00000000
+  );
+}
+
+.Listcontainer .CardShadow {
+  bottom: 0px;
+  background: linear-gradient(
+    to top,
+    #000000f3 1%,
+    #00000000,
+    #00000000,
+    #00000000
+  );
+  height: 49vh;
+  width: 100%;
+  margin-bottom: 0px;
+  margin-top: auto;
+}
+
+
+.Bannerbackground{
+  bottom: 0px;
+  background: linear-gradient(
+    to top,
+    #000000f3 3%,
+    #00000000,
+    #00000000
+  );
+  height: 49vh;
+  width: 100%;
+  margin-bottom: 0px;
+  margin-top: auto;
+}
+
+
+.CardBadge {
+  width: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-left-radius: 8px;
+  font-size: 12px;
+
+  height: fit-content;
+  background: #000000b7;
+  position: absolute;
+  top: 53%;
+  right: 0;
+}
+
+.Listcontainer {
+  height: 23vh;
+}
+
+.SliderButton {
+  font-size: 18px;
+}
+
+.containerImageInfo {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+ 
+  }
+.BackgroundImageOfInfo{
+  height: 10vh;
+}
+.frogroundShadow {
+  height: 30vh;
+  background: linear-gradient(to bottom, transparent , black 80%);
+
+}
