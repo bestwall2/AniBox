@@ -12,7 +12,7 @@ import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import DiscoverCard from "./CardsComp/DiscoverCard";
 import { Skeleton } from "./ui/skeleton";
-import { useRouter } from 'next/navigation';
+
 import Link from 'next/link';
 
 // Define TypeScript interface for props
@@ -36,7 +36,7 @@ interface Anime {
 const ListItems = ({ geners, apiPath }: ListItemsProps) => {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
+  
   useEffect(() => {
     const fetchAnime = async () => {
       try {
