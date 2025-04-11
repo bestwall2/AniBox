@@ -93,7 +93,7 @@ const ListItems = ({ geners, apiPath }: ListItemsProps) => {
                 >
                 <Link href={animeUrl} passHref>
                     <DiscoverCard
-                    cardbadge={anime.averageScore / 10}
+                    cardbadge={(anime.averageScore / 10).toString()}
                     title={anime.title.english || anime.title.romaji || "Unknown Title"}
                     info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
                     img={anime.coverImage.extraLarge}
