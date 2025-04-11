@@ -25,9 +25,10 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
       <Image src={img} alt={title} layout="fill" objectFit="cover" priority />
 
       <div className="CardShadow absolute">
+        
         <p className="Title  absolute  content-center  text-center line-clamp-2">
-          {" "}
-          {title}{" "}
+          <h1 className="absolute mr-2">•</h1>
+          {title}
         </p>
         <p className="MoreInfo text-gray-300 absolute line-clamp-1 bottom-0">
           {" "}
