@@ -1,13 +1,13 @@
 export default function Footer() {
   return (
-    <div id="footer">
+    <div id="footer" className="pl-5 pr-5">
       <div id="footer-left">
         <div
           style={{
             display: "flex",
             fontSize: "1.1rem",
             fontWeight: "bold",
-            gap: "3px",
+            gap: "4px",
           }}
         >
           <p>Welcome to</p>

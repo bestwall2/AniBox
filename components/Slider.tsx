@@ -87,10 +87,10 @@ const Slider = () => {
                 <div className="InfoContainer m-4 text-left">
                   <div className="flex items-center justify-start ">
                     <FaStar size={15} style={{ color: "yellow" }} />
-                    <h2 className="Trending pl-1 pt-1 text-yellow-400">
+                    <h2 className="Trending pl-1 pt-1 text-yellow-400"> 
                       {
-                          anime.averageScore ? anime.averageScore.toString() : "N/A"
-                        }
+                          anime.averageScore ? `${anime.averageScore / 10}` : N/A
+                      }
                     </h2>
                   </div>
                   <h1 className="Title">
@@ -122,14 +122,14 @@ const Slider = () => {
                     className="SliderButton rounded-xl mr-2"
                     variant="styled"
                   >
-                    <FaPlay size={12} /> Watch 
+                    <FaPlay size={12} /> Play Now 
                   </Button>
 
                   <Button
                     className="SliderButton rounded-xl "
                     variant="outline"
                   >
-                    <HiOutlineInformationCircle size={22} />  Info 
+                    <HiOutlineInformationCircle size={22} /> More Info 
                   </Button>
                   
                 </div>
@@ -138,8 +138,8 @@ const Slider = () => {
           ))}
         </Swiper>
       )}
-    </>
+      
+      </>   
   );
 };
-
 export default Slider;

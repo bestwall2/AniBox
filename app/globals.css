@@ -220,6 +220,25 @@ body {
 
 .Listcontainer {
   height: 23vh;
+  position: relative;
+}
+
+.Listcontainer .PlayBtn {
+  display: none;
+  position: absolute;
+  /* Adjust the position if needed */
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.Listcontainer:hover .PlayBtn {
+  display: block;
+}
+.Listcontainer:hover .CardShadow {
+  
+  background: linear-gradient(to bottom, transparent , black 92%);
+  
 }
 
 .SliderButton {

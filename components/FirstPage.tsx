@@ -3,7 +3,7 @@ import React from "react";
 import Slider from "./Slider";
 import ListItems from "./ListItems";
 import Navbar from "./NavBar";
-
+import Footer from "./Footer";
 const FirstPage = () => {
   return (
     <>
@@ -23,6 +23,7 @@ const FirstPage = () => {
             />
           </div>
         </div>
+        <Footer/>
       </div>
     </>
   );
