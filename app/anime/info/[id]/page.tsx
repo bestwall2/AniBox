@@ -16,7 +16,7 @@ export default async function AnimeInfoLayout({
 
   return (
     <div>
-      <Navbar />
+      
       <Info id={id} />   
     </div>
   );

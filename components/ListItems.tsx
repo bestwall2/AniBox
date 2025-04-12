@@ -31,6 +31,7 @@ interface Anime {
   coverImage: { large: string | null; extraLarge: string };
   averageScore: number | null;
   startDate: { year: number } | null;
+  status: string;
 }
 
 const ListItems = ({ geners, apiPath }: ListItemsProps) => {
@@ -97,6 +98,7 @@ const ListItems = ({ geners, apiPath }: ListItemsProps) => {
                     title={anime.title.english || anime.title.romaji || "Unknown Title"}
                     info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
                     img={anime.coverImage.extraLarge}
+                    status={anime.status}
                     />
                 </Link>
                 </SwiperSlide>

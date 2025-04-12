@@ -47,6 +47,18 @@ body {
   }
 }
 
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
 @layer base {
   * {
     @apply border-border;
@@ -88,6 +100,7 @@ body {
   position: absolute;
   bottom: 0px;
   width: 100%;
+  animation: slideDown 1s ease-out forwards;
 }
 .swiper-slide .container {
   display: block;
@@ -113,10 +126,12 @@ body {
   font-size: 14px;
   justify-items: center;
   content: center;
+  animation: slideDown 1s ease-out forwards;
 }
 .InfoContainer .Trending {
   font-size: 1rem;
   font-weight: 480;
+  animation: slideDown 1s ease-out forwards;
 }
 
 .InfoContainer .Title {
@@ -124,7 +139,12 @@ body {
   margin-top: 0px;
   font-weight: 500;
   word-wrap: break-word;
+  animation: slideDown 1s ease-out forwards;
 }
+.InfoContainer .Description {
+  animation: slideDown 1s ease-out forwards;
+}
+
 .InfoContainer h1 {
   display: flex;
 }
@@ -157,6 +177,7 @@ body {
   margin-right: 2px;
   height: auto;
   width: 100%;
+  animation: slideDown 1s ease-out forwards;
 }
 .Listcontainer .MoreInfo {
   font-size: 10px;
@@ -216,6 +237,20 @@ body {
   position: absolute;
   top: 53%;
   right: 0;
+}
+
+.CardGenres{
+  border-bottom-left-radius: 8px;
+  background: #000000b7;
+}
+.CardActive {
+  width: auto;
+  height: fit-content;
+  position: absolute;
+  padding-left: 5px;
+  padding-right: 5px;
+  top: 54%;
+  right: 10; 
 }
 
 .Listcontainer {
