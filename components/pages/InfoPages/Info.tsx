@@ -99,19 +99,19 @@ function Info({ id }) {
         
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
             {/* Cover Image */}
-            <div className="rounded-xl shadow-xl bg-black backdrop-blur-sm">
-            {coverImage ? (
-                <img
-                src={coverImage}
-                alt="Cover Image"
-                className="h-[25vh] w-[18vh] rounded-xl object-cover"
-                loading="lazy"
-                />
-            ) : (
-                <div className="h-full w-full bg-gray-700 flex items-center justify-center text-white">
-                No Image
-                </div>
-            )}
+            <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
+                {coverImage ? (
+                    <img
+                    src={coverImage}
+                    alt="Cover Image"
+                    className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
+                    loading="lazy"
+                    />
+                ) : (
+                    <div className="h-full w-full bg-gray-700 flex items-center justify-center text-white">
+                    No Image
+                    </div>
+                )}
             </div>
         
             <div className="flex-col ml-1 mt-0 items-center justify-center">
@@ -143,7 +143,7 @@ function Info({ id }) {
                     : "Unknown Date"}
                 </h1>
             
-                <h1 className="CardGenres text-sm flex ml-3 font-semibold items-left justify-start">
+                <h1 className="CardGenres  text-sm flex ml-3  items-left justify-start">
                     {genres.length ? genres.join(", ") : ""}
                 </h1>
                 <h1 className="text-sm flex ml-3 font-semibold items-left justify-start">
