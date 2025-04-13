@@ -303,26 +303,49 @@ query ($id: Int) {
 		  }
 		}
 		relations {
-		  edges {
-			relationType(version: 2)
-			node {
-			  id
-			  title {
-				romaji
-				native
-				english
-			  }
-			  format
-			  coverImage{
-				large
-				extraLarge
-			  }
-			  episodes
-			  chapters
-			  status
-			}
-		  }
-	  }
+            edges {
+                relationType(version: 2)
+                node {
+                    id
+                    idMal
+                    title {
+                        romaji
+                        native
+                        english
+                        userPreferred
+                    }
+                    coverImage {
+                        large
+                        extraLarge
+                        color
+                    }
+                    episodes
+                    chapters
+                    status
+                    duration
+                    genres
+                    season
+                    format
+                    averageScore
+                    popularity
+                    nextAiringEpisode {
+                        airingAt
+                        episode
+                    }
+                    seasonYear
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                    endDate {
+                        year
+                        month
+                        day
+                    }
+                }
+            }
+        }
 	  recommendations {
 		nodes {
 			mediaRecommendation {

@@ -13,9 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import parse from 'html-react-parser';
-import ListItems from "../../ListItems";
+import parse from 'html-react-RecommendList';
+import RecommendList from "../../Recommend";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 
 function Info({ id }) {
@@ -90,6 +91,7 @@ function Info({ id }) {
         
         {/* Back Arrow Button */}
         <div className="absolute top-4 left-4 z-20">
+        <button onClick={() => router.back()}>
             <IoMdArrowRoundBack
             size={30}
             style={{
@@ -97,6 +99,7 @@ function Info({ id }) {
                 margin: 5,
             }}
             />
+        </button>
         </div>
         
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
@@ -283,12 +286,11 @@ function Info({ id }) {
                     </Card>                   
                 </TabsContent>
                 <TabsContent value="Relations" className="mt-4 mb-2">
-                     <ListItems
-                        geners="Chronology"
-                        apiPath="/api/favorites-anime"
-                        param=" font-semibold text-md mt-2 mb-2"
-                        
-                    />
+                     <RecommendList
+                            geners="Chronology"
+                            data={data.relations?.edges || []}
+                            param="font-semibold text-md mt-2 mb-2"
+                        />
                 </TabsContent>
                 <TabsContent value="Characters" className="mt-4">
                      <Card>
