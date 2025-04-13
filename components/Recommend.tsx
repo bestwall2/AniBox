@@ -44,7 +44,7 @@ const RecommendList = ({ geners, data, param }: RecommendListProps) => {
         modules={[Navigation, FreeMode]}
         slidesPerView={3}
         spaceBetween={5}
-        navigation={false}
+        navigation={true}
         freeMode={true}
         className="swiper-animation"
       >

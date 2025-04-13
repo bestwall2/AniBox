@@ -1,7 +1,7 @@
 import React from "react";
 import Info from "../../../../components/pages/InfoPages/Info";
 import Navbar from "../../../../components/NavBar";
-import Footer from "../../../../components/Footer";
+
 interface AnimeInfoParams {
   id: string;
 }
@@ -17,7 +17,7 @@ export default async function AnimeInfoLayout({
   return (
     <div>     
       <Info id={id} />   
-      <Footer/>
+      
     </div>
   );
 }

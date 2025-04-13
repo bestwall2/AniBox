@@ -369,41 +369,41 @@ query ($id: Int) {
                 }
             }
       }
-characters {
-  edges { 
-	id
-	role
-	node {
-	  name {
-		first
-		last
-		full
-		native
-		userPreferred
-	  }
-	  image {
-		large
-	  }
-	}
-	voiceActorRoles {
-	  voiceActor {
-		id
-		name {
-		  first
-		  middle
-		  last
-		  full
-		  native
-		  userPreferred
-		}
-		image {
-		  large
-		}
-	  }
-	}
-  }
-}
-	}
+        characters {
+                edges { 
+                    id
+                    role
+                    node {
+                    name {
+                        first
+                        last
+                        full
+                        native
+                        userPreferred
+                    }
+                    image {
+                        large
+                    }
+                    }
+                    voiceActorRoles {
+                    voiceActor {
+                        id
+                        name {
+                        first
+                        middle
+                        last
+                        full
+                        native
+                        userPreferred
+                        }
+                        image {
+                        large
+                        }
+                    }
+                }
+        }
+      }
+    }
   }
 `
 

@@ -120,7 +120,7 @@ function Info({ id }) {
                 )}
             </div>
         
-            <div className="flex-col ml-1 mt-0 items-center justify-center">
+            <div className="InfoContainerPage flex-col ml-1 mt-0 items-center justify-center">
                 {/* Title & Rating */}
                 <div className="text-left px-4">
                     <h1 className="text-2xl font-bold line-clamp-2 text-white drop-shadow-lg break-words max-w-[200px]">
@@ -276,17 +276,7 @@ function Info({ id }) {
                             </ul>
                             
                         </CardContent>
-                    </Card>  
-                    <RecommendList
-                        geners="Recommended"
-                        data={
-                        data.recommendations?.nodes?.map((rec) => ({
-                        relationType: "RECOMMENDATION",
-                        node: rec.mediaRecommendation,
-                        })) || []
-                        }
-                        param="font-semibold text-md mt-2 mb-2"
-                    />                
+                    </Card>             
                 </TabsContent>
                 <TabsContent value="Relations" className="mt-4 mb-2">
                      <RecommendList
@@ -313,6 +303,16 @@ function Info({ id }) {
                         </CardFooter>
                     </Card>
                 </TabsContent>
+                <RecommendList
+                    geners="Recommended"
+                    data={
+                    data.recommendations?.nodes?.map((rec) => ({
+                    relationType: "RECOMMENDATION",
+                    node: rec.mediaRecommendation,
+                    })) || []
+                    }
+                    param="font-semibold text-md mt-2 mb-2"
+                />  
             </Tabs>
         
         </div>
