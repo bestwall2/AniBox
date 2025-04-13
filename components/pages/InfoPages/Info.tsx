@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 
 
 function Info({ id }) {
+  const router = useRouter();
   
   const TabsPara = "data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
   const [coverImage, setCoverImage] = useState("");
@@ -275,19 +276,17 @@ function Info({ id }) {
                             </ul>
                             
                         </CardContent>
-                        <CardFooter>
-                            <RecommendList
-                                geners="Recommended"
-                                data={
-                                    data.recommendations?.nodes?.map((rec) => ({
-                                    relationType: "RECOMMENDATION",
-                                    node: rec.mediaRecommendation,
-                                    })) || []
-                                }
-                                param="font-semibold text-md mt-2 mb-2"
-                            />
-                        </CardFooter>
-                    </Card>                   
+                    </Card>  
+                    <RecommendList
+                        geners="Recommended"
+                        data={
+                        data.recommendations?.nodes?.map((rec) => ({
+                        relationType: "RECOMMENDATION",
+                        node: rec.mediaRecommendation,
+                        })) || []
+                        }
+                        param="font-semibold text-md mt-2 mb-2"
+                    />                
                 </TabsContent>
                 <TabsContent value="Relations" className="mt-4 mb-2">
                      <RecommendList
