@@ -95,7 +95,7 @@ function Info({ id }) {
         
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
             {/* Cover Image */}
-            <div className="h-[180px] w-[120px] rounded-xl overflow-hidden shadow-xl bg-black backdrop-blur-sm">
+            <div className="h-[170px] w-[110px] rounded-xl overflow-hidden shadow-xl bg-black backdrop-blur-sm">
             {coverImage ? (
                 <img
                 src={coverImage}
