@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import parse from 'html-react-parser';
+import ListItems from "../../ListItems";
 
 function Info({ id }) {
   
@@ -98,12 +99,12 @@ function Info({ id }) {
         
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
             {/* Cover Image */}
-            <div className="h-[180px] w-[120px] rounded-xl shadow-xl bg-black backdrop-blur-sm">
+            <div className="rounded-xl shadow-xl bg-black backdrop-blur-sm">
             {coverImage ? (
                 <img
                 src={coverImage}
                 alt="Cover Image"
-                className="h-[180px] w-[120px] object-cover"
+                className="h-[25vh] w-[18vh] rounded-xl object-cover"
                 loading="lazy"
                 />
             ) : (
@@ -121,7 +122,7 @@ function Info({ id }) {
                     </h1>
                 </div>
             
-                <div className="flex ml-3 mt-2 font-bold items-left justify-start">
+                <div className="flex ml-3 mt-2 font-semibold items-left justify-start">
                     <FaStar size={20} style={{ color: "yellow", padding: 1 }} />
                     <p className="text-md ml-1 self-center">
                     {rating ? rating / 10 : "N/A"} |
@@ -135,17 +136,17 @@ function Info({ id }) {
                     </p>
                 </div>
             
-                <h1 className="flex ml-3 font-bold items-left justify-start">
+                <h1 className="flex ml-3 font-semibold items-left justify-start">
                     <MdDateRange className="self-center mr-1" size={20} />
                     {startDate
                     ? `${startDate.year} / ${startDate.month} / ${startDate.day}`
                     : "Unknown Date"}
                 </h1>
             
-                <h1 className="CardGenres text-sm flex ml-3 font-bold items-left justify-start">
+                <h1 className="CardGenres text-sm flex ml-3 font-semibold items-left justify-start">
                     {genres.length ? genres.join(", ") : ""}
                 </h1>
-                <h1 className="text-sm flex ml-3 font-bold items-left justify-start">
+                <h1 className="text-sm flex ml-3 font-semibold items-left justify-start">
                     {`Episodes : ${episodes}`}
                 </h1>
             </div>
@@ -180,7 +181,7 @@ function Info({ id }) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Description</CardTitle>
-                            <CardDescription className="whitespace-pre-line">
+                            <CardDescription className=" font-small whitespace-pre-line">
                             
                                 {parse(showMore ? formattedText : shortText + (formattedText.length > 200 ? "..." : ""))}
                                 
@@ -195,26 +196,75 @@ function Info({ id }) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p>Card Content</p>
+                            <h1 className="font-bold  mb-2 leading-none tracking-tight">Details</h1>
+                            
+                            <ul className="flex flex-col gap-2 mt-4 ">
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Airing</strong> :{" "}
+                                    <span className="text-sm font-semibold text-white">
+                                    {data?.nextAiringEpisode?.airingAt
+                                        ? new Date(data.nextAiringEpisode.airingAt * 1000).toLocaleString()
+                                        : "FINISHED"}
+                                    </span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Type</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">{data?.type || "Unknown"}</span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Aired</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">{data?.seasonYear || "N/A"}</span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Season</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">{data?.season || "Unknown"}</span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Country</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">{data?.countryOfOrigin || "Unknown"}</span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Studios</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">
+                                    {data?.studios?.nodes?.length
+                                        ? data.studios.nodes.map((studio) => studio.name).join(", ")
+                                        : "Unknown"}
+                                    </span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Source</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">{data?.source || "Unknown"}</span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Duration</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">
+                                    {data?.duration ? `${data.duration} min` : "N/A"}
+                                    </span>
+                                </li>
+                                
+                                <li>
+                                    <strong className="text-white text-sm font-semibold">Popularity</strong> :{" "}
+                                    <span className="text-sm text-muted-foreground">{data?.popularity || "N/A"}</span>
+                                </li>
+                            </ul>
+                            
                         </CardContent>
-                        <CardFooter>
-                            <p>Card Footer</p>
-                        </CardFooter>
                     </Card>                   
                 </TabsContent>
-                <TabsContent value="Relations" className="mt-4 mb-5">
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>Card Title</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p>Card Content</p>
-                        </CardContent>
-                        <CardFooter>
-                            <p>Card Footer</p>
-                        </CardFooter>
-                    </Card>
+                <TabsContent value="Relations" className="mt-4 mb-2">
+                     <ListItems
+                        geners="Chronology"
+                        apiPath="/api/favorites-anime"
+                        param=" font-semibold text-md mt-2 mb-2"
+                        
+                    />
                 </TabsContent>
                 <TabsContent value="Characters" className="mt-4">
                      <Card>
@@ -223,7 +273,7 @@ function Info({ id }) {
                             <CardDescription>Card Description</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p>Card Content</p>
+                            <h1 className="text-1xl">Details</h1>
                         </CardContent>
                         <CardFooter>
                             <p>Card Footer</p>

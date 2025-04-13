@@ -134,19 +134,20 @@ body {
 }
 .InfoContainer .Trending {
   font-size: 1rem;
-  font-weight: 480;
+  
   animation: slideDown 1.5s ease-out forwards;
 }
 
 .InfoContainer .Title {
   font-size: 1.4rem;
   margin-top: 0px;
-  font-weight: 500;
+  padding-right: 2px;
   word-wrap: break-word;
   animation: slideDown 1.5s ease-out forwards;
 }
 .InfoContainer .Description {
   animation: slideDown 1.5s ease-out forwards;
+  
 }
 
 .InfoContainer h1 {
@@ -154,7 +155,7 @@ body {
 }
 
 .InfoContainer > .Addtion > .State {
-  font-weight: 470;
+  
 }
 
 .container .Geners {

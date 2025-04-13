@@ -19,6 +19,7 @@ import Link from 'next/link';
 interface ListItemsProps {
   geners: string;
   apiPath: string;
+  param: string;
 }
 
 // Define TypeScript interface for fetched anime data
@@ -34,7 +35,7 @@ interface Anime {
   status: string;
 }
 
-const ListItems = ({ geners, apiPath }: ListItemsProps) => {
+const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   
@@ -57,7 +58,7 @@ const ListItems = ({ geners, apiPath }: ListItemsProps) => {
     <div className="ItemGeners mt-2 mb-2">
       <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
         <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
-        <p>{geners}</p>
+        <p className={param}>{geners}</p>
       </div>
       {loading ? (
         <Swiper

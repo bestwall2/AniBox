@@ -88,13 +88,13 @@ const Slider = () => {
                 <div className="InfoContainer m-4 text-left">
                   <div className="flex items-center justify-start ">
                     <FaStar size={15} style={{ color: "yellow" }} />
-                    <h2 className="Trending pl-1 pt-1 text-yellow-400"> 
+                    <h2 className="Trending font-semibold pl-1 pt-1 text-yellow-400"> 
                       {
                           anime.averageScore ? `${anime.averageScore / 10}` : N/A
                       }
                     </h2>
                   </div>
-                  <h1 className="Title">
+                  <h1 className="Title font-bold">
                     {anime.title.english ||
                       anime.title.romaji ||
                       "Unknown Title"}
@@ -102,7 +102,7 @@ const Slider = () => {
                   <p className="Description  text-sm w-auto block-words mt-1 mb-1 line-clamp-5 text-gray-400">
                     {parse(anime.description)}
                   </p>
-                  <div className="Addtion mb-2 space-x-3 h-auto">
+                  <div className="Addtion font-semibold mb-2 space-x-3 h-auto">
                     <h1>
                       <FaPlayCircle className="m-1 self-center" size={13} />
                       {anime.format || "Unknown Format"}
@@ -120,14 +120,14 @@ const Slider = () => {
                     </h1>
                   </div>
                   <Button
-                    className="SliderButton rounded-xl mr-2"
+                    className="SliderButton font-semibold rounded-xl mr-2"
                     variant="styled"
                   >
                     <FaPlay size={12} /> Play Now 
                   </Button>
 
                   <Button
-                    className="SliderButton rounded-xl "
+                    className="SliderButton font-semibold rounded-xl "
                     variant="outline"
                   >
                     <HiOutlineInformationCircle size={22} /> More Info 
