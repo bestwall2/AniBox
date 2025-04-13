@@ -4,9 +4,20 @@ import React, { useState, useEffect } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaStar } from "react-icons/fa6";
 import { MdDateRange } from "react-icons/md";
-import  MyTabs  from "../../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import parse from 'html-react-parser';
 
 function Info({ id }) {
+  
+  const TabsPara = "data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
   const [coverImage, setCoverImage] = useState("");
   const [bannerImage, setBannerImage] = useState("");
   const [title, setTitle] = useState("");
@@ -15,6 +26,12 @@ function Info({ id }) {
   const [startDate, setStartDate] = useState("");
   const [genres, setGenres] = useState([]);
   const [episodes, setEpisodes] = useState([]);
+  const [data, setData] = useState([]);
+  
+  const [showMore, setShowMore] = useState(false);
+  const formattedText = data?.description || "";
+  const shortText = formattedText.slice(0, 300); // adjust the limit as needed
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,6 +49,7 @@ function Info({ id }) {
           setEpisodes(media.episodes);
           setGenres(media.genres);
           setStartDate(media.startDate);
+          setData(media);
           setStatus(media.status || "Unknown Status");
         }
       } catch (error) {
@@ -45,12 +63,13 @@ function Info({ id }) {
   }, [id]);
 
   if (!bannerImage && !coverImage) {
-    return <div className="text-center text-white mt-20">Loading...</div>;
+    return <div className="bg-black h-full text-center text-white mt-20">Loading...</div>;
   }
 
   return (
     <>
-    <div className="h-[100vh]">
+    
+    <div className=" bg-black">
         <div className="CoverPage">
             <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
             <img
@@ -129,9 +148,90 @@ function Info({ id }) {
             </div>
             
         </div>
-        <MyTabs/>
+        <div className="m-2 w-auto flex flex-row gap-4 mt-2 items-center justify-center pt-5">
+
+            <Tabs defaultValue="overview" className="w-full flex flex-col">
+                <TabsList className="">
+                    <TabsTrigger
+                        value="overview"
+                        className={TabsPara}
+                    >
+                        Overview
+                    </TabsTrigger>
+                    
+                    <TabsTrigger
+                        value="Relations"
+                        className={TabsPara}
+                    >
+                        Relations
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="Characters"
+                        className={TabsPara}
+                    >
+                        Characters
+                    </TabsTrigger>
+                </TabsList>
+            
+                <TabsContent value="Overview" className="mt-4 mb-5">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Description</CardTitle>
+                            <CardDescription className="whitespace-pre-line">
+                            
+                                {parse(showMore ? formattedText : shortText + (formattedText.length > 200 ? "..." : ""))}
+                                
+                                    {formattedText.length > 300 && (
+                                        <button
+                                        onClick={() => setShowMore(!showMore)}
+                                        className="ml-2 text-blue-600 hover:underline text-sm font-medium"
+                                        >
+                                        {showMore ? "Show less" : "Show more"}
+                                        </button>
+                                    )}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p>Card Content</p>
+                        </CardContent>
+                        <CardFooter>
+                            <p>Card Footer</p>
+                        </CardFooter>
+                    </Card>                   
+                </TabsContent>
+                <TabsContent value="Relations" className="mt-4 mb-5">
+                     <Card>
+                        <CardHeader>
+                            <CardTitle>Card Title</CardTitle>
+                            <CardDescription>Card Description</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p>Card Content</p>
+                        </CardContent>
+                        <CardFooter>
+                            <p>Card Footer</p>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="Characters" className="mt-4">
+                     <Card>
+                        <CardHeader>
+                            <CardTitle>Card Title</CardTitle>
+                            <CardDescription>Card Description</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p>Card Content</p>
+                        </CardContent>
+                        <CardFooter>
+                            <p>Card Footer</p>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+        
+        </div>
     </div>
-    </>
+  </>
   );
 }
 

@@ -16,6 +16,7 @@ import { EffectCoverflow, Autoplay } from "swiper/modules";
 import { FaStar } from "react-icons/fa6";
 import { Skeleton } from "./ui/skeleton";
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import parse from 'html-react-parser';
 
 // Define the type for API response data
 interface Anime {
@@ -99,7 +100,7 @@ const Slider = () => {
                       "Unknown Title"}
                   </h1>
                   <p className="Description  text-sm w-auto block-words mt-1 mb-1 line-clamp-5 text-gray-400">
-                    {anime.description}
+                    {parse(anime.description)}
                   </p>
                   <div className="Addtion mb-2 space-x-3 h-auto">
                     <h1>

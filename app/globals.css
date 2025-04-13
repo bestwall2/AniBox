@@ -7,6 +7,8 @@
 body {
   font-family: "Noto Sans" , Arial, Helvetica, sans-serif;
   background: black;
+  @apply bg-black ;
+  height: 100%;
   --swiper-navigation-size: 28px;
   --swiper-navigation-color: #fff;
 }
@@ -64,10 +66,12 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
   }
 }
-
+#__next {
+  height: 100%;
+}
 .swiper {
   width: 100%;
   height: auto;
