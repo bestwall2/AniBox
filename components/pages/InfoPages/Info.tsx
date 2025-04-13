@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/card"
 import parse from 'html-react-parser';
 import ListItems from "../../ListItems";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 function Info({ id }) {
   
@@ -181,18 +183,40 @@ function Info({ id }) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Description</CardTitle>
-                            <CardDescription className=" font-small whitespace-pre-line">
                             
-                                {parse(showMore ? formattedText : shortText + (formattedText.length > 200 ? "..." : ""))}
-                                
-                                    {formattedText.length > 300 && (
-                                        <button
-                                        onClick={() => setShowMore(!showMore)}
-                                        className="ml-2 text-blue-600 hover:underline text-sm font-medium"
-                                        >
-                                        {showMore ? "Show less" : "Show more"}
-                                        </button>
+                            <CardDescription className="font-small whitespace-pre-line">
+                                <AnimatePresence initial={false}>
+                                    {showMore ? (
+                                    <motion.div
+                                        key="expanded"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        {parse(formattedText)}
+                                    </motion.div>
+                                    ) : (
+                                    <motion.div
+                                        key="collapsed"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        {parse(shortText + (formattedText.length > 200 ? "..." : ""))}
+                                    </motion.div>
                                     )}
+                                </AnimatePresence>
+                            
+                            {formattedText.length > 300 && (
+                                <button
+                                onClick={() => setShowMore(!showMore)}
+                                className="ml-2 text-blue-600 hover:underline text-sm font-medium"
+                                >
+                                {showMore ? "Show less" : "Show more"}
+                                </button>
+                            )}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
