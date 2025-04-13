@@ -347,28 +347,28 @@ query ($id: Int) {
             }
         }
 	  recommendations {
-		nodes {
-			mediaRecommendation {
-				id
-				title {
-					romaji
-					english
-				}
-				coverImage {
-					extraLarge
-					large
-				}
-				episodes
-				status
-				format
-				nextAiringEpisode {
-				  airingAt
-				  timeUntilAiring
-				  episode
-				}
-			}
-	}
-}
+            nodes {
+                mediaRecommendation {
+                id
+                title {
+                    romaji
+                    english
+                }
+                coverImage {
+                    extraLarge
+                    large
+                    color
+                }
+                format
+                status
+                episodes
+                averageScore
+                startDate {
+                    year
+                }
+                }
+            }
+      }
 characters {
   edges { 
 	id

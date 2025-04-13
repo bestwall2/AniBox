@@ -188,38 +188,30 @@ function Info({ id }) {
                             <CardTitle>Description</CardTitle>
                             
                             <CardDescription className="font-small whitespace-pre-line">
-                                <AnimatePresence initial={false}>
-                                    {showMore ? (
+                                <AnimatePresence initial={false} mode="wait">
                                     <motion.div
-                                        key="expanded"
+                                        key={showMore ? "expanded" : "collapsed"}
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: "auto", opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
+                                        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                                        className="overflow-hidden"
                                     >
-                                        {parse(formattedText)}
+                                        {showMore
+                                        ? parse(formattedText)
+                                        : parse(shortText + (formattedText.length > 200 ? "..." : ""))}
                                     </motion.div>
-                                    ) : (
-                                    <motion.div
-                                        key="collapsed"
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: "auto", opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                    >
-                                        {parse(shortText + (formattedText.length > 200 ? "..." : ""))}
-                                    </motion.div>
-                                    )}
                                 </AnimatePresence>
-                            
-                            {formattedText.length > 300 && (
-                                <button
-                                onClick={() => setShowMore(!showMore)}
-                                className="ml-2 text-blue-600 hover:underline text-sm font-medium"
-                                >
-                                {showMore ? "Show less" : "Show more"}
-                                </button>
-                            )}
+                                    
+                                {formattedText.length > 300 && (
+                                    <button
+                                        onClick={() => setShowMore(!showMore)}
+                                        className="ml-2 text-blue-600 hover:underline text-sm font-medium transition-all duration-200"
+                                    >
+                                        {showMore ? "Show less" : "Show more"}
+                                    </button>
+                                )}
+                                
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -283,6 +275,18 @@ function Info({ id }) {
                             </ul>
                             
                         </CardContent>
+                        <CardFooter>
+                            <RecommendList
+                                geners="Recommended"
+                                data={
+                                    data.recommendations?.nodes?.map((rec) => ({
+                                    relationType: "RECOMMENDATION",
+                                    node: rec.mediaRecommendation,
+                                    })) || []
+                                }
+                                param="font-semibold text-md mt-2 mb-2"
+                            />
+                        </CardFooter>
                     </Card>                   
                 </TabsContent>
                 <TabsContent value="Relations" className="mt-4 mb-2">
@@ -302,7 +306,11 @@ function Info({ id }) {
                             <h1 className="text-1xl">Details</h1>
                         </CardContent>
                         <CardFooter>
-                            <p>Card Footer</p>
+                            <RecommendList
+                                geners="Chronology"
+                                data={data.relations?.edges || []}
+                                param="font-semibold text-md mt-2 mb-2"
+                            />
                         </CardFooter>
                     </Card>
                 </TabsContent>
