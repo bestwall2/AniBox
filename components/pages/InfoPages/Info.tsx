@@ -14,7 +14,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import parse from 'html-react-parser';
-import {CircularProgress} from "@heroui/react";
 
 function Info({ id }) {
   
@@ -64,7 +63,10 @@ function Info({ id }) {
   }, [id]);
 
   if (!bannerImage && !coverImage) {
-    return <CircularProgress aria-label="Loading..." color="secondary" />;
+    return <div className="bg-black h-full text-center justify-center text-white mt-20">
+    
+    
+    </div>;
   }
 
   return (
@@ -96,12 +98,12 @@ function Info({ id }) {
         
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
             {/* Cover Image */}
-            <div className="h-[170px] w-[110px] rounded-xl overflow-hidden shadow-xl bg-black backdrop-blur-sm">
+            <div className="h-[180px] w-[120px] rounded-xl shadow-xl bg-black backdrop-blur-sm">
             {coverImage ? (
                 <img
                 src={coverImage}
                 alt="Cover Image"
-                className="h-full w-full object-fill"
+                className="h-[180px] w-[120px] object-cover"
                 loading="lazy"
                 />
             ) : (
