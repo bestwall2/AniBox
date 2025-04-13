@@ -130,12 +130,12 @@ body {
   font-size: 14px;
   justify-items: center;
   content: center;
-  animation: slideDown 1s ease-out forwards;
+  animation: slideDown 1.5s ease-out forwards;
 }
 .InfoContainer .Trending {
   font-size: 1rem;
   font-weight: 480;
-  animation: slideDown 1s ease-out forwards;
+  animation: slideDown 1.5s ease-out forwards;
 }
 
 .InfoContainer .Title {
@@ -143,10 +143,10 @@ body {
   margin-top: 0px;
   font-weight: 500;
   word-wrap: break-word;
-  animation: slideDown 1s ease-out forwards;
+  animation: slideDown 1.5s ease-out forwards;
 }
 .InfoContainer .Description {
-  animation: slideDown 1s ease-out forwards;
+  animation: slideDown 1.5s ease-out forwards;
 }
 
 .InfoContainer h1 {

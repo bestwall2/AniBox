@@ -173,7 +173,7 @@ function Info({ id }) {
                     </TabsTrigger>
                 </TabsList>
             
-                <TabsContent value="Overview" className="mt-4 mb-5">
+                <TabsContent value="overview" className="mt-4 mb-5">
                     <Card>
                         <CardHeader>
                             <CardTitle>Description</CardTitle>
