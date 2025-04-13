@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import parse from 'html-react-RecommendList';
+import parse from 'html-react-parser';
 import RecommendList from "../../Recommend";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
