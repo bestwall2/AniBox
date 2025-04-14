@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
 import DiscoverCard from "./CardsComp/DiscoverCard";
-import Skeleton from "./ui/Skeleton"; // adjust if needed
+import { Skeleton } from "./ui/skeleton";
 import Link from "next/link";
 
 interface RelationNode {
