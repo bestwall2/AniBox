@@ -104,10 +104,7 @@ function Info({ id }) {
             </button>
         </div>
         <div className="absolute top-4 right-4 z-20 flex items-center space-x-3">
-            <div className="bg-indigo-600 transition-transform ease-in delay-2 hover:scale-90 shadow-xl rounded-xl p-2">
-              <FaSearch size={20} />
-            </div>
-
+    
             <img
               className="w-10 h-10 transition-transform ease-in delay-2 hover:scale-90 rounded-full border-gray-600 border-2"
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
