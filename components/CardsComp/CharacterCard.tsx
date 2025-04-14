@@ -25,7 +25,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
       />
 
       <div className="CardShadow absolute">
-        <p className="Title absolute content-center text-center line-clamp-2">
+        <p className="Title absolute content-center text-center line-clamp-1">
           {hovered ? vaName : charName}
         </p>
 
