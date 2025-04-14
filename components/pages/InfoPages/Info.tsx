@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card"
 import parse from 'html-react-parser';
 import RecommendList from "../../Recommend";
-import CharactersSwiper from "../../Characters";
+import Characters from "../../Characters";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -287,7 +287,7 @@ function Info({ id }) {
                         />
                 </TabsContent>
                 <TabsContent value="Characters" className="mt-4">
-                     <CharactersSwiper characters={data.characters.edges} />
+                     <Characters data={data.characters.edges} />
                 </TabsContent>
                 <RecommendList
                     geners="Recommended"
