@@ -287,7 +287,9 @@ function Info({ id }) {
                         />
                 </TabsContent>
                 <TabsContent value="Characters" className="mt-4">
-                     <Characters data={data.characters.edges} />
+                     {data?.characters?.edges && (
+                            <Characters characters={data.characters.edges} />
+                     )}
                 </TabsContent>
                 <RecommendList
                     geners="Recommended"
