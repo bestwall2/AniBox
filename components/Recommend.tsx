@@ -8,6 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/free-mode";
 import DiscoverCard from "./CardsComp/DiscoverCard";
+import Skeleton from "./ui/Skeleton"; // adjust if needed
 import Link from "next/link";
 
 interface RelationNode {
@@ -31,7 +32,7 @@ interface RecommendListProps {
 }
 
 const RecommendList = ({ geners, data, param }: RecommendListProps) => {
-  if (!data || data.length === 0) return null;
+  const isEmpty = !data || data.length === 0;
 
   return (
     <div className="ItemGeners mt-2 mb-2">
@@ -48,24 +49,30 @@ const RecommendList = ({ geners, data, param }: RecommendListProps) => {
         freeMode={true}
         className="swiper-animation"
       >
-        {data.map((edge) => {
-          const anime = edge.node;
-          const animeUrl = `/anime/info/${anime.id}`;
+        {isEmpty
+          ? Array.from({ length: 10 }).map((_, index) => (
+              <SwiperSlide key={`skeleton-${index}`}>
+                <Skeleton className="SkeletonCard h-[22vh] w-[110px] rounded-lg" />
+              </SwiperSlide>
+            ))
+          : data.map((edge) => {
+              const anime = edge.node;
+              const animeUrl = `/anime/info/${anime.id}`;
 
-          return (
-            <SwiperSlide key={`${anime.id}-${anime.title.romaji}`} className="cursor-pointer">
-              <Link href={animeUrl} passHref>
-                <DiscoverCard
-                  cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
-                  title={anime.title.english || anime.title.romaji || "Unknown Title"}
-                  info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
-                  img={anime.coverImage.extraLarge}
-                  status={anime.status}
-                />
-              </Link>
-            </SwiperSlide>
-          );
-        })}
+              return (
+                <SwiperSlide key={`${anime.id}-${anime.title.romaji}`} className="cursor-pointer">
+                  <Link href={animeUrl} passHref>
+                    <DiscoverCard
+                      cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
+                      title={anime.title.english || anime.title.romaji || "Unknown Title"}
+                      info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
+                      img={anime.coverImage.extraLarge}
+                      status={anime.status}
+                    />
+                  </Link>
+                </SwiperSlide>
+              );
+            })}
       </Swiper>
     </div>
   );
