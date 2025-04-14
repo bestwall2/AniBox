@@ -11,7 +11,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
 
   return (
     <div
-      className="Listcontainer relative transition-transform ease-in delay-2 hover:scale-90 rounded-2xl overflow-hidden"
+      className="Listcontainer relative  rounded-2xl overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -21,7 +21,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
         layout="fill"
         objectFit="cover"
         priority
-        className="transition-opacity duration-300 ease-in-out"
+        className="transition-opacity duration-400 ease-in-out"
       />
 
       <div className="CardShadow absolute">
