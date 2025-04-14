@@ -103,10 +103,10 @@ function Info({ id }) {
                 />
             </button>
         </div>
-        <div className="absolute top-4 right-4 z-20 flex items-center space-x-3">
+        <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
     
             <img
-              className="w-10 h-10 transition-transform ease-in delay-2 hover:scale-90 rounded-full border-gray-600 border-2"
+              className="w-9 h-9 transition-transform ease-in delay-2 hover:scale-90 rounded-full border-gray-600 border-2"
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
               alt="user photo"
             />
@@ -291,11 +291,15 @@ function Info({ id }) {
                             geners="Chronology"
                             data={data.relations?.edges || []}
                             param="font-semibold text-md mt-2 mb-2"
+                            className="InfoListsForAni"
                         />
                 </TabsContent>
                 <TabsContent value="Characters" className="mt-4">
                      {data?.characters?.edges && (
-                            <Characters characters={data.characters.edges} />
+                            <Characters 
+                                className="InfoListsForAni"
+                                characters={data.characters.edges}
+                             />
                      )}
                 </TabsContent>
                 <RecommendList
@@ -307,6 +311,7 @@ function Info({ id }) {
                     })) || []
                     }
                     param="font-semibold text-md mt-2 mb-2"
+                    className="InfoListsForAni"
                 />  
             </Tabs>
         
