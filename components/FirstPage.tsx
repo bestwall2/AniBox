@@ -20,6 +20,7 @@ const FirstPage = () => {
             <ListItems
               geners="Favorites Anime"
               apiPath="/api/favorites-anime"
+              param="font-semibold"
             />
           </div>
         </div>
