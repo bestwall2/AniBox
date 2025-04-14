@@ -208,7 +208,7 @@ body {
 .Listcontainer .CardShadow {
   bottom: 0px;
   background: linear-gradient(to top, #000000f3 5%, #00000000 30%),
-              linear-gradient(to bottom, #000000f3 3%, #00000000 20%);
+              linear-gradient(to bottom, #000000f3 5%, #00000000 30%);
   height: 49vh;
   width: 100%;
   margin-bottom: 0px;
