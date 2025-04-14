@@ -101,10 +101,11 @@ body {
   height: 100vh;
 }
 .InfoContainer {
+  animation: slideDown 1s ease-out forwards;
   position: absolute;
   bottom: 0px;
   width: 100%;
-  animation: slideDown 1s ease-out forwards;
+  
 }
 
 .InfoContainerPage{
@@ -135,12 +136,10 @@ body {
   font-size: 14px;
   justify-items: center;
   content: center;
-  animation: slideDown 1.5s ease-out forwards;
+  
 }
 .InfoContainer .Trending {
   font-size: 1rem;
-  
-  animation: slideDown 1.5s ease-out forwards;
 }
 
 .InfoContainer .Title {
@@ -148,7 +147,6 @@ body {
   margin-top: 0px;
   padding-right: 2px;
   word-wrap: break-word;
-  animation: slideDown 1.5s ease-out forwards;
 }
 .InfoContainer .Description {
   animation: slideDown 1.5s ease-out forwards;
