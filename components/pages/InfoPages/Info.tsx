@@ -93,17 +93,27 @@ function Info({ id }) {
         
         {/* Back Arrow Button */}
         <div className="absolute top-4 left-4 z-20">
-        <button onClick={() => router.back()}>
-            <IoMdArrowRoundBack
-            size={30}
-            style={{
-                color: "white",
-                margin: 5,
-            }}
-            />
-        </button>
+            <button onClick={() => router.back()}>
+                <IoMdArrowRoundBack
+                size={30}
+                style={{
+                    color: "white",
+                    margin: 5,
+                }}
+                />
+            </button>
         </div>
-        
+        <div className="absolute top-4 right-4 z-20 flex items-center space-x-3">
+            <div className="bg-indigo-600 transition-transform ease-in delay-2 hover:scale-90 shadow-xl rounded-xl p-2">
+              <FaSearch size={20} />
+            </div>
+
+            <img
+              className="w-10 h-10 transition-transform ease-in delay-2 hover:scale-90 rounded-full border-gray-600 border-2"
+              src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
+              alt="user photo"
+            />
+        </div>      
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
             {/* Cover Image */}
             <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">

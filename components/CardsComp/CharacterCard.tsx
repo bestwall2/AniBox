@@ -21,7 +21,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
         layout="fill"
         objectFit="cover"
         priority
-        className="transition-opacity duration-400 ease-in-out"
+        className=""
       />
 
       <div className="CardShadow absolute">
