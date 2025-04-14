@@ -1,69 +1,80 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-
+import "swiper/css/free-mode";
 import { useState } from "react";
 
-const CharactersSwiper = ({ characters }) => {
+const Characters = ({ data }) => {
   return (
-    <div className="mt-6 px-4">
-      <h2 className="text-white text-lg font-bold mb-3">Characters</h2>
+    <div className="ItemGeners mt-2 mb-2">
+      <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
+        <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
+        <p className="text-base font-bold">Characters</p>
+      </div>
+
       <Swiper
-        spaceBetween={10}
-        slidesPerView={2.2}
-        breakpoints={{
-          640: { slidesPerView: 3 },
-          768: { slidesPerView: 4 },
-          1024: { slidesPerView: 5 },
-        }}
+        modules={[Navigation, FreeMode]}
+        slidesPerView={3}
+        spaceBetween={5}
         navigation={true}
-        modules={[Navigation]}
-        className="character-swiper"
+        freeMode={true}
+        className="swiper-animation"
       >
-        {characters?.map((char, index) => (
-          <SwiperSlide key={index}>
-            <CharacterCard char={char} />
-          </SwiperSlide>
-        ))}
+        {data.map((edge, index) => {
+          const character = edge.node;
+          const va = edge.voiceActorRoles?.[0]?.voiceActor;
+
+          return (
+            <SwiperSlide key={index} className="cursor-pointer">
+              <CharacterCard
+                character={character}
+                voiceActor={va}
+                role={edge.role}
+              />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );
 };
 
-const CharacterCard = ({ char }) => {
+const CharacterCard = ({ character, voiceActor, role }) => {
   const [hovered, setHovered] = useState(false);
 
-  const characterImg = char.node?.image?.large;
-  const characterName = char.node?.name?.full || "Unknown";
-
-  const va = char.voiceActorRoles?.[0]?.voiceActor;
-  const vaImg = va?.image?.large;
-  const vaName = va?.name?.full || "Unknown VA";
+  const charImage = character?.image?.large;
+  const charName = character?.name?.full || "Unknown";
+  const vaImage = voiceActor?.image?.large;
+  const vaName = voiceActor?.name?.full || "Unknown VA";
 
   return (
     <div
-      className="bg-zinc-900 rounded-lg shadow-md p-2 transition-all duration-300"
+      className="relative bg-zinc-900 rounded-lg shadow-md overflow-hidden transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <img
-        src={hovered && vaImg ? vaImg : characterImg}
-        alt={hovered && vaName ? vaName : characterName}
-        className="w-full h-[180px] object-cover rounded-md"
-      />
-      <div className="mt-2 text-center">
+      {/* Image with fade transition */}
+      <div className="w-full h-[180px]">
+        <img
+          src={hovered && vaImage ? vaImage : charImage}
+          alt={hovered ? vaName : charName}
+          className="w-full h-full object-cover transition-opacity duration-300 opacity-0"
+          onLoad={(e) => (e.target.style.opacity = 1)}
+        />
+      </div>
+
+      {/* Name and Role */}
+      <div className="mt-1 text-center px-1">
         <h3 className="text-white text-sm font-semibold truncate">
-          {hovered ? vaName : characterName}
+          {hovered ? vaName : charName}
         </h3>
-        <p className="text-xs text-muted-foreground">
-          {char.role || "Role"}
-        </p>
+        <p className="text-xs text-muted-foreground">{role}</p>
       </div>
     </div>
   );
 };
 
-export default CharactersSwiper;
+export default Characters;
