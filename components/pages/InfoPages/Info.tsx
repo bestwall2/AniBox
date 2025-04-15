@@ -324,6 +324,11 @@ function Info({ id }) {
                              />
                      )}
                 </TabsContent>
+                <Episodes 
+                episodes={allEpisodes}
+                imgbackup={data.coverImage.extraLarge}
+                />
+                
                 <RecommendList
                     geners="Recommended"
                     data={
@@ -335,10 +340,7 @@ function Info({ id }) {
                     param="font-semibold text-md mt-2 mb-2"
                     className="InfoListsForAni"
                 /> 
-                <Episodes 
-                episodes={allEpisodes}
-                imgbackup={data.coverImage.extraLarge}
-                />
+                
             </Tabs>
         
         </div>

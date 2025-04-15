@@ -18,25 +18,25 @@ interface EpisodesProps {
 
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
   return (
-    <div className="EpisodesList mt-4 h-[65px]">
+    <div className="EpisodesList mt-2 mb-2 h-[65px]">
       <div className="flex text-gray-200 items-center mb-4 space-x-2">
         <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
         <p className="text-md font-semibold">Anime Episodes</p>
       </div>
 
-      <div className="flex flex-col gap-4">
-        {episodes.map((episode) => (
-          <EpisodeCard
-            key={episode.id}
-            title={episode.title}
-            description={episode.description}
-            image={episode.img}
-            number={episode.number}
-            imgbup={imgbackup}
-          />
-        ))}
-      </div>
-    </div>
+        <div className="flex flex-col gap-4 max-h-[500px] overflow-y-scroll pr-2">
+            {episodes.map((episode) => (
+                <EpisodeCard
+                key={episode.id}
+                title={episode.title}
+                description={episode.description}
+                image={episode.img}
+                number={episode.number}
+                imgbup={imgbackup}
+                />
+            ))}
+        
+        </div>
   );
 };
 
