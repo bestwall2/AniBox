@@ -46,19 +46,11 @@ function Info({ id }) {
             const data = await response.json();
             
             const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
-            const raw = await epi_res.text();
-            const parts = raw.split("\n");
-            
-            const providersRaw = parts.find(p => p.startsWith("1:"));
-            if (!providersRaw) return;
-            
-
-            const providersJson = providersRaw.replace(/^1:/, "");
-            const epi_data = JSON.parse(providersJson);
-            
-
+            const epi_raw = await epi_res.json();
+            const epi_data = epi_raw[1]; 
+                       
             let selectedProvider = epi_data.find(p => p.providerId === "pahe" && p.episodes.length > 0);
-            
+    
             if (!selectedProvider) {
                 selectedProvider = epi_data.find(p => p.providerId === "yuki" && p.episodes.length > 0);
             }
@@ -71,7 +63,7 @@ function Info({ id }) {
                     img: episode.img,
                     description: episode.description,
                 }));
-            
+                
                 setAllEpisodes(allEpisodes);
             }
             
@@ -343,7 +335,7 @@ function Info({ id }) {
                     param="font-semibold text-md mt-2 mb-2"
                     className="InfoListsForAni"
                 /> 
-                
+                <Episodes episodes={allEpisodes} />
             </Tabs>
         
         </div>

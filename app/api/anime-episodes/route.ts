@@ -31,8 +31,8 @@ export async function GET(request) {
       throw new Error(`Failed to fetch anime info for id: ${id}`);
     }
 
-    const rawText = await res.text(); // Because response is not JSON but streamed component
-    return NextResponse.json({ raw: rawText });
+    const rawText = await res.json(); // Because response is not JSON but streamed component
+    return NextResponse.json(rawText);
   } catch (error) {
     console.error("Error fetching anime info:", error);
     return NextResponse.json(
