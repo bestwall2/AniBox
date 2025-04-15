@@ -2,8 +2,8 @@ import Image from "next/image";
 
 const EpisodeCard = ({ title, description, image, number, imgbup }) => {
   return (
-    <div className="bg-zinc-800 rounded-xl shadow-lg flex items-center space-x-1 p-2">
-      <div className="relative w-[120px] h-[90px] rounded-lg overflow-hidden flex-shrink-0">
+    <div className="bg-zinc-800 rounded-xl shadow-lg flex items-center space-x-1 p-0">
+      <div className="relative w-[120px] h-full rounded-lg overflow-hidden flex-shrink-0">
         <Image
             src={image.includes('https://') ? image : imgbup}
             alt={title}
