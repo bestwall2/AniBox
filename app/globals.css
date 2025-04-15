@@ -155,7 +155,9 @@ body {
 .InfoListsForAni {
   animation: slideDown 1.5s ease-out forwards;
 }
-
+.EpisodesList{
+    animation: slideDown 1.5s ease-out forwards;
+}
 .InfoContainer h1 {
   display: flex;
 }

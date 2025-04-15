@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 function Info({ id }) {
   const router = useRouter();
   
-  const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.99] data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
+  const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
   const [coverImage, setCoverImage] = useState("");
   const [bannerImage, setBannerImage] = useState("");
   const [title, setTitle] = useState("");
@@ -114,7 +114,7 @@ function Info({ id }) {
         </div>
         
         {/* Back Arrow Button */}
-        <div className="absolute transition-all duration-300 ease-out hover:scale-[0.99] top-4 left-4 z-20">
+        <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
             <button onClick={() => router.back()}>
                 <IoMdArrowRoundBack
                 size={30}
@@ -128,7 +128,7 @@ function Info({ id }) {
         <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
     
             <img
-              className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.99] rounded-full border-gray-600 border-2"
+              className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
               alt="user photo"
             />
