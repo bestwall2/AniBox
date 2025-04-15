@@ -7,8 +7,9 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
         <Image
             src={image.includes('https://') ? image : imgbup}
             alt={title}
-            width={160}          
-            objectFit="cover"
+            width={160}
+            height={65}           
+            objectFit="fill"
             priority
             className="rounded-lg object-cover"
         />
@@ -16,7 +17,7 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
 
       <div className="flex flex-col overflow-hidden">
         <h3 className="text-sm font-semibold ml-1  text-white truncate">{`${number}. ${title}`}</h3>
-        <p className="text-sm text-gray-300 ml-1 line-clamp-2">{description.includes('$undefined') ? imgbup : description}</p>
+        <p className="text-sm text-gray-300 ml-1 line-clamp-2">{description.includes('$undefined') ? "" : description}</p>
       </div>
     </div>
   );
