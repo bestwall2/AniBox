@@ -7,10 +7,7 @@ export async function GET(request) {
   const id = searchParams.get("id");
 
   if (!id) {
-    return NextResponse.json(
-      { error: "Missing anime ID" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Missing anime ID" }, { status: 400 });
   }
 
   try {
@@ -31,8 +28,20 @@ export async function GET(request) {
       throw new Error(`Failed to fetch anime info for id: ${id}`);
     }
 
-    const rawText = await res.json(); // Because response is not JSON but streamed component
-    return NextResponse.json(rawText);
+    const text = await res.text(); // ناخدو الرد كنص
+
+    // كنقلبو على السطر اللي فيه key 1 (episodes)
+    const key1Line = text.split(/\n/).find(line => line.startsWith("1:"));
+
+    if (!key1Line) {
+      return NextResponse.json({ error: "Episodes not found" }, { status: 500 });
+    }
+
+    const jsonString = key1Line.slice(2); // نحيد "1:" وناخد القيمة
+
+    const data = JSON.parse(jsonString);
+
+    return NextResponse.json(data); // رجع غير key 1 كـ JSON منسق
   } catch (error) {
     console.error("Error fetching anime info:", error);
     return NextResponse.json(

@@ -46,11 +46,10 @@ function Info({ id }) {
             const data = await response.json();
             
             const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
-            const epi_raw = await epi_res.json();
-            const epi_data = epi_raw[1]; 
-                       
+            const epi_data = await epi_res.json(); // هنا ماشي .json()[1] لأن الرد غيكون مصفوفة
+            
             let selectedProvider = epi_data.find(p => p.providerId === "pahe" && p.episodes.length > 0);
-    
+            
             if (!selectedProvider) {
                 selectedProvider = epi_data.find(p => p.providerId === "yuki" && p.episodes.length > 0);
             }
@@ -63,7 +62,7 @@ function Info({ id }) {
                     img: episode.img,
                     description: episode.description,
                 }));
-                
+            
                 setAllEpisodes(allEpisodes);
             }
             
