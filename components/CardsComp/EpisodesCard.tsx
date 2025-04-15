@@ -8,6 +8,7 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
             src={image.includes('https://') ? image : imgbup}
             alt={title}
             width={160}
+            height={90}
             layout="fill"
             objectFit="cover"
             priority
