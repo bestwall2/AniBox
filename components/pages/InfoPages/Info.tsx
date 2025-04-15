@@ -61,6 +61,7 @@ function Info({ id }) {
                     number: episode.number,
                     title: episode.title,
                     img: episode.img,
+                    imgb: bannerImage,
                     description: episode.description,
                 }));
             
@@ -335,7 +336,10 @@ function Info({ id }) {
                     param="font-semibold text-md mt-2 mb-2"
                     className="InfoListsForAni"
                 /> 
-                <Episodes episodes={allEpisodes} />
+                <Episodes 
+                    episodes={allEpisodes}
+                    
+                 />
             </Tabs>
         
         </div>

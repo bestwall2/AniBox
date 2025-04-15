@@ -1,6 +1,6 @@
 // components/Episodes.tsx
 import React from "react";
-import EpisodeCard from "./CardsComp/EpisodeCard";
+import EpisodeCard from "./CardsComp/EpisodesCard";
 
 interface Episode {
   id: string;
@@ -8,10 +8,11 @@ interface Episode {
   description: string;
   img: string;
   number: number;
+  imgb: string;
 }
 
 interface EpisodesProps {
-  episodes: Episode[];
+  episodes: Episode[]; 
 }
 
 const Episodes: React.FC<EpisodesProps> = ({ episodes }) => {
@@ -30,6 +31,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes }) => {
             description={episode.description}
             image={episode.img}
             number={episode.number}
+            imgbup={episode.imgb}
           />
         ))}
       </div>

@@ -1,18 +1,21 @@
 import Image from "next/image";
-import { useState } from "react";
 
-const EpisodeCard = ({ title, description, image, number }) => {
+const EpisodeCard = ({ title, description, image, number, imgbup }) => {
   return (
-    <div className="bg-zinc-800 rounded-xl shadow-lg flex items-center p-4 space-x-4">
-      <img
-        src={image}
-        alt={title}
-        className="w-24 h-24 object-cover rounded-lg shadow-md"
-      />
-      <div className="flex flex-col">
-        <span className="text-sm text-indigo-400">EP {number}</span>
-        <h3 className="text-xl font-semibold text-white">{title}</h3>
-        <p className="text-sm text-gray-300 mt-2">{description}</p>
+    <div className="bg-zinc-800 rounded-xl shadow-lg flex items-center space-x-4 p-2">
+      <div className="relative w-[100px] h-[80px] rounded-lg overflow-hidden flex-shrink-0">
+        <Image
+            src={image || imgbup}
+            alt={title}
+            width={160}
+            height={90}
+            className="rounded-lg object-cover"
+        />
+      </div>
+
+      <div className="flex flex-col overflow-hidden">
+        <h3 className="text-sm font-semibold text-white truncate">{`${number}. ${title}`}</h3>
+        <p className="text-sm text-gray-300 line-clamp-2">{description || ""}</p>
       </div>
     </div>
   );
