@@ -24,7 +24,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
                 <p className="text-md font-semibold">Anime Episodes</p>
             </div>
     
-            <div className="flex flex-col gap-4 max-h-[300px] overflow-y-scroll pr-2">
+            <div className="flex flex-col gap-4 max-h-[350px] overflow-y-scroll pr-2">
                 {episodes.map((episode) => (
                     <EpisodeCard
                     key={episode.id}
