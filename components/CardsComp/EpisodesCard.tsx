@@ -3,12 +3,12 @@ import Image from "next/image";
 const EpisodeCard = ({ title, description, image, number, imgbup }) => {
   return (
     <div className="bg-zinc-800 transition-all duration-300 ease-out hover:scale-[0.97] rounded-xl shadow-lg flex items-center space-x-[0.5] p-0">
-      <div className="relative w-[120px] min-h-[67px]  max-h-[67px] rounded-lg overflow-hidden flex-shrink-0">
+      <div className="relative w-[120px] min-h-[70px]  max-h-[70px] rounded-lg overflow-hidden flex-shrink-0">
         <Image
             src={image.includes('https://') ? image : imgbup}
             alt={title}
             width={120}
-            height={67}           
+            height={70}           
             objectFit="cover"
             priority
             className="rounded-lg object-cover"

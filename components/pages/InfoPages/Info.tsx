@@ -324,23 +324,24 @@ function Info({ id }) {
                              />
                      )}
                 </TabsContent>
-                <Episodes 
-                episodes={allEpisodes}
-                imgbackup={data.coverImage.extraLarge}
-                />
-                
-                <RecommendList
-                    geners="Recommended"
-                    data={
-                    data.recommendations?.nodes?.map((rec) => ({
-                    relationType: "RECOMMENDATION",
-                    node: rec.mediaRecommendation,
-                    })) || []
-                    }
-                    param="font-semibold text-md mt-2 mb-2"
-                    className="InfoListsForAni"
-                /> 
-                
+                <div className="flex-col">
+                    <Episodes 
+                        episodes={allEpisodes}
+                        imgbackup={data.coverImage.extraLarge}
+                    />
+                    
+                    <RecommendList
+                        geners="Recommended"
+                        data={
+                        data.recommendations?.nodes?.map((rec) => ({
+                        relationType: "RECOMMENDATION",
+                        node: rec.mediaRecommendation,
+                        })) || []
+                        }
+                        param="font-semibold text-md mt-2 mb-2"
+                        className="InfoListsForAni"
+                    /> 
+                </div>               
             </Tabs>
         
         </div>
