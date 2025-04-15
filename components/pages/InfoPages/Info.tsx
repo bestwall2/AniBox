@@ -337,7 +337,7 @@ function Info({ id }) {
                 /> 
                 <Episodes 
                 episodes={allEpisodes}
-                imgbackup={data.bannerImage}
+                imgbackup={data.coverImage.extraLarge}
                 />
             </Tabs>
         
