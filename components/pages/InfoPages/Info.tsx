@@ -61,7 +61,7 @@ function Info({ id }) {
                     number: episode.number,
                     title: episode.title,
                     img: episode.img,
-                    imgb: bannerImage,
+                    imgb: bannerImage || coverImage,
                     description: episode.description,
                 }));
             
