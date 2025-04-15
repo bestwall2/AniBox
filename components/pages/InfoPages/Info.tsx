@@ -71,6 +71,8 @@ function Info({ id }) {
         if (media) {
           setAnimeInfo(media);
         }
+        
+        /*
 
         // Episodes data
         const episodesRes = await fetch(`/api/anime-episodes?id=${id}`);
@@ -104,6 +106,7 @@ function Info({ id }) {
 
           setAllEpisodes(episodes);
         }
+        */
       } catch (error) {
         console.error("Error fetching anime data:", error);
       }
