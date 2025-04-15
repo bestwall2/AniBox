@@ -324,7 +324,7 @@ function Info({ id }) {
                              />
                      )}
                 </TabsContent>
-                <div className="flex-col">
+                <div className="flex flex-col gap-4">
                     <Episodes 
                         episodes={allEpisodes}
                         imgbackup={data.coverImage.extraLarge}
