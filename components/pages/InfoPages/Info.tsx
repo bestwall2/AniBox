@@ -114,7 +114,7 @@ function Info({ id }) {
         </div>
         
         {/* Back Arrow Button */}
-        <div className="absolute top-4 left-4 z-20">
+        <div className="absolute transition-all duration-300 ease-out hover:scale-[0.98] top-4 left-4 z-20">
             <button onClick={() => router.back()}>
                 <IoMdArrowRoundBack
                 size={30}
@@ -128,7 +128,7 @@ function Info({ id }) {
         <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
     
             <img
-              className="w-9 h-9 transition-transform ease-in delay-2 hover:scale-90 rounded-full border-gray-600 border-2"
+              className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.98] rounded-full border-gray-600 border-2"
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
               alt="user photo"
             />
