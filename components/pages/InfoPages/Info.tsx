@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card"
 import parse from 'html-react-parser';
 import RecommendList from "../../Recommend";
-import RecommendList from "../../Episodes";
+import Episodes from "../../Episodes";
 import Characters from "../../Characters";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
