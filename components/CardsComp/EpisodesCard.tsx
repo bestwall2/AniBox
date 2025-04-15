@@ -14,8 +14,8 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
       </div>
 
       <div className="flex flex-col overflow-hidden">
-        <h3 className="text-sm font-semibold text-white truncate">{`${number}. ${title}`}</h3>
-        <p className="text-sm text-gray-300 line-clamp-2">{description.includes('$undefined') ? imgbup : description}</p>
+        <h3 className="text-sm font-semibold ml-1  text-white truncate">{`${number}. ${title}`}</h3>
+        <p className="text-sm text-gray-300 ml-1 line-clamp-2">{description.includes('$undefined') ? imgbup : description}</p>
       </div>
     </div>
   );

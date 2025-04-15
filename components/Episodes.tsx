@@ -13,11 +13,12 @@ interface Episode {
 
 interface EpisodesProps {
   episodes: Episode[]; 
+  imgbackup: string;
 }
 
-const Episodes: React.FC<EpisodesProps> = ({ episodes }) => {
+const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
   return (
-    <div className="mt-4">
+    <div className="mt-4 h-[90px]">
       <div className="flex text-gray-200 items-center mb-4 space-x-2">
         <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
         <p className="text-md font-semibold">Anime Episodes</p>
@@ -31,7 +32,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes }) => {
             description={episode.description}
             image={episode.img}
             number={episode.number}
-            imgbup={episode.imgb}
+            imgbup={imgbackup}
           />
         ))}
       </div>
