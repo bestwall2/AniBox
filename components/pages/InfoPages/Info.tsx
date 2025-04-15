@@ -33,6 +33,7 @@ function Info({ id }) {
   const [genres, setGenres] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [data, setData] = useState([]);
+  const [allEpisodes, setAllEpisodes] = useState([]);
   
   const [showMore, setShowMore] = useState(false);
   const formattedText = data?.description || "";
@@ -40,27 +41,48 @@ function Info({ id }) {
   
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/anime-info?id=${id}`);
-        
-        const data = await response.json();
-        console.log(data);
-        const media = data?.Media;
-
-        if (media) {
-          setCoverImage(media.coverImage.extraLarge);
-          setBannerImage(media.bannerImage);
-          setTitle(media.title.romaji);
-          setRating(media.averageScore);
-          setEpisodes(media.episodes);
-          setGenres(media.genres);
-          setStartDate(media.startDate);
-          setData(media);
-          setStatus(media.status || "Unknown Status");
+        try {
+            const response = await fetch(`/api/anime-info?id=${id}`);           
+            const data = await response.json();
+            
+            const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
+            const epi_raw = await epi_res.json();
+            const epi_data = epi_raw[1]; 
+                       
+            let selectedProvider = epi_data.find(p => p.providerId === "pahe" && p.episodes.length > 0);
+    
+            if (!selectedProvider) {
+                selectedProvider = epi_data.find(p => p.providerId === "yuki" && p.episodes.length > 0);
+            }
+            
+            if (selectedProvider) {
+                const allEpisodes = selectedProvider.episodes.map((episode) => ({
+                    id: episode.id,
+                    number: episode.number,
+                    title: episode.title,
+                    img: episode.img,
+                    description: episode.description,
+                }));
+                
+                setAllEpisodes(allEpisodes);
+            }
+            
+            const media = data?.Media;
+    
+            if (media) {
+            setCoverImage(media.coverImage.extraLarge);
+            setBannerImage(media.bannerImage);
+            setTitle(media.title.romaji);
+            setRating(media.averageScore);
+            setEpisodes(media.episodes);
+            setGenres(media.genres);
+            setStartDate(media.startDate);
+            setData(media);
+            setStatus(media.status || "Unknown Status");
+            }
+        } catch (error) {
+            console.error("Error fetching images:", error);
         }
-      } catch (error) {
-        console.error("Error fetching images:", error);
-      }
     };
 
     if (id) {
@@ -312,7 +334,8 @@ function Info({ id }) {
                     }
                     param="font-semibold text-md mt-2 mb-2"
                     className="InfoListsForAni"
-                />  
+                /> 
+                <Episodes episodes={allEpisodes} />
             </Tabs>
         
         </div>
