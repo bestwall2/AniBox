@@ -7,9 +7,7 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
         <Image
             src={image.includes('https://') ? image : imgbup}
             alt={title}
-            width={160}
-            height={90}
-            layout="fill"
+            width={160}          
             objectFit="cover"
             priority
             className="rounded-lg object-cover"
