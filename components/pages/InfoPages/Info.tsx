@@ -91,10 +91,9 @@ function Info({ id }) {
   }, [id]);
 
   if (!bannerImage && !coverImage) {
-    return 
-    <div className="bg-black h-full text-center justify-center mt-20">
+    return  
        <div class="loader"></div> 
-    </div>;
+    ;
   }
 
   return (
@@ -343,7 +342,7 @@ function Info({ id }) {
                     /> 
                 </div>               
             </Tabs>
-        
+            <div class="loader"></div> 
         </div>
     </div>
   </>
