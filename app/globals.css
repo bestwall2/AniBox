@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'nprogress/nprogress.css';
 
 @tailwind base;
 @tailwind components;
@@ -332,4 +333,9 @@ body {
 }
 @keyframes l6{
   90%,100% {box-shadow: -10px 0,10px 0,0 10px, 0 -10px;transform: rotate(180deg)}
+}
+
+#nprogress .bar {
+  background: #8b5cf6; /* e.g., Tailwind indigo-500 */
+  height: 3px;
 }

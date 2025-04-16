@@ -92,7 +92,7 @@ function Info({ id }) {
 
   if (!bannerImage && !coverImage) {
     return  
-       <div class="loader"></div> 
+       <div class="loader">test</div> 
     ;
   }
 
@@ -342,7 +342,7 @@ function Info({ id }) {
                     /> 
                 </div>               
             </Tabs>
-            <div class="loader"></div> 
+            
         </div>
     </div>
   </>
