@@ -55,58 +55,52 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
   }, [apiPath]);
 
   return (
-    <div className="ItemGeners mt-2 mb-2">
-      <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
-        <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
-        <p className={param}>{geners}</p>
-      </div>
-      {loading ? (
-        <Swiper
-          modules={[Navigation, FreeMode]}
-          slidesPerView={3}
-          spaceBetween={5}
-          navigation={true}
-          className="swiper-animation"
-          freeMode={true}
-        >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <SwiperSlide key={`skeleton-${index}`}>
-              <Skeleton className="SkeletonCard h-[22vh] w-[110px] rounded-lg" />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      ) : (
-        <Swiper
-          modules={[Navigation, FreeMode]}
-          slidesPerView={3}
-          spaceBetween={5}
-          navigation={false}
-          freeMode={true}
-          className="swiper-animation"
-        >
-          {animeList.map((anime) => {
-            const animeUrl = `/anime/info/${anime.id}`;           
-
-            return (
-                <SwiperSlide
-                key={`${anime.id}-${anime.title.romaji}`}
-                className="cursor-pointer"
-                >
-                <Link href={animeUrl} passHref>
-                    <DiscoverCard
-                    cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
-                    title={anime.title.english || anime.title.romaji || "Unknown Title"}
-                    info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
-                    img={anime.coverImage.extraLarge}
-                    status={anime.status}
-                    />
-                </Link>
+        <div className="ItemGeners mt-2 mb-2">
+        
+            <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
+                <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
+                <p className={param}>{geners}</p>
+            </div>
+            
+            <Swiper
+                modules={[Navigation, FreeMode]}
+                slidesPerView={3}
+                spaceBetween={5}
+                navigation={false}
+                freeMode={true}
+                className="swiper-animation"
+            >
+            
+            {loading ? (
+                Array.from({ length: 10 }).map((_, index) => (
+                <SwiperSlide key={`skeleton-${index}`}>
+                    <Skeleton className="SkeletonCard h-[22vh] w-[110px] rounded-lg" />
                 </SwiperSlide>
-            );
-          })}
-        </Swiper>
-      )}
-    </div>
+                ))
+            ) : (
+                animeList.map((anime) => {
+                const animeUrl = `/anime/info/${anime.id}`;
+        
+                return (
+                    <SwiperSlide
+                    key={`${anime.id}-${anime.title.romaji}`}
+                    className="cursor-pointer"
+                    >
+                    <Link href={animeUrl} passHref>
+                        <DiscoverCard
+                        cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
+                        title={anime.title.english || anime.title.romaji || "Unknown Title"}
+                        info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
+                        img={anime.coverImage.extraLarge}
+                        status={anime.status}
+                        />
+                    </Link>
+                    </SwiperSlide>
+                );
+                })
+            )}
+            </Swiper>
+        </div>
   );
 };
 

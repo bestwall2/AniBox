@@ -11,7 +11,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
 
   return (
     <div
-      className="Listcontainer relative  rounded-2xl overflow-hidden"
+      className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative  rounded-2xl overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
