@@ -89,12 +89,13 @@ function Info({ id }) {
       fetchData();
     }
   }, [id]);
-
+ 
+ /*
   if (!bannerImage && !coverImage) {
     return  
        <div class="loader">test</div> 
     ;
-  }
+  }*/
 
   return (
     <>

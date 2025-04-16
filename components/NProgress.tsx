@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: true });
 
 export default function ProgressBar() {
   const pathname = usePathname();

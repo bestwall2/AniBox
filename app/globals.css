@@ -309,33 +309,25 @@ body {
 
 }
 
-/* HTML: <div class="loader"></div> */
-.loader {
-  width: 100px;
-  aspect-ratio: 1;
-  padding: 10px;
-  box-sizing: border-box;
-  display: grid;
-  background: #fff;
-  filter: blur(3px) contrast(7) hue-rotate(290deg);
-  mix-blend-mode: darken;
-}
-.loader:before{
-  content: "";
-  margin: auto;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  color: #ff0000;
-  background: currentColor;
-  box-shadow: -30px 0,30px 0,0 30px, 0 -30px;
-  animation: l6 1s infinite alternate;
-}
-@keyframes l6{
-  90%,100% {box-shadow: -10px 0,10px 0,0 10px, 0 -10px;transform: rotate(180deg)}
+
+/* لون الخط ديال التحميل */
+#nprogress .bar {
+  background: #8b5cf6 !important; 
 }
 
+/* شكل الشريط */
 #nprogress .bar {
-  background: #8b5cf6; /* e.g., Tailwind indigo-500 */
-  height: 3px;
+  height: 3px; /* يمكن تزيد الطول */
+}
+
+/* لون الخلفية ديال الـ spinner */
+#nprogress .spinner-icon {
+  border-top-color: #8b5cf6 !important;
+  border-left-color: #8b5cf6 !important;
+}
+
+/* مكان الـ spinner */
+#nprogress .spinner {
+  top: 15px;
+  right: 15px;
 }
