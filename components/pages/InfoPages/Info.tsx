@@ -90,12 +90,12 @@ function Info({ id }) {
     }
   }, [id]);
  
- /*
+ 
   if (!bannerImage && !coverImage) {
     return  
-       <div class="loader">test</div> 
+       <div class="test text-xl">AniPlay</div> 
     ;
-  }*/
+  }
 
   return (
     <>
