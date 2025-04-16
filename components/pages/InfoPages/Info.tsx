@@ -91,9 +91,9 @@ function Info({ id }) {
   }, [id]);
 
   if (!bannerImage && !coverImage) {
-    return <div className="bg-black h-full text-center justify-center text-white mt-20">
-    
-    
+    return 
+    <div className="bg-black h-full text-center justify-center mt-20">
+       <div class="loader"></div> 
     </div>;
   }
 
