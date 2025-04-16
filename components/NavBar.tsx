@@ -59,12 +59,12 @@ const Navbar = () => {
               data-dropdown-placement="bottom"
             >
               <div className="flex items-center space-x-3">
-                <div className="bg-indigo-600 transition-transform ease-in delay-2 hover:scale-90 shadow-xl rounded-xl p-2">
+                <div className="bg-indigo-600 transition-all duration-300 ease-out hover:scale-[0.97] shadow-xl rounded-xl p-2">
                   <FaSearch size={20} />
                 </div>
 
                 <img
-                  className="w-10 h-10 transition-transform ease-in delay-2 hover:scale-90 rounded-full border-gray-600 border-2"
+                  className="w-10 h-10 transition-all duration-300 ease-out hover:scale-[0.97] rounded-full border-gray-600 border-2"
                   src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
                   alt="user photo"
                 />
@@ -75,7 +75,7 @@ const Navbar = () => {
       </nav>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="bg-indigo-600 shadow-xl w-[50px]  transition-transform ease-in delay-2 hover:scale-90 flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
+          <div className="bg-indigo-600 shadow-xl w-[50px]  transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
             <BiSolidCategory size={22} />
           </div>
         </DropdownMenuTrigger>

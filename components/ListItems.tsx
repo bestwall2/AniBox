@@ -64,7 +64,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
         <Swiper
           modules={[Navigation, FreeMode]}
           slidesPerView={3}
-          spaceBetween={4}
+          spaceBetween={5}
           navigation={true}
           className="swiper-animation"
           freeMode={true}
@@ -85,8 +85,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
           className="swiper-animation"
         >
           {animeList.map((anime) => {
-            const animeUrl = `/anime/info/${anime.id}`;
-            
+            const animeUrl = `/anime/info/${anime.id}`;           
 
             return (
                 <SwiperSlide
