@@ -34,7 +34,7 @@ export async function GET(request) {
     const key1Line = text.split(/\n/).find(line => line.startsWith("1:"));
 
     if (!key1Line) {
-      return NextResponse.json({ error: "Episodes not found" + text}, { status: 500 });
+          return NextResponse.json("[]"); 
     }
 
     const jsonString = key1Line.slice(2); // نحيد "1:" وناخد القيمة
