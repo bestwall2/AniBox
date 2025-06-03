@@ -45,36 +45,33 @@ function Info({ id }) {
     try {
       const response = await fetch(`/api/anime-info?id=${id}`);           
       const data = await response.json();
-
-     // const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
-     // const epi_data = await epi_res.json();
-
-     /* let selectedProvider = epi_data.find(
-        (p) => p.providerId === "pahe" && p.episodes.length > 0
-      );
-
+        // Fetch episodes from your API
+      const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
+      const epi_data = await epi_res.json();
+      let selectedProvider = epi_data.find(
+        (p) => p?.providerId === "pahe" && p?.episodes?.length > 0
+      );        
+        // Fallback to another provider if needed
       if (!selectedProvider) {
         selectedProvider = epi_data.find(
-          (p) => p.providerId === "yuki" && p.episodes.length > 0
+             (p) => p?.providerId === "yuki" && p?.episodes?.length > 0
         );
       }
-
+    
       if (selectedProvider) {
-        const allEpisodes = selectedProvider.episodes.map((episode) => ({
-          id: episode.id,
-          number: episode.number,
-          title: episode.title,
-          img: episode.img,
-          description: episode.description,
-        }));
-
-        setAllEpisodes(allEpisodes);
-      } else {
-        // If no provider is found or episodes are empty, set an empty list
-        setAllEpisodes([]);
-      }*/
+            const allEpisodes = selectedProvider.episodes.map((episode) => ({
+                id: episode.id,
+                number: episode.number,
+                title: episode.title,
+                img: episode.img,
+                description: episode.description,
+            }));
+        
+            setAllEpisodes(allEpisodes);
+        } else {
+            setAllEpisodes([]);
+      }
       
-      setAllEpisodes([]);
       const media = data?.Media;
 
       if (media) {

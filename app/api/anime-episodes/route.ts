@@ -15,33 +15,33 @@ export async function GET(request) {
       method: "POST",
       headers: {
         "Accept": "text/x-component",
-        "Next-Action": "7f328d44382d74f2942c42d0bc9915b2d510628a02",
-        "Next-Router-State-Tree": `["",{"children":["(user)",{"children":["(media)",{"children":["anime",{"children":["info",{"children":[["aniId","${id}","d"],{"children":["__PAGE__",{}, "/anime/info/${id}","refresh"]}]}]}]}]}]},null,null,true]`,
-        "User-Agent": "Mozilla/5.0 (Linux; U; Android 12; en; ZTE 8046 Build/MyOS12.0.12_8046_EEA) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/110.0.0.0 Mobile Safari/537.36",
+        "Next-Action": "7f98001caa202033310a94da4dff5fe16667c58611",
+        "Next-Router-State-Tree": `%5B%22%22%2C%7B%22children%22%3A%5B%22(user)%22%2C%7B%22children%22%3A%5B%22(media)%22%2C%7B%22children%22%3A%5B%22anime%22%2C%7B%22children%22%3A%5B%22info%22%2C%7B%22children%22%3A%5B%5B%22aniId%22%2C%22${id}%22%2C%22d%22%5D%2C%7B%22children%22%3A%5B%22__PAGE__%22%2C%7B%7D%2C%22%2Fanime%2Finfo%2F${id}%22%2C%22refresh%22%5D%7D%5D%7D%5D%7D%5D%7D%5D%7D%2Cnull%2Cnull%2Ctrue%5D`,
+        "User-Agent": "Mozilla/5.0 (Linux; Android 12; ZTE 8046 Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7204.3 Mobile Safari/537.36",
         "Referer": `https://aniplaynow.live/anime/info/${id}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([id, false, true]),
+      body: JSON.stringify([id, true, true]),
     });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch anime info for id: ${id}`);
     }
 
-    const text = await res.text(); // ناخدو الرد كنص
+    const text = await res.text();
 
-    // كنقلبو على السطر اللي فيه key 1 (episodes)
+    // extract line that starts with "1:"
     const key1Line = text.split(/\n/).find(line => line.startsWith("1:"));
 
     if (!key1Line) {
-          return NextResponse.json([]); 
+      return NextResponse.json([]);
     }
 
-    const jsonString = key1Line.slice(2); // نحيد "1:" وناخد القيمة
+    const jsonString = key1Line.slice(2); // remove the "1:" prefix
 
     const data = JSON.parse(jsonString);
 
-    return NextResponse.json(data); // رجع غير key 1 كـ JSON منسق
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching anime info:", error);
     return NextResponse.json(
