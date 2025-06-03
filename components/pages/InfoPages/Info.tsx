@@ -46,10 +46,10 @@ function Info({ id }) {
       const response = await fetch(`/api/anime-info?id=${id}`);           
       const data = await response.json();
 
-      const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
-      const epi_data = await epi_res.json();
+     // const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
+     // const epi_data = await epi_res.json();
 
-      let selectedProvider = epi_data.find(
+     /* let selectedProvider = epi_data.find(
         (p) => p.providerId === "pahe" && p.episodes.length > 0
       );
 
@@ -72,8 +72,9 @@ function Info({ id }) {
       } else {
         // If no provider is found or episodes are empty, set an empty list
         setAllEpisodes([]);
-      }
-
+      }*/
+      
+      setAllEpisodes([]);
       const media = data?.Media;
 
       if (media) {
