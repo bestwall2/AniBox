@@ -20,6 +20,19 @@ import Characters from "../../Characters";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+// Helper function to strip HTML tags
+const stripHtmlTags = (html: string): string => {
+  if (!html) return '';
+  return html.replace(/<[^>]*>?/gm, '');
+};
+
+// Helper function to format date
+const formatDate = (dateObj: { year?: number; month?: number; day?: number }): string | undefined => {
+  if (dateObj && dateObj.year && dateObj.month && dateObj.day) {
+    return `${dateObj.year}-${String(dateObj.month).padStart(2, '0')}-${String(dateObj.day).padStart(2, '0')}`;
+  }
+  return undefined;
+};
 
 function Info({ id }) {
   const router = useRouter();
@@ -101,16 +114,56 @@ function Info({ id }) {
 }, [id]);
  
  
-  if (!bannerImage && !coverImage) {
-    return  
-       <div class="test text-xl">AniPlay</div> 
-    ;
+  if (!bannerImage && !coverImage && !data) { // Added !data condition for loading state
+    return ( // Added parentheses and improved loading display
+      <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
+        <div className="test">AniPlay Loading...</div>
+      </div>
+    );
+  }
+
+  // Construct JSON-LD data
+  let structuredDataObject = null;
+  if (data && Object.keys(data).length > 0) {
+    const schemaType = data.type === 'MOVIE' ? 'Movie' : 'TVSeries';
+    const name = data.title?.english || data.title?.romaji || title || "Untitled";
+    const description = stripHtmlTags(data.description || "");
+    const image = data.coverImage?.extraLarge || coverImage || "";
+
+    structuredDataObject = {
+      "@context": "https://schema.org",
+      "@type": schemaType,
+      "name": name,
+      "description": description,
+      "image": image ? [image] : undefined, // image should be an array of URLs or undefined
+      "datePublished": formatDate(data.startDate || startDate), // data.startDate is {year, month, day}
+      "genre": data.genres && data.genres.length > 0 ? data.genres : undefined,
+    };
+
+    if (schemaType === 'TVSeries' && (data.episodes || episodes)) {
+      structuredDataObject.numberOfEpisodes = data.episodes || episodes;
+    }
+
+    if ((data.averageScore || rating) && (data.averageScore > 0 || rating > 0)) {
+      const currentRating = data.averageScore || rating;
+      structuredDataObject.aggregateRating = {
+        "@type": "AggregateRating",
+        "ratingValue": (currentRating / 10).toFixed(1), // Assuming rating is out of 100
+        "bestRating": "10",
+        // "ratingCount": data.popularity, // Popularity might not be ratingCount, omit if not sure
+      };
+    }
   }
 
   return (
     <>
-    
-    <div className=" bg-black">
+      {structuredDataObject && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredDataObject) }}
+        />
+      )}
+      <div className=" bg-black">
         <div className="CoverPage">
             <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
             <img
