@@ -78,25 +78,26 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
                 </SwiperSlide>
                 ))
             ) : (
-                animeList.map((anime) => {
-                const animeUrl = `/anime/info/${anime.id}`;
-        
-                return (
-                    <SwiperSlide
-                    key={`${anime.id}-${anime.title.romaji}`}
-                    className="cursor-pointer"
-                    >
-                    <Link href={animeUrl} passHref>
-                        <DiscoverCard
-                        cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
-                        title={anime.title.english || anime.title.romaji || "Unknown Title"}
-                        info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
-                        img={anime.coverImage.extraLarge}
-                        status={anime.status}
-                        />
-                    </Link>
-                    </SwiperSlide>
-                );
+                
+                animeList.filter((anime): anime is Anime => anime !== null && typeof anime === "object" && anime.id !== undefined).map((anime) => {
+                    const animeUrl = `/anime/info/${anime.id}`;
+            
+                    return (
+                        <SwiperSlide
+                        key={`${anime.id}-${anime.title.romaji}`}
+                        className="cursor-pointer"
+                        >
+                        <Link href={animeUrl} passHref>
+                            <DiscoverCard
+                            cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
+                            title={anime.title.english || anime.title.romaji || "Unknown Title"}
+                            info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
+                            img={anime.coverImage.extraLarge}
+                            status={anime.status}
+                            />
+                        </Link>
+                        </SwiperSlide>
+                    );
                 })
             )}
             </Swiper>
