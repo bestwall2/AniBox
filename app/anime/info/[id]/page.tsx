@@ -18,19 +18,22 @@ export async function generateMetadata({ params }: { params: AnimeInfoParams }):
   const id = params.id;
 
   try {
-    const data = await fetchAnimeInfo(id);
+    const response = await fetch(`/api/anime-info?id=${id}`);           
+    const data = await response.json();
+    const media = data?.Media;
+    //const data = await fetchAnimeInfo(id);
 
-    if (!data) {
+    if (!media) {
       return {
         title: "Anime Not Found - AniPlay",
         description: "The requested anime could not be found.",
       };
     }
 
-    const title = data.title?.english || data.title?.romaji || "Untitled Anime";
+    const title = media.title.english || media.title.romaji || "Untitled Anime";
     const pageTitle = `${title} - Details | AniPlay`;
-    const description = stripHtmlTags(data.description || "No description available.");
-    const imageUrl = data.image || ""; // Default to empty string if no image
+    const description = stripHtmlTags(media.description || "No description available.");
+    const imageUrl = media.coverImage.extraLarge || ""; // Default to empty string if no image
 
     return {
       title: pageTitle,
