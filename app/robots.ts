@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       // Add disallow rules here if there are specific paths that should not be crawled
       // e.g., disallow: '/admin/',
     },
-    sitemap: 'https://ani-play-sigma.vercel.app/sitemap.xml`,
+    sitemap: 'https://ani-play-sigma.vercel.app/sitemap.xml',
   };
 }
