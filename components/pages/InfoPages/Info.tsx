@@ -128,7 +128,7 @@ function Info({ id }) {
     const schemaType = data.type === 'MOVIE' ? 'Movie' : 'TVSeries';
     const name = data.title?.english || data.title?.romaji || title || "Untitled";
     const description = stripHtmlTags(data.description || "");
-    const image = data.coverImage?.extraLarge || coverImage || "";
+    const image = coverImage;
 
     structuredDataObject = {
       "@context": "https://schema.org",
@@ -390,7 +390,7 @@ function Info({ id }) {
                 <div className="flex flex-col gap-2">
                     <Episodes 
                         episodes={allEpisodes}
-                        imgbackup={data.coverImage.extraLarge}
+                        imgbackup={coverImage}
                     />
                     
                     <RecommendList
