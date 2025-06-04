@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from 'next';
 import Info from "../../../../components/pages/InfoPages/Info";
 import Navbar from "../../../../components/NavBar";
-import { fetchAnimeInfo } from "../../../actions/ApiData.js";
+import { fetchAnimeInfo } from "../../../../actions/ApiData.js";
 
 interface AnimeInfoParams {
   id: string;
