@@ -23,7 +23,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
     <div className="EpisodesList mt-2 ">
             <div className="flex text-gray-200 items-center mb-4 space-x-2">
                 <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
-                <p className="text-md font-semibold">Anime Episodes</p>
+                <p className="text-md font-semibold mr-auto">Anime Episodes</p>
                 <FaSearch className="items-end" size={18} />
             </div>
     

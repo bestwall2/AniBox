@@ -8,7 +8,7 @@ const FirstPage = () => {
   return (
     <>
       {/* Outer wrapper to control scrolling */}
-      <div className=" min-h-screen flex flex-col">
+      <div className=" min-h-screen flex flex-col mb-4">
         {/* Navbar (Static at the top) */}
         <Navbar />
         {/* Main content area */}
@@ -24,7 +24,7 @@ const FirstPage = () => {
             />
           </div>
         </div>
-        <Footer/>
+        {/*<Footer/>*/}
       </div>
     </>
   );

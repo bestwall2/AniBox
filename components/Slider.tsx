@@ -131,7 +131,7 @@ const Slider = () => {
                         
                         <Link href={ `/anime/info/${anime.id}`} passHref>
                             <Button
-                                className="SliderButton font-semibold rounded-xl "
+                                className="SliderButton pt-2 pb-2 font-semibold rounded-xl "
                                 variant="outline" >
                                 <HiOutlineInformationCircle size={22} /> More Info 
                             </Button>

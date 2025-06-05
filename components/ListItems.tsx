@@ -55,8 +55,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
   }, [apiPath]);
 
   return (
-        <div className="ItemGeners mt-2 mb-2">
-        
+        <div className="ItemGeners mt-2 mb-2">   
             <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
                 <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
                 <p className={param}>{geners}</p>
@@ -66,7 +65,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
                 modules={[Navigation, FreeMode]}
                 slidesPerView={3}
                 spaceBetween={5}
-                navigation={false}
+                navigation={true}
                 freeMode={true}
                 className="swiper-animation"
             >
