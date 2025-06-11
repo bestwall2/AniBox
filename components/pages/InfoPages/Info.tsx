@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card"
 import parse from 'html-react-parser';
 import RecommendList from "../../Recommend";
+import { Skeleton } from "../../ui/skeleton";
 import Episodes from "../../Episodes";
 import Characters from "../../Characters";
 import { motion, AnimatePresence } from "framer-motion";
@@ -175,12 +176,8 @@ function Info({ id }) {
                     loading="lazy"
                     />
             ) : (
-                    <img
-                    src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
-                    alt="Banner Image"
-                    className="w-full h-full object-cover opacity-60"
-                    loading="lazy"
-                    />
+
+                    <Skeleton className="SkeletonCard w-full h-full " />
             )}
                 
             <div className="Bannerbackground absolute" />
@@ -217,13 +214,8 @@ function Info({ id }) {
                     className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
                     loading="lazy"
                     />
-                ) : (
-                    <img
-                    src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
-                    alt="Cover Image"
-                    className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
-                    loading="lazy"
-                    />
+                ) : (                 
+                    <Skeleton className="SkeletonCard min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl " />
                 )}
             </div>
         
