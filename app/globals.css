@@ -168,9 +168,6 @@ body {
 .InfoContainer > .Addtion > .State {
   
 }
-.EpisodeSearch {
-    animation: slideDown 1.5s ease-out forwards;
-}
 
 .container .Geners {
   font-size: 1.3rem;

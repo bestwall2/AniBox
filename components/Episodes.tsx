@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import EpisodeCard from "./CardsComp/EpisodesCard";
 import { FaSearch } from "react-icons/fa";
 import SearchInput from "./ui/SearchInput"; // adjust if needed
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Episode {
   id: string;
@@ -45,11 +46,20 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
       </div>
 
       {/* Conditional SearchInput */}
-      {showSearch && (
-        <div className="EpisodeSearch mb-4 px-1">
-          <SearchInput value={searchValue} onChange={handleSearchChange} />
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {showSearch && (
+            <motion.div
+            key="search"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="EpisodeSearch mb-4 px-1 overflow-hidden"
+            >
+            <SearchInput value={searchValue} onChange={handleSearchChange} />
+            </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Filtered Episode List */}
       <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
