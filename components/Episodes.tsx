@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import EpisodeCard from "./CardsComp/EpisodesCard";
 import { FaSearch } from "react-icons/fa";
-import SearchInput from "./ui/SearchInput"; // Adjust this path if necessary
+import SearchInput from "./ui/SearchInput"; // adjust if needed
 
 interface Episode {
   id: string;
@@ -20,6 +20,15 @@ interface EpisodesProps {
 
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
   const [showSearch, setShowSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (value: string) => {
+    setSearchValue(value);
+  };
+
+  const filteredEpisodes = episodes.filter((episode) =>
+    episode.number.toString().includes(searchValue)
+  );
 
   return (
     <div className="EpisodesList mt-2">
@@ -37,14 +46,14 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
 
       {/* Conditional SearchInput */}
       {showSearch && (
-        <div className="mb-4 px-1">
-          <SearchInput />
+        <div className="EpisodeSearch mb-4 px-1">
+          <SearchInput value={searchValue} onChange={handleSearchChange} />
         </div>
       )}
 
-      {/* Episode List */}
+      {/* Filtered Episode List */}
       <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
-        {episodes.map((episode) => (
+        {filteredEpisodes.map((episode) => (
           <EpisodeCard
             key={episode.id}
             title={episode.title}
