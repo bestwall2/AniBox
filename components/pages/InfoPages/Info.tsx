@@ -328,7 +328,7 @@ function Info({ id }) {
                             <ul className="flex flex-col gap-2 mt-4 ">
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Airing</strong> :{" "}
-                                    <span className="text-sm font-semibold text-white">
+                                    <span className="lighting-text text-sm font-semibold text-white">
                                     {data?.nextAiringEpisode?.airingAt
                                         ? new Date(data.nextAiringEpisode.airingAt * 1000).toLocaleString()
                                         : "FINISHED"}

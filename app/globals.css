@@ -14,6 +14,15 @@ body {
   --swiper-navigation-color: #fff;
 }
 
+body.no-text-selection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -330,4 +339,35 @@ body {
 #nprogress .spinner {
   top: 15px;
   right: 15px;
+}
+
+
+.lighting-text {
+  
+  text-align: center;
+  /* Apply animation to the whole text block */
+  animation: lightEffect 1.5s infinite alternate;
+}
+
+@keyframes lightEffect {
+  0% {
+    text-shadow:
+      0 0 5px rgba(255, 255, 255, 0.5),
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 15px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    text-shadow:
+      0 0 20px rgba(255, 255, 255, 1),
+      0 0 40px rgba(0, 255, 255, 0.8), /* Cyan glow */
+      0 0 60px rgba(0, 255, 255, 0.6),
+      0 0 80px rgba(0, 255, 255, 0.4);
+    color: #e0ffff; /* Brighter, slightly bluish color */
+  }
+  100% {
+    text-shadow:
+      0 0 5px rgba(255, 255, 255, 0.5),
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 15px rgba(255, 255, 255, 0.5);
+  }
 }
