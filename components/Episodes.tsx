@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import EpisodeCard from "./CardsComp/EpisodesCard";
 import { FaSearch } from "react-icons/fa";
-import SearchInput from "../ui/SearchInput"; // Adjust this path if necessary
+import SearchInput from "./ui/SearchInput"; // Adjust this path if necessary
 
 interface Episode {
   id: string;
