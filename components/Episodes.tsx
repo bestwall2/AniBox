@@ -27,7 +27,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
                 <FaSearch className="items-end" size={18} />
             </div>
     
-            <div className="flex flex-col gap-4 max-h-[350px] overflow-y-scroll pr-2">
+            <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
                 {episodes.map((episode) => (
                     <EpisodeCard
                     key={episode.id}
