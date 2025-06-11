@@ -21,15 +21,17 @@ interface EpisodesProps {
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
   return (
     <div className="EpisodesList mt-2 ">
-            <div className="flex text-gray-200 items-center mb-4 space-x-2">
+        <div className="flex text-gray-200 items-center mb-4 justify-between"> {/* Added justify-between here */}
+            <div className="flex items-center space-x-2"> {/* Wrapped the span and p in a div to keep them together on the left */}
                 <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
-                <p className="text-md font-semibold mr-auto">Anime Episodes</p>
-                <FaSearch className="items-end" size={18} />
+                <p className="text-md font-semibold">Episodes</p>
             </div>
+            <FaSearch className="items-end" size={18} />
+        </div>
     
-            <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
-                {episodes.map((episode) => (
-                    <EpisodeCard
+        <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
+            {episodes.map((episode) => (
+                <EpisodeCard
                     key={episode.id}
                     title={episode.title}
                     description={episode.description}
@@ -39,7 +41,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
                     />
                 ))}
             
-            </div>
+        </div>
     </div>
   );
 };
