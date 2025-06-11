@@ -166,12 +166,23 @@ function Info({ id }) {
       <div className=" bg-black">
         <div className="CoverPage">
             <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
-            <img
-                src={bannerImage || coverImage}
-                alt="Banner Image"
-                className="w-full h-full object-cover opacity-60"
-                loading="lazy"
-            />
+            
+            {bannerImage ? (
+                    <img
+                    src={bannerImage || coverImage}
+                    alt="Banner Image"
+                    className="w-full h-full object-cover opacity-60"
+                    loading="lazy"
+                    />
+            ) : (
+                    <img
+                    src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
+                    alt="Banner Image"
+                    className="w-full h-full object-cover opacity-60"
+                    loading="lazy"
+                    />
+            )}
+                
             <div className="Bannerbackground absolute" />
             </div>
         </div>
@@ -207,9 +218,12 @@ function Info({ id }) {
                     loading="lazy"
                     />
                 ) : (
-                    <div className="h-full w-full bg-gray-700 flex items-center justify-center text-white">
-                    loading Image
-                    </div>
+                    <img
+                    src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
+                    alt="Cover Image"
+                    className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
+                    loading="lazy"
+                    />
                 )}
             </div>
         
