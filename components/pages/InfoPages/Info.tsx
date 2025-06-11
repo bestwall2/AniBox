@@ -222,37 +222,58 @@ function Info({ id }) {
             <div className="InfoContainerPage flex-col ml-1 mt-0 items-center justify-center">
                 {/* Title & Rating */}
                 <div className="text-left px-4">
+                    {title ? (
                     <h1 className="text-2xl font-bold line-clamp-2 text-white drop-shadow-lg break-words max-w-[200px]">
-                    {title || "Unknown Title"}
+                        {title}
                     </h1>
+                    ) : (
+                    <Skeleton className="h-6 w-[200px] rounded" />
+                    )}
                 </div>
-            
+                
                 <div className="flex ml-3 mt-2 font-semibold items-left justify-start">
                     <FaStar size={20} style={{ color: "yellow", padding: 1 }} />
-                    <p className="text-md ml-1 self-center">
-                    {rating ? rating / 10 : "N/A"} |
-                    </p>
-                    <p
-                    className={`ml-2 ${
-                        status === "RELEASING" ? "text-green-500" : "text-red-500"
-                    }`}
-                    >
-                    {status}
-                    </p>
+                    {rating !== undefined && status ? (
+                    <>
+                        <p className="text-md ml-1 self-center">
+                        {rating / 10} |
+                        </p>
+                        <p
+                        className={`ml-2 ${
+                            status === "RELEASING" ? "text-green-500" : "text-red-500"
+                        }`}
+                        >
+                        {status}
+                        </p>
+                    </>
+                    ) : (
+                    <Skeleton className="h-4 w-[100px] ml-2 rounded" />
+                    )}
                 </div>
-            
+                
                 <h1 className="flex ml-3 font-semibold items-left justify-start">
                     <MdDateRange className="self-center mr-1" size={20} />
-                    {startDate
-                    ? `${startDate.year} / ${startDate.month} / ${startDate.day}`
-                    : "Unknown Date"}
+                    {startDate ? (
+                    `${startDate.year} / ${startDate.month} / ${startDate.day}`
+                    ) : (
+                    <Skeleton className="h-4 w-[120px] rounded" />
+                    )}
                 </h1>
-            
-                <h1 className="CardGenres  text-sm flex ml-3  items-left justify-start">
-                    {genres.length ? genres.join(", ") : ""}
+                
+                <h1 className="CardGenres text-sm flex ml-3 items-left justify-start">
+                    {genres.length ? (
+                    genres.join(", ")
+                    ) : (
+                    <Skeleton className="h-4 w-[150px] rounded" />
+                    )}
                 </h1>
+                
                 <h1 className="text-sm flex ml-3 font-semibold items-left justify-start">
-                    {`Episodes : ${episodes}`}
+                    {episodes !== undefined ? (
+                    `Episodes : ${episodes}`
+                    ) : (
+                    <Skeleton className="h-4 w-[100px] rounded" />
+                    )}
                 </h1>
             </div>
             
