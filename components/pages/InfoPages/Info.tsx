@@ -287,45 +287,41 @@ function Info({ id }) {
                         <CardHeader>
                             <CardTitle>Description</CardTitle>
                             
-                            <CardDescription className="font-small whitespace-pre-line">                              
-                                
-                                
+                            <CardDescription className="font-small whitespace-pre-line">
                                 {formattedText ? (
-                                    
+                                    <>
                                     <AnimatePresence initial={false} mode="wait">
                                         <motion.div
-                                            key={showMore ? "expanded" : "collapsed"}
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-                                            className="overflow-hidden"
+                                        key={showMore ? "expanded" : "collapsed"}
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                                        className="overflow-hidden"
                                         >
-                                            {showMore
+                                        {showMore
                                             ? parse(formattedText)
                                             : parse(shortText + (formattedText.length > 200 ? "..." : ""))}
                                         </motion.div>
                                     </AnimatePresence>
-                                    
+                                
                                     {formattedText.length > 300 && (
                                         <button
-                                            onClick={() => setShowMore(!showMore)}
-                                            className="ml-2 text-blue-600 hover:underline text-sm font-medium transition-all duration-200"
+                                        onClick={() => setShowMore(!showMore)}
+                                        className="ml-2 text-blue-600 hover:underline text-sm font-medium transition-all duration-200"
                                         >
-                                            {showMore ? "Show less" : "Show more"}
+                                        {showMore ? "Show less" : "Show more"}
                                         </button>
                                     )}
-                                    
-                                ) : (                 
-                                    <div className="space-y-2"> {/* Adds vertical spacing between skeleton lines */}
-                                        <Skeleton className="h-4 w-full rounded" /> {/* Full-width line */}
-                                        <Skeleton className="h-4 w-11/12 rounded" /> {/* Slightly shorter line */}
-                                        <Skeleton className="h-4 w-10/12 rounded" /> {/* Another slightly shorter line */}
-                                        <Skeleton className="h-4 w-8/12 rounded" /> {/* Even shorter line, mimicking a paragraph end */}
+                                    </>
+                                ) : (
+                                    <div className="space-y-2">
+                                    <Skeleton className="h-4 w-full rounded" />
+                                    <Skeleton className="h-4 w-11/12 rounded" />
+                                    <Skeleton className="h-4 w-10/12 rounded" />
+                                    <Skeleton className="h-4 w-8/12 rounded" />
                                     </div>
                                 )}
-                                
-                                
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
