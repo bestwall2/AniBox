@@ -208,7 +208,7 @@ function Info({ id }) {
                     />
                 ) : (
                     <div className="h-full w-full bg-gray-700 flex items-center justify-center text-white">
-                    No Image
+                    loading Image
                     </div>
                 )}
             </div>
