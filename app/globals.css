@@ -336,31 +336,20 @@ body {
 
 
 .lighting-text {
-  
+  will-change: filter, color; /* Hint for filter changes */
   text-align: center;
-  /* Apply animation to the whole text block */
-  animation: lightEffect 1.5s infinite alternate;
+  animation: lightEffect 2s infinite alternate; /* Slower animation */
 }
 
+
 @keyframes lightEffect {
-  0% {
-    text-shadow:
-      0 0 5px rgba(255, 255, 255, 0.5),
-      0 0 10px rgba(255, 255, 255, 0.5),
-      0 0 15px rgba(255, 255, 255, 0.5);
+  0%, 100% { /* Simpler initial/final state */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   }
   50% {
     text-shadow:
-      0 0 20px rgba(255, 255, 255, 1),
-      0 0 40px rgba(0, 255, 255, 0.8), /* Cyan glow */
-      0 0 60px rgba(0, 255, 255, 0.6),
-      0 0 80px rgba(0, 255, 255, 0.4);
-    color: #e0ffff; /* Brighter, slightly bluish color */
-  }
-  100% {
-    text-shadow:
-      0 0 5px rgba(255, 255, 255, 0.5),
-      0 0 10px rgba(255, 255, 255, 0.5),
-      0 0 15px rgba(255, 255, 255, 0.5);
+      0 0 15px rgba(255, 255, 255, 0.9), /* Slightly reduced blur */
+      0 0 30px rgba(0, 255, 255, 0.7);   /* Fewer layers, smaller max blur */
+    color: #e0ffff;
   }
 }
