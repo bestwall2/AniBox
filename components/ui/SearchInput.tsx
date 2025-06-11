@@ -1,19 +1,21 @@
 // components/ui/SearchInput.tsx
 
-import { useState } from "react";
 import { Search, X } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card"; // adjust the import path if needed
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function SearchInput() {
-  const [value, setValue] = useState("");
+interface SearchInputProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
+export default function SearchInput({ value, onChange }: SearchInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNums = e.target.value.replace(/\D/g, "");
-    setValue(onlyNums);
+    onChange(onlyNums); // 🔁 Call parent handler
   };
 
   const clearInput = () => {
-    setValue("");
+    onChange(""); // 🔁 Clear in parent too
   };
 
   return (
