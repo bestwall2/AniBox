@@ -115,7 +115,7 @@ function Info({ id }) {
 }, [id]);
  
  
-  if (!bannerImage && !coverImage && !data) { // Added !data condition for loading state
+  if (!data) { // Added !data condition for loading state
     return ( // Added parentheses and improved loading display
       <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
         <div className="test">AniPlay Loading...</div>
@@ -287,30 +287,44 @@ function Info({ id }) {
                         <CardHeader>
                             <CardTitle>Description</CardTitle>
                             
-                            <CardDescription className="font-small whitespace-pre-line">
-                                <AnimatePresence initial={false} mode="wait">
-                                    <motion.div
-                                        key={showMore ? "expanded" : "collapsed"}
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: "auto", opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-                                        className="overflow-hidden"
-                                    >
-                                        {showMore
-                                        ? parse(formattedText)
-                                        : parse(shortText + (formattedText.length > 200 ? "..." : ""))}
-                                    </motion.div>
-                                </AnimatePresence>
+                            <CardDescription className="font-small whitespace-pre-line">                              
+                                
+                                
+                                {formattedText ? (
                                     
-                                {formattedText.length > 300 && (
-                                    <button
-                                        onClick={() => setShowMore(!showMore)}
-                                        className="ml-2 text-blue-600 hover:underline text-sm font-medium transition-all duration-200"
-                                    >
-                                        {showMore ? "Show less" : "Show more"}
-                                    </button>
+                                    <AnimatePresence initial={false} mode="wait">
+                                        <motion.div
+                                            key={showMore ? "expanded" : "collapsed"}
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                                            className="overflow-hidden"
+                                        >
+                                            {showMore
+                                            ? parse(formattedText)
+                                            : parse(shortText + (formattedText.length > 200 ? "..." : ""))}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                    
+                                    {formattedText.length > 300 && (
+                                        <button
+                                            onClick={() => setShowMore(!showMore)}
+                                            className="ml-2 text-blue-600 hover:underline text-sm font-medium transition-all duration-200"
+                                        >
+                                            {showMore ? "Show less" : "Show more"}
+                                        </button>
+                                    )}
+                                    
+                                ) : (                 
+                                    <div className="space-y-2"> {/* Adds vertical spacing between skeleton lines */}
+                                        <Skeleton className="h-4 w-full rounded" /> {/* Full-width line */}
+                                        <Skeleton className="h-4 w-11/12 rounded" /> {/* Slightly shorter line */}
+                                        <Skeleton className="h-4 w-10/12 rounded" /> {/* Another slightly shorter line */}
+                                        <Skeleton className="h-4 w-8/12 rounded" /> {/* Even shorter line, mimicking a paragraph end */}
+                                    </div>
                                 )}
+                                
                                 
                             </CardDescription>
                         </CardHeader>
