@@ -402,11 +402,11 @@ function Info({ id }) {
                         </CardContent>
                     </Card>             
                 </TabsContent>
-                <TabsContent value="Relations" className="mt-4 mb-2">
+                <TabsContent value="Relations" className="mt-4">
                      <RecommendList
                             geners="Chronology"
                             data={animeDetails?.relations?.edges || []}
-                            param="font-semibold text-md  mb-2"
+                            param="font-semibold text-md"
                             className="InfoListsForAni"
                         />
                 </TabsContent>
@@ -432,7 +432,7 @@ function Info({ id }) {
                         node: rec.mediaRecommendation,
                         })) || []
                         }
-                        param="font-semibold text-md  mb-2"
+                        param="font-semibold text-md"
                         className="InfoListsForAni"
                     /> 
                 </div>               
