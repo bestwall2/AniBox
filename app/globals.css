@@ -133,7 +133,11 @@ body {
   background: linear-gradient(to bottom, #000 3%, #000000df, #00000000);
 }
 .BannerbackgroundShadow {
-  background: linear-gradient(to bottom, #00000080 3%, #00000050, #00000000); /* Lowered opacity for the first two stops */
+  background: linear-gradient(to bottom, #000000f3 1%,
+    #00000000,
+    #00000000,
+    #00000000
+  );
 }
 
 .InfoContainer .Addtion {
