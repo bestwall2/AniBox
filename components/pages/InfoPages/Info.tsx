@@ -165,6 +165,7 @@ function Info({ id }) {
         />
       )}
       <div className=" bg-black">
+        
         <div className="CoverPage">
             <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
             
@@ -183,7 +184,8 @@ function Info({ id }) {
                 <div className="Bannerbackground absolute" />
             </div>
         </div>
-        <div className="BannerbackgroundShadow absolute z-20 top-4 h-[40px]  w-full"/>
+        <div className="BannerbackgroundShadow absolute z-20 top-0 h-[40px]  w-full"/>
+        
         {/* Back Arrow Button */}
         <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
             <button onClick={() => router.back()}>
