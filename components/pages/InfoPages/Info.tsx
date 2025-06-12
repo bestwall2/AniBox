@@ -78,7 +78,7 @@ const fetchAnimeEpisodes = async (id) => {
 
 function Info({ id }) {
   const router = useRouter();
-  const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
+  const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-[#3888E7] rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
   
   const [showMore, setShowMore] = useState(false);
 
