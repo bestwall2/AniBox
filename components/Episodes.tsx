@@ -36,7 +36,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup }) => {
       {/* Header */}
       <div className="flex text-gray-200 items-center pr-4 mb-4 justify-between">
         <div className="flex items-center space-x-2">
-          <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
+          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
           <p className="text-md font-semibold">Episodes</p>
         </div>
 

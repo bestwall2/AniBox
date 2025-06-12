@@ -37,7 +37,7 @@ const RecommendList = ({ geners, data, param }: RecommendListProps) => {
   return (
     <div className="ItemGeners mt-2 mb-2">
       <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
-        <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
+        <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
         <p className={param}>{geners}</p>
       </div>
 
