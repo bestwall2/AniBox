@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { fetchPopularAnime } from '../actions/ApiData'; // Assuming this function fetches a list of anime with their IDs
 
 // Define the base URL, ideally from an environment variable
-const BASE_URL = 'https://ani-play-sigma.vercel.app';
+const BASE_URL = 'https://ani-box-nine.vercel.app';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
