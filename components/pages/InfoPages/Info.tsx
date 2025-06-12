@@ -168,22 +168,22 @@ function Info({ id }) {
         <div className="CoverPage">
             <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
             
-            {bannerImage ? (
-                    <img
-                    src={bannerImage || coverImage}
-                    alt="Banner Image"
-                    className="w-full h-full object-cover opacity-60"
-                    loading="lazy"
-                    />
-            ) : (
-
-                    <Skeleton className="SkeletonCard w-full h-full " />
-            )}
+                {bannerImage ? (
+                        <img
+                        src={bannerImage || coverImage}
+                        alt="Banner Image"
+                        className="w-full h-full object-cover opacity-60"
+                        loading="lazy"
+                        />
+                ) : (
+    
+                        <Skeleton className="SkeletonCard w-full h-full " />
+                )}
                 
-            <div className="Bannerbackground absolute" />
+                <div className="Bannerbackground absolute" />
             </div>
         </div>
-        
+        <div className="BannerbackgroundShadow absolute z-20 top-4 h-[40px]  w-full"/>
         {/* Back Arrow Button */}
         <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
             <button onClick={() => router.back()}>

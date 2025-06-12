@@ -132,6 +132,9 @@ body {
 .NavBarLayout {
   background: linear-gradient(to bottom, #000 3%, #000000df, #00000000);
 }
+.BannerbackgroundShadow {
+  background: linear-gradient(to bottom, #000 3%, #000000df, #00000000);
+}
 
 .InfoContainer .Addtion {
   display: flex;
