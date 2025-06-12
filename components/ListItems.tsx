@@ -1,7 +1,7 @@
 "use client";
 
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -12,7 +12,7 @@ import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import DiscoverCard from "./CardsComp/DiscoverCard";
 import { Skeleton } from "./ui/skeleton";
-
+import { useQuery } from "@tanstack/react-query";
 import Link from 'next/link';
 
 // Define TypeScript interface for props
@@ -35,24 +35,25 @@ interface Anime {
   status: string;
 }
 
-const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
-  const [animeList, setAnimeList] = useState<Anime[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  
-  useEffect(() => {
-    const fetchAnime = async () => {
-      try {
-        const data = await fetch(apiPath).then((res) => res.json());
-        setAnimeList(data.Page?.media.slice(0, 25) || []);
-      } catch (error) {
-        console.error("Error fetching anime:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+const fetchAnimeList = async (apiPath: string) => {
+  const response = await fetch(apiPath);
+  if (!response.ok) {
+    throw new Error(`HTTP Error: ${response.status}`);
+  }
+  const data = await response.json();
+  return data.Page?.media.slice(0, 25) || [];
+};
 
-    fetchAnime();
-  }, [apiPath]);
+const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
+  const { data: animeList, isLoading, error } = useQuery<Anime[], Error>({
+    queryKey: ["animeList", apiPath],
+    queryFn: () => fetchAnimeList(apiPath),
+  });
+
+  if (error) {
+    console.error("Error fetching anime list:", error);
+    // Optionally, render an error state here
+  }
 
   return (
         <div className="ItemGeners mt-2 mb-2">   
@@ -70,7 +71,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
                 className="swiper-animation"
             >
             
-            {loading ? (
+            {isLoading ? (
                 Array.from({ length: 10 }).map((_, index) => (
                 <SwiperSlide key={`skeleton-${index}`}>
                     <Skeleton className="SkeletonCard h-[22vh] w-[110px] rounded-lg" />
@@ -78,7 +79,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
                 ))
             ) : (
                 
-                animeList.filter((anime): anime is Anime => anime !== null && typeof anime === "object" && anime.id !== undefined).map((anime) => {
+                animeList?.filter((anime): anime is Anime => anime !== null && typeof anime === "object" && anime.id !== undefined).map((anime) => {
                     const animeUrl = `/anime/info/${anime.id}`;
             
                     return (

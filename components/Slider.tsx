@@ -3,7 +3,7 @@
 // Shadcn styles
 import { Button } from "./ui/button";
 // Import Swiper styles
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -18,6 +18,7 @@ import { Skeleton } from "./ui/skeleton";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import parse from 'html-react-parser';
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
 // Define the type for API response data
 interface Anime {
@@ -31,34 +32,29 @@ interface Anime {
   startDate: { year: number; month: number; day: number };
 }
 
+const fetchPopularAnime = async () => {
+  const response = await fetch("/api/popular-anime");
+  if (!response.ok) {
+    throw new Error(`HTTP Error: ${response.status}`);
+  }
+  const data = await response.json();
+  return data.Page?.media.slice(0, 5) || [];
+};
+
 const Slider = () => {
-  const [animeList, setAnimeList] = useState<Anime[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { data: animeList, isLoading, error } = useQuery<Anime[], Error>({
+    queryKey: ["popularAnime"],
+    queryFn: fetchPopularAnime,
+  });
 
-  // Fetch popular anime data from the API
-  useEffect(() => {
-    const fetchAnime = async () => {
-      try {
-        const response = await fetch("/api/popular-anime");
-        if (!response.ok) {
-          throw new Error(`HTTP Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setAnimeList(data.Page?.media.slice(0, 5) || []); // Ensure data is extracted correctly
-      } catch (error) {
-        console.error("Error fetching popular anime:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAnime();
-  }, []);
+  if (error) {
+    console.error("Error fetching popular anime:", error);
+    // Optionally, render an error state here
+  }
 
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <Skeleton className="SkeletonCard h-[60vh] w-[100%]" />
       ) : (
         <Swiper
@@ -72,7 +68,7 @@ const Slider = () => {
           
 
         >
-          {animeList.map((anime) => (
+          {animeList?.map((anime) => (
             <SwiperSlide key={`${anime.id}-${anime.title.romaji}`}>
             
   
