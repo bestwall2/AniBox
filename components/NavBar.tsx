@@ -59,7 +59,7 @@ const Navbar = () => {
               data-dropdown-placement="bottom"
             >
               <div className="flex items-center space-x-3">
-                <div className="bg-indigo-600 transition-all duration-300 ease-out hover:scale-[0.97] shadow-xl rounded-xl p-2">
+                <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] transition-all duration-300 ease-out hover:scale-[0.97] shadow-xl rounded-xl p-2">
                   <FaSearch size={20} />
                 </div>
 
