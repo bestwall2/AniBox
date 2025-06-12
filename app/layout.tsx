@@ -3,8 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ProgressBar from '@/components/NProgress';
 import { Suspense } from 'react';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import QueryProvider from "@/components/QueryProvider"; // Import the new QueryProvider
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,8 +21,6 @@ export const metadata: Metadata = {
   description: "Free Anime WebSite For Watching Anime For Free ",
 };
 
-const queryClient = new QueryClient();
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,13 +35,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryClientProvider client={queryClient}>
+        <QueryProvider>
           <Suspense fallback={null}>
             <ProgressBar />
           </Suspense>
           {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        </QueryProvider>
       </body>
     </html>
   );
