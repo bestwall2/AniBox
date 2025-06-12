@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     title: "AniBox",
     description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
     images: ["/images/anibox_og_default.png"]
+  },
+  icons: {
+    icon: "/images/anibox_og_default.png",
+    shortcut: "/favicon.ico",
+    apple: "/images/anibox_og_default.png"
   }
 };
 
