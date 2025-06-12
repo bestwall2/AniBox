@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-0  p-4">
           <a
             href="/"
-            className="flex items-center space-x-2 rtl:space-x-reverse"
+            className="flex items-center space-x-0 rtl:space-x-reverse"
           >
             <img
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/logo.png"
@@ -75,7 +75,7 @@ const Navbar = () => {
       </nav>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="bg-indigo-600 shadow-xl w-[50px]  transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
+          <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] shadow-xl w-[50px]  transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
             <BiSolidCategory size={22} />
           </div>
         </DropdownMenuTrigger>
