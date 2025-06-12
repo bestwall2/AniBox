@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+# AniBox
+
+**AniBox: The Ultimate Anime Streaming Destination**  
+Elevate your anime viewing with AniBox, a meticulously designed web app built on Next.js. We've focused on creating a truly smooth and enjoyable anime streaming experience.
+
+[Live Demo](https://ani-box-nine.vercel.app/)
+
+---
+
+## Features
+
+- 🚀 Built with Next.js and TypeScript
+- 🎬 Stream your favorite anime titles instantly
+- 🔍 Fast and intuitive search
+- 📱 Responsive design for all devices
+- 💡 Modern UI/UX
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v18 or later)
+- npm or yarn
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/bestwall2/AniBox.git
+   cd AniBox
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-## Learn More
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+AniBox is ready to deploy on platforms like Vercel, Netlify, or your favorite cloud provider.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project does not currently specify a license. Please add one if you plan to open-source contributions.
+
+## Contact
+
+- Author: [bestwall2](https://github.com/bestwall2)
+- Repo: [AniBox on GitHub](https://github.com/bestwall2/AniBox)
+- Live Site: [ani-box-nine.vercel.app](https://ani-box-nine.vercel.app/)
+
+---
+
+Let me know if you want any custom sections (like API docs, credits, screenshots, etc.) added!
