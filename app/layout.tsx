@@ -17,7 +17,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AniPlay",
+  title: "AniBox",
   description: "Free Anime WebSite For Watching Anime For Free ",
 };
 

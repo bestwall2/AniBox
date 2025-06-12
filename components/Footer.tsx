@@ -13,7 +13,7 @@ export default function Footer() {
           <p>Welcome to</p>
           <div id="footer-logo">
             <img
-              src="https://aniplaynow.live/logo.svg"
+              src="/images/logo.svg"
               style={{ width: "90px" }}
               alt="Logo"
             />
@@ -25,7 +25,7 @@ export default function Footer() {
             the media which is hosted on 3rd party services.
           </p>
         </div>
-        <div style={{ fontSize: "0.875rem" }}>Copyright © AniPlay 2024</div>
+        <div style={{ fontSize: "0.875rem" }}>Copyright © AniBox 2024</div>
       </div>
       <div id="footer-right">
         <a

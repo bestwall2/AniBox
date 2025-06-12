@@ -100,7 +100,7 @@ function Info({ id }) {
   /*if (isDetailsLoading || isEpisodesLoading) {
     return (
       <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
-        <div className="test">AniPlay Loading...</div>
+        <div className="test">AniBox Loading...</div>
       </div>
     );
   }*/
@@ -194,7 +194,7 @@ function Info({ id }) {
     
             <img
               className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
-              src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
+              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
               alt="user photo"
             />
         </div>      
