@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-0 pr-4 py-4">
           <a
             href="/"
-            className="flex items-center space-x-0 rtl:space-x-reverse ml-0">
+            className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0">
             <img
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/logo.png"
               className="h-14"
