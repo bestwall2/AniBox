@@ -152,7 +152,7 @@ query($perPage: Int, $page: Int) {
 			lastPage
 			hasNextPage
 		}
-		media (sort :POPULARITY_DESC, type : ANIME){
+		media (type: ANIME, sort: POPULARITY_DESC, startDate_greater: 20250101, startDate_lesser: 20260101 ){
 			id
 			idMal
 			title {
