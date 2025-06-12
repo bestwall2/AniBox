@@ -25,14 +25,15 @@ export async function generateMetadata({ params }: { params: AnimeInfoParams }):
 
     if (!media) {
       return {
-        title: "Anime Not Found - AniPlay",
+        title: "Anime Not Found - AniBox",
         description: "The requested anime could not be found.",
       };
     }
 
     const title = media.title.english || media.title.romaji || "Untitled Anime";
-    const pageTitle = `${title} - Details | AniPlay`;
-    const description = stripHtmlTags(media.description || "No description available.");
+    const pageTitle = `${title} | AniBox`;
+    const rawDescription = stripHtmlTags(media.description || "No description available.");
+    const description = rawDescription.length > 160 ? rawDescription.substring(0, 157) + '...' : rawDescription;
     const imageUrl = media.coverImage.extraLarge || ""; // Default to empty string if no image
 
     return {
@@ -41,6 +42,8 @@ export async function generateMetadata({ params }: { params: AnimeInfoParams }):
       openGraph: {
         title: pageTitle,
         description: description,
+        type: media.type === 'MOVIE' ? 'video.movie' : 'video.tv_show',
+        url: `https://ani-box-nine.vercel.app/anime/info/${id}`,
         images: imageUrl ? [{ url: imageUrl }] : [],
       },
       twitter: {
@@ -53,7 +56,7 @@ export async function generateMetadata({ params }: { params: AnimeInfoParams }):
   } catch (error) {
     console.error("Error fetching anime info for metadata:", error);
     return {
-      title: "Error - AniPlay",
+      title: "Error - AniBox",
       description: "An error occurred while fetching anime details.",
     };
   }
