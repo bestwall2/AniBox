@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import 'nprogress/nprogress.css';
 
 @tailwind base;
@@ -6,7 +6,7 @@
 @tailwind utilities;
 
 body {
-  font-family: "Noto Sans" , Arial, Helvetica, sans-serif;
+  
   background: black;
   @apply bg-black ;
   height: 100%;
