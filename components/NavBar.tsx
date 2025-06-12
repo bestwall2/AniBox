@@ -45,8 +45,8 @@ const Navbar = () => {
           >
             <img
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/logo.png"
-              className="h-9"
-              alt="AniPlay"
+              className="h-14"
+              alt="AniBox"
             />
           </a>
           <div className="flex items-center md:order-0 space-x-3 md:space-x-0 rtl:space-x-reverse">
