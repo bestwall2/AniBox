@@ -25,6 +25,15 @@ body {
   }
 }
 
+/* In your main CSS file (e.g., style.css or within a <style> tag in your HTML <head>) */
+@font-face {
+  font-family: 'GeistVF'; /* This is the name you'll use to refer to your font */
+  src: url('/fonts/GeistVF.woff') format('woff');
+  font-weight: normal; /* Or specify a range for variable fonts, e.g., 100 900 */
+  font-style: normal;
+  /* You can add more `src` lines for different font formats (e.g., woff2, ttf) for better browser support */
+}
+
 @layer base {
   :root {
     --background: 0 0% 3.9%;
@@ -159,7 +168,7 @@ body {
 }
 .InfoContainer .Description {
   animation: slideDown 1.5s ease-out forwards;
-  
+  font-family: 'GeistVF';
 }
 .InfoListsForAni {
   animation: slideDown 1.5s ease-out forwards;

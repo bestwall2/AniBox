@@ -85,6 +85,12 @@ const Slider = () => {
                     />
                     <div className="ContainerLayout"></div>
                     <div className="InfoContainer m-4 text-left">
+                        
+                        <h1 className="Title tex-xl t font-bold">
+                            {anime.title.english ||
+                            anime.title.romaji ||
+                            "Unknown Title"}
+                        </h1>
                         <div className="flex items-center justify-start ">
                             <FaStar size={15} style={{ color: "yellow" }} />
                             <h2 className="Trending font-semibold pl-1 pt-1 text-yellow-400"> 
@@ -93,11 +99,6 @@ const Slider = () => {
                             }
                             </h2>
                         </div>
-                        <h1 className="Title font-bold">
-                            {anime.title.english ||
-                            anime.title.romaji ||
-                            "Unknown Title"}
-                        </h1>
                         <p className="Description  text-sm w-auto block-words pr-5 mt-1 mb-1  line-clamp-5 text-gray-400">
                             {parse(anime.description)}
                         </p>
@@ -119,7 +120,7 @@ const Slider = () => {
                             </h1>
                         </div>
                         <Button
-                            className="SliderButton bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] font-semibold rounded-xl mr-2"
+                            className="SliderButton p-4 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] font-semibold rounded-xl mr-2"
                             variant="styled"
                         >
                             <FaPlay size={12} /> Play Now 
@@ -127,7 +128,7 @@ const Slider = () => {
                         
                         <Link href={ `/anime/info/${anime.id}`} passHref>
                             <Button
-                                className="SliderButton pt-2 pb-2 font-semibold rounded-xl "
+                                className="SliderButton p-4 font-semibold rounded-xl "
                                 variant="outline" >
                                 <HiOutlineInformationCircle size={22} /> More Info 
                             </Button>
