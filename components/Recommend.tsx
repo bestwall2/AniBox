@@ -66,7 +66,7 @@ const RecommendList = ({ geners, data, param }: RecommendListProps) => {
                       cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
                       title={anime.title.english || anime.title.romaji || "Unknown Title"}
                       info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"} • ${anime.episodes || "N/A"} Episodes`}
-                      img={anime.coverImage.extraLarge}
+                      img={anime.coverImage.large}
                       status={anime.status}
                     />
                   </Link>

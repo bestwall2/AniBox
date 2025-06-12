@@ -406,7 +406,7 @@ function Info({ id }) {
                      <RecommendList
                             geners="Chronology"
                             data={animeDetails?.relations?.edges || []}
-                            param="font-semibold text-md mt-2 mb-2"
+                            param="font-semibold text-md  mb-2"
                             className="InfoListsForAni"
                         />
                 </TabsContent>
@@ -432,7 +432,7 @@ function Info({ id }) {
                         node: rec.mediaRecommendation,
                         })) || []
                         }
-                        param="font-semibold text-md mt-2 mb-2"
+                        param="font-semibold text-md  mb-2"
                         className="InfoListsForAni"
                     /> 
                 </div>               
