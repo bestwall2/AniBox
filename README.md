@@ -105,20 +105,6 @@ For major changes, please open an issue first to discuss what you would like to 
 
 This project is licensed under the [MIT License](LICENSE).
 
-This project is currently unlicensed.
-
-<!--
-IMPORTANT: Please choose a license for your project to define how others can use, modify, and distribute it.
-Common open-source licenses include:
-- MIT License: Permissive and simple.
-- Apache License 2.0: Permissive, provides patent rights.
-- GNU GPLv3: Strong copyleft, ensures derivatives remain open source.
-
-You can add a LICENSE file to your repository (e.g., LICENSE.md) and update this section.
-For example, if you choose MIT:
-Distributed under the MIT License. See `LICENSE.md` for more information.
--->
-
 ---
 
 ## 📧 Contact
