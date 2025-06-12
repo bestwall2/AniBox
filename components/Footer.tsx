@@ -13,7 +13,7 @@ export default function Footer() {
           <p>Welcome to</p>
           <div id="footer-logo">
             <img
-              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
+              src="/images/logo.svg"
               style={{ width: "90px" }}
               alt="Logo"
             />
@@ -30,7 +30,7 @@ export default function Footer() {
       <div id="footer-right">
         <a
           target="_blank"
-          href="https://github.com/bestwall2"
+          href="https://github.com/coen-h"
           rel="noopener noreferrer"
         >
           <i
