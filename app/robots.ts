@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-     
+      disallow: '/api/',
       // Add disallow rules here if there are specific paths that should not be crawled
       // e.g., disallow: '/admin/',
     },

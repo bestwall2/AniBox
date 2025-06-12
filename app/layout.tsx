@@ -17,8 +17,29 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AniPlay",
-  description: "Free Anime WebSite For Watching Anime For Free ",
+  title: "AniBox",
+  description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
+  openGraph: {
+    title: "AniBox",
+    description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
+    url: "https://ani-box-nine.vercel.app",
+    siteName: "AniBox",
+    images: [
+      {
+        url: "/images/anibox_og_default.png",
+        width: 1200,
+        height: 630,
+        alt: "AniBox Logo"
+      }
+    ],
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AniBox",
+    description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
+    images: ["/images/anibox_og_default.png"]
+  }
 };
 
 export default function RootLayout({
@@ -31,6 +52,7 @@ export default function RootLayout({
       <head>
         <meta name="google-site-verification" content="YSX0QBTUpg092ujQcCx9pcyX5TXf-tAwNvTWRMNN-pQ" />
         {/* other meta tags */}
+        <meta name="theme-color" content="#000000" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -43,7 +43,7 @@ const Navbar = () => {
             href="/"
             className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0">
             <img
-              src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/logo.png"
+              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
               className="h-14"
               alt="AniBox"
             />
@@ -64,7 +64,7 @@ const Navbar = () => {
 
                 <img
                   className="w-10 h-10 transition-all duration-300 ease-out hover:scale-[0.97] rounded-full border-gray-600 border-2"
-                  src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/profile.jpg"
+                  src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
                   alt="user photo"
                 />
               </div>
