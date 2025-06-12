@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react"; // Removed useEffect
+import { useQuery } from "@tanstack/react-query"; // Added useQuery
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaStar } from "react-icons/fa6";
 import { MdDateRange } from "react-icons/md";
@@ -35,123 +36,114 @@ const formatDate = (dateObj: { year?: number; month?: number; day?: number }): s
   return undefined;
 };
 
+// Fetch function for anime details
+const fetchAnimeDetails = async (id) => {
+  const response = await fetch(`/api/anime-info?id=${id}`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok for anime details');
+  }
+  const data = await response.json();
+  return data.Media; // Assuming the relevant data is in Media object
+};
+
+// Fetch function for anime episodes
+const fetchAnimeEpisodes = async (id) => {
+  const response = await fetch(`/api/anime-episodes?id=${id}`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok for anime episodes');
+  }
+  const epi_data = await response.json();
+
+  let selectedProvider = epi_data.find(
+      (p) => p?.providerId === "pahe" && Array.isArray(p.episodes) && p.episodes.length > 0
+  );
+
+  if (!selectedProvider) {
+      selectedProvider = epi_data.find(
+          (p) => p?.providerId === "yuki" && Array.isArray(p.episodes) && p.episodes.length > 0
+      );
+  }
+
+  if (selectedProvider) {
+      return selectedProvider.episodes.map((episode) => ({
+          id: episode.id ?? null,
+          number: episode.number ?? null,
+          title: episode.title ?? "",
+          img: episode.img ?? "",
+          description: episode.description ?? "",
+      }));
+  }
+  return []; // Return empty array if no episodes found
+};
+
 function Info({ id }) {
   const router = useRouter();
-  
   const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
-  const [coverImage, setCoverImage] = useState("");
-  const [bannerImage, setBannerImage] = useState("");
-  const [title, setTitle] = useState("");
-  const [rating, setRating] = useState("");
-  const [status, setStatus] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [genres, setGenres] = useState([]);
-  const [episodes, setEpisodes] = useState([]);
-  const [data, setData] = useState([]);
-  const [allEpisodes, setAllEpisodes] = useState([]);
   
   const [showMore, setShowMore] = useState(false);
-  const formattedText = data?.description || "";
+
+  const { data: animeDetails, isLoading: isDetailsLoading, error: detailsError } = useQuery({
+    queryKey: ['animeDetails', id],
+    queryFn: () => fetchAnimeDetails(id),
+    enabled: !!id, // Only run query if id is available
+  });
+
+  const { data: processedEpisodes, isLoading: isEpisodesLoading, error: episodesError } = useQuery({
+    queryKey: ['animeEpisodes', id],
+    queryFn: () => fetchAnimeEpisodes(id),
+    enabled: !!id, // Only run query if id is available
+  });
+
+  const formattedText = animeDetails?.description || "";
   const shortText = formattedText.slice(0, 300); // adjust the limit as needed
-  
-  useEffect(() => {
-  const fetchData = async () => {
-    try {
-        const response = await fetch(`/api/anime-info?id=${id}`);           
-        const data = await response.json();
-      
-        // Fetch episodes from your API
-        const epi_res = await fetch(`/api/anime-episodes?id=${id}`);
-        const epi_data = await epi_res.json();
-        
-        // Try to get episodes from 'pahe' first
-        let selectedProvider = epi_data.find(
-            (p) => p?.providerId === "pahe" && Array.isArray(p.episodes) && p.episodes.length > 0
-        );
-        
-        // If 'pahe' has no episodes, fallback to 'yuki'
-        if (!selectedProvider) {
-            selectedProvider = epi_data.find(
-                (p) => p?.providerId === "yuki" && Array.isArray(p.episodes) && p.episodes.length > 0
-            );
-        }
-        
-        if (selectedProvider) {
-            const allEpisodes = selectedProvider.episodes.map((episode) => ({
-                id: episode.id ?? null,
-                number: episode.number ?? null,
-                title: episode.title ?? "",
-                img: episode.img ?? "",
-                description: episode.description ?? "",
-            }));
-        
-            setAllEpisodes(allEpisodes);
-        } else {
-            // No episodes found from either provider
-            setAllEpisodes([]);
-        }
-      
-        const media = data?.Media;
-
-        if (media) {
-            setCoverImage(media.coverImage.extraLarge);
-            setBannerImage(media.bannerImage);
-            setTitle(media.title.romaji);
-            setRating(media.averageScore);
-            setEpisodes(media.episodes);
-            setGenres(media.genres);
-            setStartDate(media.startDate);
-            setData(media);
-            setStatus(media.status || "Unknown Status");
-        }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  if (id) {
-    fetchData();
-  }
-}, [id]);
  
- 
-  if (!data) { // Added !data condition for loading state
-    return ( // Added parentheses and improved loading display
+  if (isDetailsLoading || isEpisodesLoading) {
+    return (
       <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
         <div className="test">AniPlay Loading...</div>
       </div>
     );
   }
 
+  if (detailsError) {
+    console.error("Error fetching anime details:", detailsError);
+    // Optionally return an error component or message
+    return <div className="text-red-500 text-center">Error loading anime details.</div>;
+  }
+
+  if (episodesError) {
+    console.error("Error fetching anime episodes:", episodesError);
+    // Optionally return an error component or message for episodes
+    // You might still want to render details if they loaded successfully
+  }
+
   // Construct JSON-LD data
   let structuredDataObject = null;
-  if (data && Object.keys(data).length > 0) {
-    const schemaType = data.type === 'MOVIE' ? 'Movie' : 'TVSeries';
-    const name = data.title?.english || data.title?.romaji || title || "Untitled";
-    const description = stripHtmlTags(data.description || "");
-    const image = coverImage;
+  if (animeDetails && Object.keys(animeDetails).length > 0) {
+    const schemaType = animeDetails.type === 'MOVIE' ? 'Movie' : 'TVSeries';
+    const name = animeDetails.title?.english || animeDetails.title?.romaji || "Untitled";
+    const description = stripHtmlTags(animeDetails.description || "");
+    const image = animeDetails.coverImage?.extraLarge;
 
     structuredDataObject = {
       "@context": "https://schema.org",
       "@type": schemaType,
       "name": name,
       "description": description,
-      "image": image ? [image] : undefined, // image should be an array of URLs or undefined
-      "datePublished": formatDate(data.startDate || startDate), // data.startDate is {year, month, day}
-      "genre": data.genres && data.genres.length > 0 ? data.genres : undefined,
+      "image": image ? [image] : undefined,
+      "datePublished": formatDate(animeDetails.startDate),
+      "genre": animeDetails.genres && animeDetails.genres.length > 0 ? animeDetails.genres : undefined,
     };
 
-    if (schemaType === 'TVSeries' && (data.episodes || episodes)) {
-      structuredDataObject.numberOfEpisodes = data.episodes || episodes;
+    if (schemaType === 'TVSeries' && animeDetails.episodes) {
+      structuredDataObject.numberOfEpisodes = animeDetails.episodes;
     }
 
-    if ((data.averageScore || rating) && (data.averageScore > 0 || rating > 0)) {
-      const currentRating = data.averageScore || rating;
+    if (animeDetails.averageScore && animeDetails.averageScore > 0) {
       structuredDataObject.aggregateRating = {
         "@type": "AggregateRating",
-        "ratingValue": (currentRating / 10).toFixed(1), // Assuming rating is out of 100
+        "ratingValue": (animeDetails.averageScore / 10).toFixed(1),
         "bestRating": "10",
-        // "ratingCount": data.popularity, // Popularity might not be ratingCount, omit if not sure
       };
     }
   }
@@ -169,9 +161,9 @@ function Info({ id }) {
         <div className="CoverPage">
             <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
             
-                {bannerImage ? (
+                {animeDetails?.bannerImage || animeDetails?.coverImage?.extraLarge ? (
                         <img
-                        src={bannerImage || coverImage}
+                        src={animeDetails.bannerImage || animeDetails.coverImage.extraLarge}
                         alt="Banner Image"
                         className="w-full h-full object-cover opacity-60"
                         loading="lazy"
@@ -209,9 +201,9 @@ function Info({ id }) {
         <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
             {/* Cover Image */}
             <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
-                {coverImage ? (
+                {animeDetails?.coverImage?.extraLarge ? (
                     <img
-                    src={coverImage}
+                    src={animeDetails.coverImage.extraLarge}
                     alt="Cover Image"
                     className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
                     loading="lazy"
@@ -224,9 +216,9 @@ function Info({ id }) {
             <div className="InfoContainerPage flex-col ml-1 mt-0 items-center justify-center">
                 {/* Title & Rating */}
                 <div className="text-left px-4">
-                    {title ? (
+                    {animeDetails?.title?.romaji ? (
                     <h1 className="text-2xl font-bold line-clamp-2 text-white drop-shadow-lg break-words max-w-[200px]">
-                        {title}
+                        {animeDetails.title.romaji}
                     </h1>
                     ) : (
                     <Skeleton className="h-6 w-[200px] rounded" />
@@ -235,17 +227,17 @@ function Info({ id }) {
                 
                 <div className="flex ml-3 mt-2 font-semibold items-left justify-start">
                     <FaStar size={20} style={{ color: "yellow", padding: 1 }} />
-                    {rating !== undefined && status ? (
+                    {animeDetails?.averageScore !== undefined && animeDetails?.status ? (
                     <>
                         <p className="text-md ml-1 self-center">
-                        {rating / 10} |
+                        {animeDetails.averageScore / 10} |
                         </p>
                         <p
                         className={`ml-2 ${
-                            status === "RELEASING" ? "text-green-500" : "text-red-500"
+                            animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"
                         }`}
                         >
-                        {status}
+                        {animeDetails.status}
                         </p>
                     </>
                     ) : (
@@ -255,24 +247,24 @@ function Info({ id }) {
                 
                 <h1 className="flex ml-3 font-semibold items-left justify-start">
                     <MdDateRange className="self-center mr-1" size={20} />
-                    {startDate ? (
-                    `${startDate.year} / ${startDate.month} / ${startDate.day}`
+                    {animeDetails?.startDate ? (
+                    `${animeDetails.startDate.year} / ${animeDetails.startDate.month} / ${animeDetails.startDate.day}`
                     ) : (
                     <Skeleton className="h-4 w-[120px] rounded" />
                     )}
                 </h1>
                 
                 <h1 className="CardGenres text-sm flex ml-3 items-left justify-start">
-                    {genres.length ? (
-                    genres.join(", ")
+                    {animeDetails?.genres?.length ? (
+                    animeDetails.genres.join(", ")
                     ) : (
                     <Skeleton className="h-4 w-[150px] rounded" />
                     )}
                 </h1>
                 
                 <h1 className="text-sm flex ml-3 font-semibold items-left justify-start">
-                    {episodes !== undefined ? (
-                    `Episodes : ${episodes}`
+                    {animeDetails?.episodes !== undefined ? (
+                    `Episodes : ${animeDetails.episodes}`
                     ) : (
                     <Skeleton className="h-4 w-[100px] rounded" />
                     )}
@@ -354,56 +346,56 @@ function Info({ id }) {
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Airing</strong> :{" "}
                                     <span className="lighting-text text-sm font-semibold text-white">
-                                    {data?.nextAiringEpisode?.airingAt
-                                        ? new Date(data.nextAiringEpisode.airingAt * 1000).toLocaleString()
+                                    {animeDetails?.nextAiringEpisode?.airingAt
+                                        ? new Date(animeDetails.nextAiringEpisode.airingAt * 1000).toLocaleString()
                                         : "FINISHED"}
                                     </span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Type</strong> :{" "}
-                                    <span className="text-sm text-muted-foreground">{data?.type || "Unknown"}</span>
+                                    <span className="text-sm text-muted-foreground">{animeDetails?.type || "Unknown"}</span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Aired</strong> :{" "}
-                                    <span className="text-sm text-muted-foreground">{data?.seasonYear || "N/A"}</span>
+                                    <span className="text-sm text-muted-foreground">{animeDetails?.seasonYear || "N/A"}</span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Season</strong> :{" "}
-                                    <span className="text-sm text-muted-foreground">{data?.season || "Unknown"}</span>
+                                    <span className="text-sm text-muted-foreground">{animeDetails?.season || "Unknown"}</span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Country</strong> :{" "}
-                                    <span className="text-sm text-muted-foreground">{data?.countryOfOrigin || "Unknown"}</span>
+                                    <span className="text-sm text-muted-foreground">{animeDetails?.countryOfOrigin || "Unknown"}</span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Studios</strong> :{" "}
                                     <span className="text-sm text-muted-foreground">
-                                    {data?.studios?.nodes?.length
-                                        ? data.studios.nodes.map((studio) => studio.name).join(", ")
+                                    {animeDetails?.studios?.nodes?.length
+                                        ? animeDetails.studios.nodes.map((studio) => studio.name).join(", ")
                                         : "Unknown"}
                                     </span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Source</strong> :{" "}
-                                    <span className="text-sm text-muted-foreground">{data?.source || "Unknown"}</span>
+                                    <span className="text-sm text-muted-foreground">{animeDetails?.source || "Unknown"}</span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Duration</strong> :{" "}
                                     <span className="text-sm text-muted-foreground">
-                                    {data?.duration ? `${data.duration} min` : "N/A"}
+                                    {animeDetails?.duration ? `${animeDetails.duration} min` : "N/A"}
                                     </span>
                                 </li>
                                 
                                 <li>
                                     <strong className="text-white text-sm font-semibold">Popularity</strong> :{" "}
-                                    <span className="text-sm text-muted-foreground">{data?.popularity || "N/A"}</span>
+                                    <span className="text-sm text-muted-foreground">{animeDetails?.popularity || "N/A"}</span>
                                 </li>
                             </ul>
                             
@@ -413,29 +405,29 @@ function Info({ id }) {
                 <TabsContent value="Relations" className="mt-4 mb-2">
                      <RecommendList
                             geners="Chronology"
-                            data={data.relations?.edges || []}
+                            data={animeDetails?.relations?.edges || []}
                             param="font-semibold text-md mt-2 mb-2"
                             className="InfoListsForAni"
                         />
                 </TabsContent>
                 <TabsContent value="Characters" className="mt-4">
-                     {data?.characters?.edges && (
+                     {animeDetails?.characters?.edges && (
                             <Characters 
                                 className="InfoListsForAni"
-                                characters={data.characters.edges}
+                                characters={animeDetails.characters.edges}
                              />
                      )}
                 </TabsContent>
                 <div className="flex flex-col gap-2">
                     <Episodes 
-                        episodes={allEpisodes}
-                        imgbackup={coverImage}
+                        episodes={processedEpisodes || []} // Use processedEpisodes
+                        imgbackup={animeDetails?.coverImage?.extraLarge}
                     />
                     
                     <RecommendList
                         geners="Recommended"
                         data={
-                        data.recommendations?.nodes?.map((rec) => ({
+                        animeDetails?.recommendations?.nodes?.map((rec) => ({
                         relationType: "RECOMMENDATION",
                         node: rec.mediaRecommendation,
                         })) || []

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ProgressBar from '@/components/NProgress';
 import { Suspense } from 'react';
+import QueryProvider from "@/components/QueryProvider"; // Import the new QueryProvider
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,17 +28,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-  <head>
+      <head>
         <meta name="google-site-verification" content="YSX0QBTUpg092ujQcCx9pcyX5TXf-tAwNvTWRMNN-pQ" />
         {/* other meta tags */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={null}>
-          <ProgressBar />
-        </Suspense>
-        {children}
+        <QueryProvider>
+          <Suspense fallback={null}>
+            <ProgressBar />
+          </Suspense>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
