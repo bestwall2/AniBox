@@ -57,7 +57,7 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
             />
         </div>
       </div>
-      <FaPlay className="PlayBtn " size={38}  style={{ color: "#a08dff", padding: 1 }} /> 
+      <FaPlay className="PlayBtn " size={30}  style={{ color: "#a08dff", padding: 1 }} /> 
     </div>
   );
 };

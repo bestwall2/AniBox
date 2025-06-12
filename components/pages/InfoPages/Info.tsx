@@ -97,13 +97,13 @@ function Info({ id }) {
   const formattedText = animeDetails?.description || "";
   const shortText = formattedText.slice(0, 300); // adjust the limit as needed
  
-  if (isDetailsLoading || isEpisodesLoading) {
+  /*if (isDetailsLoading || isEpisodesLoading) {
     return (
       <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
         <div className="test">AniPlay Loading...</div>
       </div>
     );
-  }
+  }*/
 
   if (detailsError) {
     console.error("Error fetching anime details:", detailsError);
