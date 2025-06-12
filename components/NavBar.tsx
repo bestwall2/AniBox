@@ -38,14 +38,14 @@ const Navbar = () => {
           hidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-2  p-4">
+        <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-0  p-4">
           <a
             href="/"
-            className="flex items-center space-x-3 rtl:space-x-reverse"
+            className="flex items-center space-x-2 rtl:space-x-reverse"
           >
             <img
               src="https://raw.githubusercontent.com/bestwall2/AniPlay/refs/heads/main/app/images/logo.png"
-              className="h-15"
+              className="h-14"
               alt="AniBox"
             />
           </a>
