@@ -87,31 +87,31 @@ const Slider = () => {
                     <div className="InfoContainer m-4 text-left">
                         <div className="flex items-center justify-start ">
                             <FaStar size={15} style={{ color: "yellow" }} />
-                            <h2 className="Trending font-semibold pl-1 pt-1 text-yellow-400"> 
+                            <h2 className="text-base font-semibold pl-1 pt-1 text-yellow-400">
                             {
                                 anime.averageScore ? `${anime.averageScore / 10}` : N/A
                             }
                             </h2>
                         </div>
-                        <h1 className="Title font-bold">
+                        <h1 className="text-xl font-bold">
                             {anime.title.english ||
                             anime.title.romaji ||
                             "Unknown Title"}
                         </h1>
-                        <p className="Description  text-sm w-auto block-words pr-5 mt-1 mb-1  line-clamp-5 text-gray-400">
+                        <p className="text-sm w-auto block-words pr-5 mt-1 mb-1  line-clamp-5 text-gray-400">
                             {parse(anime.description)}
                         </p>
-                        <div className="Addtion font-semibold mb-2 space-x-3 h-auto">
-                            <h1>
+                        <div className="font-semibold mb-2 space-x-3 h-auto flex"> {/* Ensure flex for h1s if they are inline */}
+                            <h1 className="text-sm flex items-center"> {/* Added flex and items-center */}
                             <FaPlayCircle className="m-1 self-center" size={13} />
                             {anime.format || "Unknown Format"}
                             </h1>
                             <h1
-                            className={`State ${anime.status === "RELEASING" ? "text-green-500" : "text-red-500"}`}
+                            className={`text-sm flex items-center State ${anime.status === "RELEASING" ? "text-green-500" : "text-red-500"}`} // Added flex and items-center
                             >
                             {anime.status || "Unknown Status"}
                             </h1>
-                            <h1>
+                            <h1 className="text-sm flex items-center"> {/* Added flex and items-center */}
                             <MdDateRange className="m-1 self-center" size={13} />
                             {anime.startDate
                                 ? `${anime.startDate.year} ${anime.startDate.month}, ${anime.startDate.day}`
@@ -119,7 +119,7 @@ const Slider = () => {
                             </h1>
                         </div>
                         <Button
-                            className="SliderButton font-semibold rounded-xl mr-2"
+                            className="text-lg font-semibold rounded-xl mr-2"
                             variant="styled"
                         >
                             <FaPlay size={12} /> Play Now 
@@ -127,7 +127,7 @@ const Slider = () => {
                         
                         <Link href={ `/anime/info/${anime.id}`} passHref>
                             <Button
-                                className="SliderButton pt-2 pb-2 font-semibold rounded-xl "
+                                className="text-lg pt-2 pb-2 font-semibold rounded-xl "
                                 variant="outline" >
                                 <HiOutlineInformationCircle size={22} /> More Info 
                             </Button>

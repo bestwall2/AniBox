@@ -78,7 +78,7 @@ const fetchAnimeEpisodes = async (id) => {
 
 function Info({ id }) {
   const router = useRouter();
-  const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";
+  const TabsPara = "text-base transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white"; // Added text-base
   
   const [showMore, setShowMore] = useState(false);
 
@@ -229,11 +229,11 @@ function Info({ id }) {
                     <FaStar size={20} style={{ color: "yellow", padding: 1 }} />
                     {animeDetails?.averageScore !== undefined && animeDetails?.status ? (
                     <>
-                        <p className="text-md ml-1 self-center">
+                        <p className="text-base ml-1 self-center"> {/* Changed text-md to text-base */}
                         {animeDetails.averageScore / 10} |
                         </p>
                         <p
-                        className={`ml-2 ${
+                        className={`text-base ml-2 ${ /* Changed text-md to text-base indirectly via parent, ensure it applies or add text-base here too if needed */
                             animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"
                         }`}
                         >
@@ -245,7 +245,7 @@ function Info({ id }) {
                     )}
                 </div>
                 
-                <h1 className="flex ml-3 font-semibold items-left justify-start">
+                <h1 className="text-base flex ml-3 font-semibold items-left justify-start"> {/* Added text-base */}
                     <MdDateRange className="self-center mr-1" size={20} />
                     {animeDetails?.startDate ? (
                     `${animeDetails.startDate.year} / ${animeDetails.startDate.month} / ${animeDetails.startDate.day}`
@@ -302,7 +302,7 @@ function Info({ id }) {
                         <CardHeader>
                             <CardTitle>Description</CardTitle>
                             
-                            <CardDescription className="font-small whitespace-pre-line">
+                            <CardDescription className="text-sm whitespace-pre-line"> {/* Changed font-small to text-sm */}
                                 {formattedText ? (
                                     <>
                                     <AnimatePresence initial={false} mode="wait">
@@ -340,7 +340,7 @@ function Info({ id }) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <h1 className="font-bold  mb-2 leading-none tracking-tight">Details</h1>
+                            <h1 className="text-lg font-bold mb-2 leading-none tracking-tight">Details</h1> {/* Added text-lg */}
                             
                             <ul className="flex flex-col gap-2 mt-4 ">
                                 <li>

@@ -57,9 +57,9 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
 
   return (
         <div className="ItemGeners mt-2 mb-2">   
-            <div className="Geners flex text-gray-200 items-center mb-2 space-x-2">
+            <div className="flex text-gray-200 items-center mb-2 space-x-2"> {/* Removed Geners class */}
                 <span className="w-1.5 rounded-full h-6 bg-indigo-500"></span>
-                <p className={param}>{geners}</p>
+                <p className="text-lg font-semibold">{geners}</p> {/* Applied text-lg font-semibold, removed param */}
             </div>
             
             <Swiper

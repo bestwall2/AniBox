@@ -6,7 +6,7 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
     <div className="bg-zinc-800 h-[75px] transition-all pt-2 pb-2 duration-300 ease-out hover:scale-[0.97] rounded-xl shadow-xl flex items-center">
         <div className="relative transition-all duration-300 ease-out hover:scale-[0.97] w-[120px] min-h-[75px] max-h-[75px] rounded-lg overflow-hidden flex-shrink-0">
             <Image
-            src={image.includes('https://') ? image : imgbup}
+            src={typeof image === 'string' && image.includes('https://') ? image : imgbup}
             alt={title}
             layout="fill"
             objectFit="cover"
@@ -27,7 +27,7 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
         <div className="flex flex-col pt-2 pb-2 pl-3 overflow-hidden"> {/* Added padding here */}
             <h3 className="text-md font-semibold text-white truncate">{`${number}. ${title}`}</h3>
             <p className="text-sm text-gray-200 line-clamp-2 leading-tight max-h-[3em]"> {/* Adjusted line-clamp and added max-height */}
-            {description.includes('$undefined') ? "" : description}
+            {typeof description === 'string' && description.includes('$undefined') ? "" : description}
             </p>
         </div>
     </div>

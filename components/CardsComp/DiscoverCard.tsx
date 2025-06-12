@@ -30,16 +30,16 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
       <div className="CardShadow absolute">
       
         
-        <p className="Title  absolute  content-center  text-center line-clamp-2">
+        <p className="text-sm font-bold absolute content-center text-center line-clamp-2"> {/* Applied text-sm and font-bold directly */}
           {title}
         </p>
               
-        <p className="MoreInfo text-gray-300 absolute line-clamp-1 bottom-0">
+        <p className="text-xs text-gray-300 absolute line-clamp-1 bottom-0"> {/* Applied text-xs directly */}
           {" "}
           {info}{" "}
         </p>
-        <div className="CardBadge flex items-center justify-start">
-          <p className="CardBadgeText self-center">{cardbadge}</p>
+        <div className="text-xs flex items-center justify-start CardBadge"> {/* Applied text-xs to parent div */}
+          <p className="self-center">{cardbadge}</p> {/* Removed CardBadgeText class */}
           <FaStar
             
             size={12}
