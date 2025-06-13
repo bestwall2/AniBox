@@ -11,10 +11,11 @@ export default function TestPlayer() {
   const [outro, setOutro] = useState(null);
 
   const requestBody = {
-    id: '178680',
-    host: 'yuki',
-    ep: '1',
-    type: 'sub',
+    id: "178680",
+    host: "pahe",
+    slug: "69177-6075",
+    ep: "1",
+    type: "sub",
   };
 
   useEffect(() => {
