@@ -3,7 +3,7 @@ import VideoPlayer from "../components/VideoPlayer";
 import 'plyr/dist/plyr.css';
 
 
-function App() {
+export default function  testPlayer() {
   const [videoSrc, setVideoSrc] = useState(null);
   const [captions, setCaptions] = useState([]);
   const [intro, setIntro] = useState(null);
@@ -78,4 +78,3 @@ function App() {
   );
 }
 
-export default App;
