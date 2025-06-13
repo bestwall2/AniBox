@@ -210,6 +210,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = (props) => {
 
   // Populate playback speed options (assuming they are static in the HTML structure)
   // This effect is to attach listeners to pre-existing items from HTML
+  /*
   useEffect(() => {
     if (settingsContainerRef.current) {
         const speedOptions = settingsContainerRef.current.querySelectorAll<HTMLLIElement>(".playback li[data-speed]");
@@ -247,6 +248,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = (props) => {
         // For now, direct assignment is used as in original PlayerControls.
     }
   }, [props.onPlaybackSpeedChange, props.onSettingsNavigate, isSettingsActive]); // Re-run if settings become active
+  */
 
   // Note: Quality options are populated dynamically by VideoPlayer.tsx when HLS manifest is parsed.
   // The onClick handlers for quality are also attached at that time.
