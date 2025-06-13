@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import './style.css';
 
 interface PlayerControlsProps {
   playerContainerRef: React.RefObject<HTMLDivElement>; // For mouse move events to show/hide controls
