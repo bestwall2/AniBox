@@ -1,14 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import VideoPlayer from "../../components/VideoPlayer";
-import 'plyr/dist/plyr.css';
+import React, { useEffect, useState } from "react";
+import VideoPlayer from "../../components/Player/VideoPlayer";
+import "plyr/dist/plyr.css";
+
+type Caption = {
+  label: string;
+  srcLang: string;
+  src: string;
+  default?: boolean;
+};
 
 export default function TestPlayer() {
-  const [videoSrc, setVideoSrc] = useState(null);
-  const [captions, setCaptions] = useState([]);
-  const [intro, setIntro] = useState(null);
-  const [outro, setOutro] = useState(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const [captions, setCaptions] = useState<Caption[]>([]);
+  const [intro, setIntro] = useState<string | null>(null);
+  const [outro, setOutro] = useState<string | null>(null);
 
   const requestBody = {
     id: "178680",
@@ -19,20 +26,18 @@ export default function TestPlayer() {
   };
 
   useEffect(() => {
-    fetch('https://ani-box-nine.vercel.app/api/anime-source', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    fetch("https://ani-box-nine.vercel.app/api/anime-source", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         if (!Array.isArray(data) || data.length < 2) {
-          console.error('Unexpected response structure:', data);
+          console.error("Unexpected response structure:", data);
           return;
         }
 
@@ -42,11 +47,11 @@ export default function TestPlayer() {
         if (source) setVideoSrc(source);
 
         if (Array.isArray(payload.subtitles)) {
-          const mappedSubs = payload.subtitles.map(sub => ({
-            label: sub.lang || 'Unknown',
-            srcLang: sub.lang?.toLowerCase() || 'en',
+          const mappedSubs = payload.subtitles.map((sub: any, i: number) => ({
+            label: sub.lang || "Unknown",
+            srclang: (sub.lang || "en").toLowerCase(),
             src: sub.url,
-            default: false,
+            default: i === 0, // الترجمة الأولى افتراضياً
           }));
           setCaptions(mappedSubs);
         }
@@ -54,27 +59,28 @@ export default function TestPlayer() {
         if (payload.intro) setIntro(payload.intro);
         if (payload.outro) setOutro(payload.outro);
       })
-      .catch(err => {
-        console.error('Fetch error:', err);
+      .catch((err) => {
+        console.error("Fetch error:", err);
       });
   }, []);
 
   const handleEpisodesClick = () => {
-    alert('Episodes button clicked! Open episode list here.');
+    alert("Episodes button clicked! Open episode list here.");
   };
 
   if (!videoSrc) return <div>Loading video...</div>;
 
   return (
     <div style={{ padding: 10 }}>
-      <h1>Plyr React Video Player Demo {videoSrc}</h1>
+      <h1>Plyr React Video Player Demo</h1>
       <VideoPlayer
-        videoSrc={videoSrc}
-        captions={captions}
+        source={videoSrc}
+        subtitles={captions}
         intro={intro}
         outro={outro}
         onEpisodesClick={handleEpisodesClick}
         plyrOptions={{ seekTime: 10 }}
+        width={720}
       />
     </div>
   );
