@@ -11,11 +11,16 @@ type Caption = {
   default?: boolean;
 };
 
+type IntroOutro = {
+  start: number;
+  end: number;
+};
+
 export default function TestPlayer() {
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [captions, setCaptions] = useState<Caption[]>([]);
-  const [intro, setIntro] = useState<string | null>(null);
-  const [outro, setOutro] = useState<string | null>(null);
+  const [intro, setIntro] = useState<IntroOutro | null>(null);
+  const [outro, setOutro] = useState<IntroOutro | null>(null);
 
   const requestBody = {
     id: "178680",
@@ -49,9 +54,9 @@ export default function TestPlayer() {
         if (Array.isArray(payload.subtitles)) {
           const mappedSubs = payload.subtitles.map((sub: any, i: number) => ({
             label: sub.lang || "Unknown",
-            srclang: (sub.lang || "en").toLowerCase(),
+            srcLang: (sub.lang || "en").toLowerCase(),
             src: sub.url,
-            default: i === 0, // الترجمة الأولى افتراضياً
+            default: i === 0,
           }));
           setCaptions(mappedSubs);
         }
