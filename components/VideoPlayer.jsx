@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import 'plyr/dist/plyr.css';
+import Hls from 'hls.js';
 
 const VideoPlayer = ({
   videoSrc,
@@ -23,35 +24,72 @@ const VideoPlayer = ({
 }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
+  const hlsRef = useRef(null);
 
   useEffect(() => {
     let Plyr;
 
     async function setupPlayer() {
-      // Dynamically import Plyr only in client-side
       Plyr = (await import('plyr')).default;
 
       if (!videoRef.current) return;
 
-      playerRef.current = new Plyr(videoRef.current, {
-        controls,
-        captions: {
-          active: true,
-          update: true,
-          language: captions.find(c => c.default)?.srcLang || 'en',
-        },
-        ...plyrOptions,
-      });
+      const video = videoRef.current;
 
+      // Clean up previous instance
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+
+      // Handle HLS (.m3u8)
+      if (Hls.isSupported() && videoSrc.endsWith('.m3u8')) {
+        const hls = new Hls();
+        hlsRef.current = hls;
+
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          playerRef.current = new Plyr(video, {
+            controls,
+            captions: {
+              active: true,
+              update: true,
+              language: captions.find(c => c.default)?.srcLang || 'en',
+            },
+            ...plyrOptions,
+          });
+          setupEpisodesButton();
+        });
+
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          console.error('HLS.js error:', data);
+        });
+      } else {
+        playerRef.current = new Plyr(video, {
+          controls,
+          captions: {
+            active: true,
+            update: true,
+            language: captions.find(c => c.default)?.srcLang || 'en',
+          },
+          ...plyrOptions,
+        });
+        setupEpisodesButton();
+      }
+    }
+
+    function setupEpisodesButton() {
       playerRef.current.on('ready', () => {
         const controlsElem = document.querySelector('.plyr__controls');
         if (!controlsElem) return;
 
         const captionsBtn = controlsElem.querySelector('[data-plyr="captions"]');
-        if (!captionsBtn) return;
-
-        // Avoid duplicate episodes button
-        if (controlsElem.querySelector('[data-plyr="episodes"]')) return;
+        if (!captionsBtn || controlsElem.querySelector('[data-plyr="episodes"]')) return;
 
         const episodesBtn = document.createElement('button');
         episodesBtn.className = 'plyr__control';
@@ -59,16 +97,14 @@ const VideoPlayer = ({
         episodesBtn.setAttribute('aria-label', 'Episodes');
         episodesBtn.setAttribute('data-plyr', 'episodes');
         episodesBtn.style.cursor = 'pointer';
-
         episodesBtn.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="7" height="7" rx="1" ry="1"/>
             <rect x="14" y="3" width="7" height="7" rx="1" ry="1"/>
             <rect x="3" y="14" width="7" height="7" rx="1" ry="1"/>
             <rect x="14" y="14" width="7" height="7" rx="1" ry="1"/>
           </svg>
         `;
-
         episodesBtn.addEventListener('click', () => {
           if (typeof onEpisodesClick === 'function') {
             onEpisodesClick();
@@ -88,6 +124,10 @@ const VideoPlayer = ({
         playerRef.current.destroy();
         playerRef.current = null;
       }
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
     };
   }, [videoSrc, captions, controls, onEpisodesClick, plyrOptions]);
 
@@ -100,7 +140,9 @@ const VideoPlayer = ({
         playsInline
         style={{ width: '100%' }}
       >
-        <source src={videoSrc} type="video/mp4" />
+        {videoSrc.endsWith('.mp4') && (
+          <source src={videoSrc} type="video/mp4" />
+        )}
         {captions.map(({ label, srcLang, src, default: isDefault }, i) => (
           <track
             key={i}
@@ -111,9 +153,6 @@ const VideoPlayer = ({
             default={isDefault}
           />
         ))}
-        <a href={videoSrc} download>
-          Download video
-        </a>
       </video>
     </div>
   );

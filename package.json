@@ -25,6 +25,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.6.5",
+    "hls.js": "^1.6.5",
     "html-react-parser": "^5.2.3",
     "lucide-react": "^0.460.0",
     "next": "^15.3.0",
