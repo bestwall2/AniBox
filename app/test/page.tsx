@@ -1,9 +1,10 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import VideoPlayer from "../../components/VideoPlayer";
 import 'plyr/dist/plyr.css';
 
-
-export default function  testPlayer() {
+export default function TestPlayer() {
   const [videoSrc, setVideoSrc] = useState(null);
   const [captions, setCaptions] = useState([]);
   const [intro, setIntro] = useState(null);
@@ -77,4 +78,3 @@ export default function  testPlayer() {
     </div>
   );
 }
-
