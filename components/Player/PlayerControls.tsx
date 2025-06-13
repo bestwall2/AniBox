@@ -40,6 +40,7 @@ interface PlayerControlsProps {
   onToggleAutoplay?: () => void;
   onTogglePictureInPicture?: () => void;
   onToggleFullscreen?: () => void;
+  playerSeekTime: number; // Added playerSeekTime prop
 }
 
 const PlayerControls: React.FC<PlayerControlsProps> = (props) => {
@@ -148,24 +149,28 @@ const PlayerControls: React.FC<PlayerControlsProps> = (props) => {
     if (!settingsContainerRef.current || !settingsBtnRef.current) return;
 
     if (isSettingsActive) {
-      settingsContainerRef.current.classList.add("active");
-      settingsBtnRef.current.classList.add("active");
+      if (settingsContainerRef.current) settingsContainerRef.current.classList.add("active");
+      if (settingsBtnRef.current) settingsBtnRef.current.classList.add("active");
       // Ensure sub-menus are correctly shown/hidden based on activeSettingsMenu
-      const allSubMenus = settingsContainerRef.current.querySelectorAll<HTMLDivElement>(".settings > div[data-label]");
-      allSubMenus.forEach(menuDiv => {
-        if (menuDiv.dataset.label === activeSettingsMenu) {
-          menuDiv.removeAttribute("hidden");
-        } else {
-          menuDiv.setAttribute("hidden", "");
-        }
-      });
+      if (settingsContainerRef.current) {
+        const allSubMenus = settingsContainerRef.current.querySelectorAll<HTMLDivElement>(".settings > div[data-label]");
+        allSubMenus.forEach(menuDiv => {
+          if (menuDiv.dataset.label === activeSettingsMenu) {
+            menuDiv.removeAttribute("hidden");
+          } else {
+            menuDiv.setAttribute("hidden", "");
+          }
+        });
+      }
     } else {
-      settingsContainerRef.current.classList.remove("active");
-      settingsBtnRef.current.classList.remove("active");
-       const allSubMenus = settingsContainerRef.current.querySelectorAll<HTMLDivElement>(".settings > div[data-label]");
-      allSubMenus.forEach(menuDiv => menuDiv.setAttribute("hidden", ""));
-      const homeMenu = settingsContainerRef.current.querySelector<HTMLDivElement>(".settings > div[data-label='settingHome']");
-      if (homeMenu) homeMenu.removeAttribute("hidden"); // Default to home
+      if (settingsContainerRef.current) settingsContainerRef.current.classList.remove("active");
+      if (settingsBtnRef.current) settingsBtnRef.current.classList.remove("active");
+      if (settingsContainerRef.current) {
+        const allSubMenus = settingsContainerRef.current.querySelectorAll<HTMLDivElement>(".settings > div[data-label]");
+        allSubMenus.forEach(menuDiv => menuDiv.setAttribute("hidden", ""));
+        const homeMenu = settingsContainerRef.current.querySelector<HTMLDivElement>(".settings > div[data-label='settingHome']");
+        if (homeMenu) homeMenu.removeAttribute("hidden"); // Default to home
+      }
     }
   }, [isSettingsActive, activeSettingsMenu]);
 
@@ -206,33 +211,42 @@ const PlayerControls: React.FC<PlayerControlsProps> = (props) => {
   // Populate playback speed options (assuming they are static in the HTML structure)
   // This effect is to attach listeners to pre-existing items from HTML
   useEffect(() => {
-    if (settingsContainerRef.current) { // Ensure settings container is there
+    if (settingsContainerRef.current) {
         const speedOptions = settingsContainerRef.current.querySelectorAll<HTMLLIElement>(".playback li[data-speed]");
+        const speedListeners: Array<{el: HTMLLIElement, fn: () => void}> = [];
         speedOptions.forEach(li => {
             const speed = parseFloat(li.dataset.speed!);
-            // Important: Remove old listener before adding new one if this effect can re-run with different handlers
-            // For now, assuming onPlaybackSpeedChange is stable or this effect runs once for these static items.
-            li.onclick = () => props.onPlaybackSpeedChange(speed);
+            const listener = () => props.onPlaybackSpeedChange(speed);
+            li.onclick = listener; // Consider addEventListener for easier removal if needed
+            // speedListeners.push({el: li, fn: listener}); // For explicit cleanup if using addEventListener
         });
 
-        // Attach listeners for settings navigation (Home links and Back arrows)
         const homeLinks = settingsContainerRef.current.querySelectorAll<HTMLLIElement>(".settings > div[data-label='settingHome'] > ul > li");
+        const homeLinkListeners: Array<{el: HTMLLIElement, fn: () => void}> = [];
         homeLinks.forEach(link => {
             const targetMenu = link.dataset.label as 'speed' | 'quality';
             if (targetMenu) {
-                link.onclick = () => props.onSettingsNavigate(targetMenu);
+                const listener = () => props.onSettingsNavigate(targetMenu);
+                link.onclick = listener;
+                // homeLinkListeners.push({el: link, fn: listener});
             }
         });
 
         const backArrows = settingsContainerRef.current.querySelectorAll<HTMLElement>(".settings .back_arrow");
+        const backArrowListeners: Array<{el: HTMLElement, fn: () => void}> = [];
         backArrows.forEach(arrow => {
             const targetMenu = arrow.dataset.label as 'home';
             if (targetMenu) {
-                 arrow.onclick = () => props.onSettingsNavigate(targetMenu);
+                 const listener = () => props.onSettingsNavigate(targetMenu);
+                 arrow.onclick = listener;
+                 // backArrowListeners.push({el: arrow, fn: listener});
             }
         });
+        // Cleanup for dynamically attached onclick handlers is tricky if the component re-renders often
+        // and these props change. If these elements were React components, handling would be simpler.
+        // For now, direct assignment is used as in original PlayerControls.
     }
-  }, [props.onPlaybackSpeedChange, props.onSettingsNavigate]); // Add dependencies
+  }, [props.onPlaybackSpeedChange, props.onSettingsNavigate, isSettingsActive]); // Re-run if settings become active
 
   // Note: Quality options are populated dynamically by VideoPlayer.tsx when HLS manifest is parsed.
   // The onClick handlers for quality are also attached at that time.

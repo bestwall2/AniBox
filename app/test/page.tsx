@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import VideoPlayer from "../../components/Player/VideoPlayer";
-import "plyr/dist/plyr.css";
+// import "plyr/dist/plyr.css"; // Removed
 
 type Caption = {
   label: string;
@@ -54,7 +54,7 @@ export default function TestPlayer() {
         if (Array.isArray(payload.subtitles)) {
           const mappedSubs = payload.subtitles.map((sub: any, i: number) => ({
             label: sub.lang || "Unknown",
-            srcLang: (sub.lang || "en").toLowerCase(),
+            srclang: (sub.lang || "en").toLowerCase(), // Changed srcLang to srclang
             src: sub.url,
             default: i === 0,
           }));

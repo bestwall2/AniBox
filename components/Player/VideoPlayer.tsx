@@ -21,7 +21,7 @@ type VideoPlayerProps = {
   intro?: IntroOutro | null;
   outro?: IntroOutro | null;
   onEpisodesClick?: () => void;
-  plyrOptions?: Record<string, any>;
+  plyrOptions?: Record<string, any> & { seekTime?: number }; // Added seekTime to plyrOptions
   width?: string | number;
 };
 
@@ -56,6 +56,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [currentCaptionTrackLabel, setCurrentCaptionTrackLabel] = useState<string>("OFF");
   const [isAutoplayActive, setIsAutoplayActive] = useState(false);
   const [isFullscreenActive, setIsFullscreenActive] = useState(false);
+
+  const playerSeekTime = plyrOptions?.seekTime || 10; // Extract seekTime or default to 10
   // ... (add more state variables as needed) ...
 
   // This useEffect was for initializing refs from the injected HTML.
@@ -220,13 +222,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const handleFastRewind = () => {
     if (mainVideoRef.current) {
-      mainVideoRef.current.currentTime -= 10;
+      mainVideoRef.current.currentTime -= playerSeekTime;
     }
   };
 
   const handleFastForward = () => {
     if (mainVideoRef.current) {
-      mainVideoRef.current.currentTime += 10;
+      mainVideoRef.current.currentTime += playerSeekTime;
     }
   };
 
@@ -683,6 +685,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         onToggleFullscreen={handleToggleFullscreen}
 
         playerContainerRef={playerContainerRef}
+        playerSeekTime={playerSeekTime} // Pass down playerSeekTime
       />
 
       {outro && (
