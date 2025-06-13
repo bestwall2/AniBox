@@ -39,14 +39,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const video = videoRef.current;
     if (!video) return;
 
+    // إذا كان الفيديو بصيغة m3u8
     if (source.endsWith(".m3u8")) {
       if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(source);
         hls.attachMedia(video);
-        return () => {
-          hls.destroy();
-        };
+        return () => hls.destroy();
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = source;
       }
@@ -56,8 +55,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }, [source]);
 
   return (
-    <div style={{ maxWidth: width }}>
-      {/* ✅ عرض بيانات intro كـ string */}
+    <div className="video_player" style={{ maxWidth: width }}>
       {intro && (
         <div className="video-intro">
           Intro: {intro.start}s - {intro.end}s
@@ -72,6 +70,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         style={{ width: "100%", height: "auto" }}
         {...plyrOptions}
       >
+        {/* <source> element to preserve your styling/js */}
+        <source src={source} type="application/x-mpegURL" size="1080" />
+
         {subtitles.map(
           ({ label, kind = "subtitles", src, srclang, default: def }, i) => (
             <track
@@ -87,7 +88,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         متصفحك لا يدعم عرض الفيديو
       </video>
 
-      {/* ✅ عرض بيانات outro أيضاً */}
       {outro && (
         <div className="video-outro">
           Outro: {outro.start}s - {outro.end}s
