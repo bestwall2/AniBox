@@ -67,7 +67,7 @@ export default function TestPlayer() {
 
   return (
     <div style={{ padding: 10 }}>
-      <h1>Plyr React Video Player Demo</h1>
+      <h1>Plyr React Video Player Demo {videoSrc}</h1>
       <VideoPlayer
         videoSrc={videoSrc}
         captions={captions}
