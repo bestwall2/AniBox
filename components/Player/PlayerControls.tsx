@@ -40,6 +40,7 @@ interface PlayerControlsProps {
   onToggleAutoplay?: () => void;
   onTogglePictureInPicture?: () => void;
   onToggleFullscreen?: () => void;
+  playerSeekTime: number; // Added playerSeekTime prop
 }
 
 const PlayerControls: React.FC<PlayerControlsProps> = (props) => {
