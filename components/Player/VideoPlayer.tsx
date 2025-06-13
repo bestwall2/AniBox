@@ -9,13 +9,18 @@ type Subtitle = {
   default?: boolean;
 };
 
+type IntroOutro = {
+  start: number;
+  end: number;
+};
+
 type VideoPlayerProps = {
   source: string;
   subtitles?: Subtitle[];
-  intro?: string | null;
-  outro?: string | null;
+  intro?: IntroOutro | null;
+  outro?: IntroOutro | null;
   onEpisodesClick?: () => void;
-  plyrOptions?: Record<string, any>; // مثال: { seekTime: 10 }
+  plyrOptions?: Record<string, any>;
   width?: string | number;
 };
 
@@ -34,7 +39,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const video = videoRef.current;
     if (!video) return;
 
-    // دعم HLS عبر hls.js إذا كان المصدر m3u8 ومتصفح لا يدعمه
     if (source.endsWith(".m3u8")) {
       if (Hls.isSupported()) {
         const hls = new Hls();
@@ -53,7 +57,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   return (
     <div style={{ maxWidth: width }}>
-      {intro && <div className="video-intro">{intro}</div>}
+      {/* ✅ عرض بيانات intro كـ string */}
+      {intro && (
+        <div className="video-intro">
+          Intro: {intro.start}s - {intro.end}s
+        </div>
+      )}
 
       <video
         ref={videoRef}
@@ -61,22 +70,29 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         controls
         preload="metadata"
         style={{ width: "100%", height: "auto" }}
-        {...plyrOptions} // تمرير خيارات إضافية (يمكن تعديل حسب الحاجة)
+        {...plyrOptions}
       >
-        {subtitles.map(({ label, kind = "subtitles", src, srclang, default: def }, i) => (
-          <track
-            key={i}
-            label={label}
-            kind={kind}
-            src={src}
-            srclang={srclang}
-            default={def}
-          />
-        ))}
+        {subtitles.map(
+          ({ label, kind = "subtitles", src, srclang, default: def }, i) => (
+            <track
+              key={i}
+              label={label}
+              kind={kind}
+              src={src}
+              srclang={srclang}
+              default={def}
+            />
+          )
+        )}
         متصفحك لا يدعم عرض الفيديو
       </video>
 
-      {outro && <div className="video-outro">{outro}</div>}
+      {/* ✅ عرض بيانات outro أيضاً */}
+      {outro && (
+        <div className="video-outro">
+          Outro: {outro.start}s - {outro.end}s
+        </div>
+      )}
 
       {onEpisodesClick && (
         <button onClick={onEpisodesClick} style={{ marginTop: 10 }}>
