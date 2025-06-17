@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "node-fetch": "^3.0.0",
     "@heroui/react": "^2.7.6",
     "@heroui/system": "^2.4.13",
     "@heroui/tabs": "^2.2.14",
