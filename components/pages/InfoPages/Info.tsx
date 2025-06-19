@@ -54,28 +54,31 @@ const fetchAnimeEpisodes = async (id) => {
   }
   const epi_data = await response.json();
 
-  let selectedProvider = epi_data.find(
-      (p) => p?.providerId === "pahe" && Array.isArray(p.episodes) && p.episodes.length > 0
-  );
-
+  let selectedProvider = epi_data.episodes.find(
+    (p) => p?.providerId === "pahe" && Array.isArray(p.episodes) && p.episodes.length > 0
+  );  
   if (!selectedProvider) {
-      selectedProvider = epi_data.find(
-          (p) => p?.providerId === "yuki" && Array.isArray(p.episodes) && p.episodes.length > 0
-      );
+    selectedProvider = epi_data.episodes.find(
+      (p) => p?.providerId === "yuki" && Array.isArray(p.episodes) && p.episodes.length > 0
+    );
+  }
+  if (!selectedProvider) {
+    selectedProvider = epi_data.episodes.find(
+      (p) => p?.providerId === "koto" && Array.isArray(p.episodes) && p.episodes.length > 0
+    );
   }
 
   if (selectedProvider) {
-      return selectedProvider.episodes.map((episode) => ({
-          id: episode.id ?? null,
-          number: episode.number ?? null,
-          title: episode.title ?? "",
-          img: episode.img ?? "",
-          description: episode.description ?? "",
-      }));
+    return selectedProvider.episodes.map((episode) => ({
+      id: episode.id ?? null,
+      number: episode.number ?? null,
+      title: episode.title ?? "",
+      img: episode.img ?? "",
+      description: episode.description ?? "",
+    }));
   }
   return []; // Return empty array if no episodes found
 };
-
 function Info({ id }) {
   const router = useRouter();
   const TabsPara = " transition-all duration-300 ease-out hover:scale-[0.90] data-[state=active]:border-b-2 data-[state=active]:border-[#3888E7] rounded-gl px-4 py-2  font-medium text-gray-700 data-[state=active]:text-white";

@@ -11,41 +11,33 @@ export async function GET(request) {
   }
 
   try {
-    const res = await fetch(`https://aniplaynow.live/anime/info/${id}`, {
-      method: "POST",
+    // Fetch anime episodes from the API using your provided URL and headers
+    const res = await fetch(`https://aniplaynow.live/api/anime/episodes?id=${id}&releasing=true&refresh=true`, {
+      credentials: "include",
       headers: {
-        "Accept": "text/x-component",
-        "Next-Action": "7f98001caa202033310a94da4dff5fe16667c58611",
-        "Next-Router-State-Tree": `%5B%22%22%2C%7B%22children%22%3A%5B%22(user)%22%2C%7B%22children%22%3A%5B%22(media)%22%2C%7B%22children%22%3A%5B%22anime%22%2C%7B%22children%22%3A%5B%22info%22%2C%7B%22children%22%3A%5B%5B%22aniId%22%2C%22${id}%22%2C%22d%22%5D%2C%7B%22children%22%3A%5B%22__PAGE__%22%2C%7B%7D%2C%22%2Fanime%2Finfo%2F${id}%22%2C%22refresh%22%5D%7D%5D%7D%5D%7D%5D%7D%5D%7D%2Cnull%2Cnull%2Ctrue%5D`,
-        "User-Agent": "Mozilla/5.0 (Linux; Android 12; ZTE 8046 Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7204.3 Mobile Safari/537.36",
-        "Referer": `https://aniplaynow.live/anime/info/${id}`,
-        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Priority": "u=0"
       },
-      body: JSON.stringify([id, true, true]),
+      referrer: `https://aniplaynow.live/anime/info/${id}`,
+      method: "GET",
+      mode: "cors"
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch anime info for id: ${id}`);
+      throw new Error(`Failed to fetch anime episodes for id: ${id}`);
     }
 
-    const text = await res.text();
-
-    // extract line that starts with "1:"
-    const key1Line = text.split(/\n/).find(line => line.startsWith("1:"));
-
-    if (!key1Line) {
-      return NextResponse.json([]);
-    }
-
-    const jsonString = key1Line.slice(2); // remove the "1:" prefix
-
-    const data = JSON.parse(jsonString);
-
+    const data = await res.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error fetching anime info:", error);
+    console.error("Error fetching anime episodes:", error);
     return NextResponse.json(
-      { error: "Failed to fetch anime info" },
+      { error: "Failed to fetch anime episodes" },
       { status: 500 }
     );
   }
