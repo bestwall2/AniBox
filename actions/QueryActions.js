@@ -255,6 +255,10 @@ query ($id: Int) {
 		  english
 		  userPreferred
 	  }
+			externalLinks {
+      site
+      url
+    }
 	  coverImage {
 		  large
 		  extraLarge
