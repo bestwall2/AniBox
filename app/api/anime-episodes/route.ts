@@ -12,7 +12,7 @@ export async function GET(request) {
 
   try {
     // Fetch anime episodes from the API using your provided URL and headers
-    const res = await fetch(`https://aniplaynow.live/api/anime/episodes?id=${id}&releasing=true&refresh=true`, {
+    const res = await fetch(`https://animetsu.to/api/anime/episodes?id=${id}&releasing=true&refresh=true`, {
       credentials: "include",
       headers: {
         "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
@@ -23,7 +23,7 @@ export async function GET(request) {
         "Sec-Fetch-Site": "same-origin",
         "Priority": "u=0"
       },
-      referrer: `https://aniplaynow.live/anime/info/${id}`,
+      referrer: `https://animetsu.to/anime/info/${id}`,
       method: "GET",
       mode: "cors"
     });
