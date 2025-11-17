@@ -16,10 +16,10 @@ interface Episode {
 interface EpisodesProps {
   episodes: Episode[];
   imgbackup: string;
-  anilistid: number;
+  anilistId: number; // camelCase fixed
 }
 
-const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup , anilistid}) => {
+const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
@@ -29,10 +29,12 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup , anilistid}) =
   useEffect(() => {
     const fetchTmdbId = async () => {
       try {
-        const res = await fetch(`https://ani-box-nine.vercel.app/api/anime-id?id=${anilistid}`);
+        const res = await fetch(
+          `https://ani-box-nine.vercel.app/api/anime-id?id=${anilistId}`
+        );
         if (!res.ok) throw new Error("Failed to fetch TMDB ID");
         const data = await res.json();
-        setTmdbId(data.tmdb_id); // store TMDB ID
+        setTmdbId(data.tmdb_id);
       } catch (error) {
         console.error(error);
       }
