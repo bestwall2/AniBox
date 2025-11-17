@@ -122,7 +122,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
             frameBorder="0"
             referrerPolicy="origin"
             allowFullScreen
-            sandbox="allow-scripts allow-same-origin allow-forms"
+            
           />
         </div>
       )}
