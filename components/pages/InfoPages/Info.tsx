@@ -418,7 +418,7 @@ function Info({ id }) {
                     <Episodes 
                         episodes={processedEpisodes || []} // Use processedEpisodes
                         imgbackup={animeDetails?.coverImage?.extraLarge}
-                        anilistId={animeDetails?.id}
+                        anilistId={id}
                     />
                     
                     <RecommendList
