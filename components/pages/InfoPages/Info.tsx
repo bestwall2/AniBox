@@ -75,7 +75,7 @@ const fetchAnimeEpisodes = async (id) => {
       img: episode.image ?? "",
       description: episode.description ?? "",
       isFiller: episode.isFiller ?? false,
-      season: getSeasonNumberFromTitle(animeDetails?.title?.english), // infer season
+      
     }));
   }
 
@@ -427,7 +427,10 @@ function Info({ id }) {
                 </TabsContent>
                 <div className="flex flex-col gap-2">
                     <Episodes 
-                        episodes={processedEpisodes || []} // Use processedEpisodes
+                        episodes={processedEpisodes?.map(ep => ({
+                          ...ep,
+                          season: getSeasonNumberFromTitle(animeDetails?.title?.english)
+                        })) || []}
                         imgbackup={animeDetails?.coverImage?.extraLarge}
                         anilistId={id}
                     />
