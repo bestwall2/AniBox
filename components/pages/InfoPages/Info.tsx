@@ -103,7 +103,7 @@ function Info({ id }) {
 
   const formattedText = animeDetails?.description || "";
   const shortText = formattedText.slice(0, 300); // adjust the limit as needed
-  const animeType = animeDetails?.type; // "MOVIE" or "TV"
+  const animeType = animeDetails?.format; // "MOVIE" or "TV"
   /*if (isDetailsLoading || isEpisodesLoading) {
     return (
       <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
