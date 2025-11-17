@@ -11,14 +11,14 @@ interface Episode {
   description: string;
   img: string;
   imgb: string;
-  season?: number; // optional, movies won't have it
+  season?: number;
 }
 
 interface EpisodesProps {
   episodes: Episode[];
   imgbackup: string;
   anilistId: number;
-  type: string; // anime type
+  type: string; // "MOVIE" or "TV"
 }
 
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, type }) => {
@@ -26,6 +26,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
   const [searchValue, setSearchValue] = useState("");
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [tmdbId, setTmdbId] = useState<number | null>(null);
+  const [playClicked, setPlayClicked] = useState(false); // track if user clicked play
 
   useEffect(() => {
     const fetchTmdbId = async () => {
@@ -49,9 +50,15 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
     ep.number?.toString().includes(searchValue)
   );
 
-  const handleEpisodeClick = (episode: Episode) => setSelectedEpisode(episode);
+  const handleEpisodeClick = (episode: Episode) => {
+    setSelectedEpisode(episode);
+    setPlayClicked(true); // show player after user clicks
+  };
 
-  // Helper: render iframe URL
+  const handleMoviePlay = () => {
+    setPlayClicked(true);
+  };
+
   const getIframeUrl = () => {
     if (!tmdbId) return "";
     if (type === "MOVIE") return `https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`;
@@ -93,8 +100,20 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
         </AnimatePresence>
       )}
 
+      {/* Play Button for Movies */}
+      {type === "MOVIE" && !playClicked && (
+        <div className="flex justify-center mb-4">
+          <button
+            onClick={handleMoviePlay}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
+          >
+            Play Movie
+          </button>
+        </div>
+      )}
+
       {/* Video Player */}
-      {tmdbId && (type === "MOVIE" || (type === "TV" && selectedEpisode)) && (
+      {tmdbId && playClicked && (type === "MOVIE" || (type === "TV" && selectedEpisode)) && (
         <div className="mb-4 w-full h-[400px]">
           <iframe
             src={getIframeUrl()}
@@ -103,6 +122,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
             frameBorder="0"
             referrerPolicy="origin"
             allowFullScreen
+            sandbox="allow-scripts allow-same-origin allow-forms"
           />
         </div>
       )}
@@ -132,3 +152,4 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
 };
 
 export default Episodes;
+
