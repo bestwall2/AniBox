@@ -87,7 +87,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId }) =
       {selectedEpisode && tmdbId && (
         <div className="mb-4 w-full h-[400px]">
           <iframe
-            src={`https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=1&episode=${selectedEpisode.number}`}
+            src={`https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${episode.season}&episode=${selectedEpisode.number}`}
             title={`Episode ${selectedEpisode.number}`}
             style={{ width: "100%", height: "100%" }}
             frameBorder="0"
