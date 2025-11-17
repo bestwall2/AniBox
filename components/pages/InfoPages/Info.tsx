@@ -47,6 +47,16 @@ const fetchAnimeDetails = async (id) => {
 };
 
 
+function getSeasonNumberFromTitle(title: string | null | undefined): number {
+  if (!title) return 1; // default season 1 if no title
+  const match = title.match(/Season\s+(\d+)/i); // regex looks for "Season 3", "Season 2", etc.
+  if (match && match[1]) {
+    return parseInt(match[1], 10);
+  }
+  return 1; // default to season 1
+}
+
+
 // Fetch function for anime episodes
 const fetchAnimeEpisodes = async (id) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
@@ -65,6 +75,7 @@ const fetchAnimeEpisodes = async (id) => {
       img: episode.image ?? "",
       description: episode.description ?? "",
       isFiller: episode.isFiller ?? false,
+      season: getSeasonNumberFromTitle(animeDetails?.title?.english), // infer season
     }));
   }
 
