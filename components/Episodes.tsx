@@ -1,8 +1,11 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import EpisodeCard from "./CardsComp/EpisodesCard";
 import { FaSearch } from "react-icons/fa";
 import SearchInput from "./ui/SearchInput";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface Episode {
   id: string;
@@ -22,11 +25,10 @@ interface EpisodesProps {
 }
 
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, type }) => {
+  const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [tmdbId, setTmdbId] = useState<number | null>(null);
-  const [playClicked, setPlayClicked] = useState(false); // track if user clicked play
 
   useEffect(() => {
     const fetchTmdbId = async () => {
@@ -51,20 +53,15 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
   );
 
   const handleEpisodeClick = (episode: Episode) => {
-    setSelectedEpisode(episode);
-    setPlayClicked(true); // show player after user clicks
+    if (tmdbId) {
+      router.push(`/player?tmdbId=${tmdbId}&type=TV&season=${episode.season}&episode=${episode.number}&anilistId=${anilistId}`);
+    }
   };
 
   const handleMoviePlay = () => {
-    setPlayClicked(true);
-  };
-
-  const getIframeUrl = () => {
-    if (!tmdbId) return "";
-    if (type === "MOVIE") return `https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`;
-    if (type === "TV" && selectedEpisode)
-      return `https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${selectedEpisode.season}&episode=${selectedEpisode.number}`;
-    return "";
+    if (tmdbId) {
+      router.push(`/player?tmdbId=${tmdbId}&type=MOVIE&anilistId=${anilistId}`);
+    }
   };
 
   return (
@@ -101,7 +98,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
       )}
 
       {/* Play Button for Movies */}
-      {type === "MOVIE" && !playClicked && (
+      {type === "MOVIE" && (
         <div className="flex justify-center mb-4">
           <button
             onClick={handleMoviePlay}
@@ -109,21 +106,6 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
           >
             Play Movie
           </button>
-        </div>
-      )}
-
-      {/* Video Player */}
-      {tmdbId && playClicked && (type === "MOVIE" || (type === "TV" && selectedEpisode)) && (
-        <div className="mb-4 w-full h-[400px]">
-          <iframe
-            src={getIframeUrl()}
-            title={type === "MOVIE" ? "Movie Player" : `Episode ${selectedEpisode?.number}`}
-            style={{ width: "100%", height: "100%" }}
-            frameBorder="0"
-            referrerPolicy="origin"
-            allowFullScreen
-            
-          />
         </div>
       )}
 
@@ -152,4 +134,3 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
 };
 
 export default Episodes;
-
