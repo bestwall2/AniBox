@@ -48,36 +48,34 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
 
   const handleSearchChange = (value: string) => setSearchValue(value);
 
-  const filteredEpisodes = episodes.filter((ep) =>
-    ep.number?.toString().includes(searchValue)
-  );
-
-  const handleEpisodeClick = (episode: Episode) => {
+  const handlePlay = (episode?: Episode) => {
     if (tmdbId) {
-      router.push(`/player?tmdbId=${tmdbId}&type=TV&season=${episode.season}&episode=${episode.number}&anilistId=${anilistId}`);
+      if (type === "MOVIE") {
+        router.push(`/player?tmdbId=${tmdbId}&type=MOVIE&anilistId=${anilistId}`);
+      } else if (episode) {
+        router.push(`/player?tmdbId=${tmdbId}&type=TV&season=${episode.season}&episode=${episode.number}&anilistId=${anilistId}`);
+      }
     }
   };
 
-  const handleMoviePlay = () => {
-    if (tmdbId) {
-      router.push(`/player?tmdbId=${tmdbId}&type=MOVIE&anilistId=${anilistId}`);
-    }
-  };
+  const episodesToDisplay = type === "MOVIE"
+    ? [{ id: "play-movie", number: 1, title: "Play Movie", description: "", img: "", imgb: "" }]
+    : episodes.filter((ep) => ep.number?.toString().includes(searchValue));
 
   return (
     <div className="EpisodesList mt-2">
       {/* Header */}
-      {type === "TV" && (
-        <div className="flex text-gray-200 items-center pr-4 mb-4 justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
-            <p className="text-md font-semibold">Episodes</p>
-          </div>
+      <div className="flex text-gray-200 items-center pr-4 mb-4 justify-between">
+        <div className="flex items-center space-x-2">
+          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
+          <p className="text-md font-semibold">{type === "MOVIE" ? "Movie" : "Episodes"}</p>
+        </div>
+        {type === "TV" && (
           <button onClick={() => setShowSearch((prev) => !prev)}>
             <FaSearch size={18} className="hover:text-white transition" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Conditional SearchInput */}
       {type === "TV" && (
@@ -97,38 +95,24 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
         </AnimatePresence>
       )}
 
-      {/* Play Button for Movies */}
-      {type === "MOVIE" && (
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={handleMoviePlay}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
+      {/* Episode/Movie List */}
+      <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
+        {episodesToDisplay.map((episode) => (
+          <div
+            key={episode.id}
+            onClick={() => handlePlay(episode)}
+            className="cursor-pointer"
           >
-            Play Movie
-          </button>
-        </div>
-      )}
-
-      {/* Episode List */}
-      {type === "TV" && (
-        <div className="flex flex-col gap-2 max-h-[350px] overflow-y-scroll pr-2">
-          {filteredEpisodes.map((episode) => (
-            <div
-              key={episode.id}
-              onClick={() => handleEpisodeClick(episode)}
-              className="cursor-pointer"
-            >
-              <EpisodeCard
-                title={episode.title}
-                description={episode.description}
-                image={episode.img}
-                number={episode.number}
-                imgbup={imgbackup}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+            <EpisodeCard
+              title={episode.title}
+              description={episode.description}
+              image={episode.img}
+              number={episode.number}
+              imgbup={imgbackup}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
