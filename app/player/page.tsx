@@ -23,6 +23,15 @@ const fetchAnimeDetails = async (id: string) => {
   return data.Media; // Assuming the relevant data is in Media object
 };
 
+function getSeasonNumberFromTitle(title: string | null | undefined): number {
+  if (!title) return 1; // default season 1 if no title
+  const match = title.match(/Season\s+(\d+)/i); // regex looks for "Season 3", "Season 2", etc.
+  if (match && match[1]) {
+    return parseInt(match[1], 10);
+  }
+  return 1; // default to season 1
+}
+
 const PlayerPageContent = () => {
   const searchParams = useSearchParams();
   const [iframeUrl, setIframeUrl] = useState("");
@@ -49,7 +58,7 @@ const PlayerPageContent = () => {
     if (tmdbId) {
       if (type === "MOVIE") {
         setIframeUrl(`https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`);
-      } else if (type === "TV") {
+      } else if (type === "TV" && season && episode) {
         setIframeUrl(`https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${season}&episode=${episode}`);
       }
     }
@@ -65,7 +74,6 @@ const PlayerPageContent = () => {
             style={{ width: "100%", height: "100%" }}
             frameBorder="0"
             referrerPolicy="origin"
-            
             allowFullScreen
           />
         ) : (
@@ -77,7 +85,10 @@ const PlayerPageContent = () => {
       {anilistId && <PlayerInfo anilistId={anilistId} />}
       {anilistId && episodes && animeDetails && (
         <Episodes
-          episodes={episodes}
+          episodes={episodes.map((ep: any) => ({
+            ...ep,
+            season: getSeasonNumberFromTitle(animeDetails?.title?.english)
+          }))}
           imgbackup={animeDetails?.coverImage?.extraLarge}
           anilistId={parseInt(anilistId, 10)}
           type={type || "TV"}
