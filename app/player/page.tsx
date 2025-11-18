@@ -49,7 +49,7 @@ const PlayerPageContent = () => {
     if (tmdbId) {
       if (type === "MOVIE") {
         setIframeUrl(`https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`);
-      } else if (type === "TV" && season && episode) {
+      } else if (type === "TV") {
         setIframeUrl(`https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${season}&episode=${episode}`);
       }
     }
@@ -65,7 +65,7 @@ const PlayerPageContent = () => {
             style={{ width: "100%", height: "100%" }}
             frameBorder="0"
             referrerPolicy="origin"
-            sandbox="allow-same-origin allow-forms allow-scripts"
+            
             allowFullScreen
           />
         ) : (
