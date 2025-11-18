@@ -14,6 +14,15 @@ const fetchAnimeEpisodes = async (id: string) => {
   return response.json();
 };
 
+const fetchAnimeDetails = async (id: string) => {
+  const response = await fetch(`/api/anime-info?id=${id}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok for anime details");
+  }
+  const data = await response.json();
+  return data.Media; // Assuming the relevant data is in Media object
+};
+
 const PlayerPageContent = () => {
   const searchParams = useSearchParams();
   const [iframeUrl, setIframeUrl] = useState("");
@@ -28,6 +37,12 @@ const PlayerPageContent = () => {
     queryKey: ["animeEpisodes", anilistId],
     queryFn: () => fetchAnimeEpisodes(anilistId!),
     enabled: !!anilistId,
+  });
+
+  const { data: animeDetails, isLoading: isDetailsLoading } = useQuery({
+    queryKey: ['animeDetails', anilistId],
+    queryFn: () => fetchAnimeDetails(anilistId!),
+    enabled: !!anilistId, // Only run query if id is available
   });
 
   useEffect(() => {
@@ -59,10 +74,10 @@ const PlayerPageContent = () => {
         )}
       </div>
       {anilistId && <PlayerInfo anilistId={anilistId} />}
-      {anilistId && episodes && (
+      {anilistId && episodes && animeDetails && (
         <Episodes
           episodes={episodes}
-          imgbackup="" // This prop is not available in this context, so I'll pass an empty string
+          imgbackup={animeDetails?.coverImage?.extraLarge}
           anilistId={parseInt(anilistId, 10)}
           type={type || "TV"}
         />
