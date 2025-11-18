@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import PlayerInfo from "../../../components/PlayerInfo";
-import Episodes from "../../../components/Episodes";
+import PlayerInfo from "../../components/PlayerInfo";
+import Episodes from "../../components/Episodes";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchAnimeEpisodes = async (id: string) => {
