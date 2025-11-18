@@ -46,11 +46,12 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
     fetchTmdbId();
   }, [anilistId]);
 
-  const handleSearchChange = (value: string) => setSearchValue(value);
+  const handleSearchChange = (value: string) => setSearchValue(value || "");
 
-  const filteredEpisodes = episodes.filter((ep) =>
-    ep.number?.toString().includes(searchValue)
+  const filteredEpisodes = (episodes || []).filter((ep) =>
+  ep.number?.toString().includes(searchValue || "")
   );
+
 
   const handleEpisodeClick = (episode: Episode) => {
     if (tmdbId) {
