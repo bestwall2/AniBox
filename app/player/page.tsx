@@ -65,6 +65,7 @@ const PlayerPageContent = () => {
             style={{ width: "100%", height: "100%" }}
             frameBorder="0"
             referrerPolicy="origin"
+            sandbox="allow-same-origin allow-forms allow-scripts"
             allowFullScreen
           />
         ) : (
