@@ -7,20 +7,18 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
 
-import { FaStar, FaPlayCircle } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
 
-// Fetch anime episodes
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
-  if (!response.ok) throw new Error("Network response was not ok for anime episodes");
+  if (!response.ok) throw new Error("Failed to fetch episodes");
   return response.json();
 };
 
-// Fetch anime details
 const fetchAnimeDetails = async (id: string) => {
   const response = await fetch(`/api/anime-info?id=${id}`);
-  if (!response.ok) throw new Error("Network response was not ok for anime details");
+  if (!response.ok) throw new Error("Failed to fetch anime info");
   const data = await response.json();
   return data.Media;
 };
@@ -41,21 +39,18 @@ const PlayerPageContent = () => {
   const episode = searchParams.get("episode");
   const anilistId = searchParams.get("anilistId");
 
-  // Episodes
   const { data: episodes } = useQuery({
     queryKey: ["animeEpisodes", anilistId],
     queryFn: () => fetchAnimeEpisodes(anilistId!),
     enabled: !!anilistId,
   });
 
-  // Anime details
   const { data: animeDetails } = useQuery({
     queryKey: ["animeDetails", anilistId],
     queryFn: () => fetchAnimeDetails(anilistId!),
     enabled: !!anilistId,
   });
 
-  // Set iframe player link
   useEffect(() => {
     if (tmdbId) {
       if (type === "MOVIE") {
@@ -67,83 +62,38 @@ const PlayerPageContent = () => {
   }, [tmdbId, type, season, episode]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 flex flex-col gap-6">
 
       {/* Player */}
-      <div className="mb-4 w-full h-[500px]">
+      <div className="w-full h-[500px]">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
             title={type === "MOVIE" ? "Movie Player" : `Episode ${episode}`}
-            className="w-full h-full"
+            className="w-full h-full rounded-xl"
             frameBorder="0"
             referrerPolicy="origin"
             allowFullScreen
           />
         ) : (
-          <div className="w-full h-full bg-black flex items-center justify-center">
+          <div className="w-full h-full bg-black flex items-center justify-center rounded-xl">
             <p className="text-white">Loading player...</p>
           </div>
         )}
       </div>
 
-      {/* === REPLACEMENT FOR <PlayerInfo /> === */}
+      {/* Watching Now Panel */}
       {animeDetails && (
-        <div className="container bg-zinc-900 p-4 rounded-xl shadow-lg mb-6">
-
-          <Image
-            src={animeDetails.coverImage.extraLarge}
-            alt={animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
-            width={500}
-            height={300}
-            className="rounded-xl w-full"
-          />
-
-          <div className="InfoContainer m-4 text-left">
-
-            <h1 className="Title text-xl font-bold">
-              {animeDetails.title.english ||
-                animeDetails.title.romaji ||
-                "Unknown Title"}
-            </h1>
-
-            <div className="flex items-center justify-start">
-              <FaStar size={15} className="text-yellow-400" />
-              <h2 className="Trending font-semibold pl-1 pt-1 text-yellow-400">
-                {animeDetails.averageScore ? `${animeDetails.averageScore / 10}` : "N/A"}
-              </h2>
-            </div>
-
-            <p className="Description text-sm pr-5 mt-1 mb-1 line-clamp-5 text-gray-300">
-              {parse(animeDetails.description)}
-            </p>
-
-            <div className="Addtion font-semibold mb-2 space-y-1">
-              <h1 className="flex items-center gap-2">
-                <FaPlayCircle size={13} />
-                {animeDetails.format || "Unknown Format"}
-              </h1>
-
-              <h1
-                className={`State ${
-                  animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"
-                }`}
-              >
-                {animeDetails.status || "Unknown Status"}
-              </h1>
-
-              <h1 className="flex items-center gap-2">
-                <MdDateRange size={13} />
-                {animeDetails.startDate
-                  ? `${animeDetails.startDate.year} ${animeDetails.startDate.month}, ${animeDetails.startDate.day}`
-                  : "Unknown Date"}
-              </h1>
-            </div>
-          </div>
+        <div className="bg-zinc-900 p-4 rounded-xl shadow-lg text-white">
+          <p className="text-sm mb-1">You are Watching</p>
+          <h2 className="text-pink-500 font-semibold text-lg mb-1">Episode {episode || "1"}</h2>
+          <p className="text-xs text-gray-400 mb-2">
+            If current server doesn’t work please try other servers beside.
+          </p>
         </div>
       )}
 
-      {/* Episodes */}
+      {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
         <Episodes
           episodes={episodes.map((ep: any) => ({
@@ -154,6 +104,47 @@ const PlayerPageContent = () => {
           anilistId={parseInt(anilistId, 10)}
           type={type || "TV"}
         />
+      )}
+
+      {/* Anime Info (bottom) */}
+      {animeDetails && (
+        <div className="bg-zinc-900 p-4 rounded-xl shadow-lg flex flex-col gap-4">
+          <Image
+            src={animeDetails.coverImage.extraLarge}
+            alt={animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
+            width={500}
+            height={300}
+            className="rounded-xl w-full"
+          />
+          <div className="flex flex-col gap-2">
+            <h1 className="text-xl font-bold text-white">
+              {animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
+            </h1>
+            <div className="flex items-center gap-2">
+              <FaStar className="text-yellow-400" />
+              <span className="text-yellow-400 font-semibold">
+                {animeDetails.averageScore ? `${animeDetails.averageScore / 10}` : "N/A"}
+              </span>
+            </div>
+            <p className="text-gray-300 text-sm line-clamp-5">
+              {animeDetails.description ? parse(animeDetails.description) : "No description available"}
+            </p>
+            <div className="flex flex-wrap gap-2 text-sm font-semibold">
+              <span>{animeDetails.format || "Unknown Format"}</span>
+              <span
+                className={animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"}
+              >
+                {animeDetails.status || "Unknown Status"}
+              </span>
+              <span className="flex items-center gap-1">
+                <MdDateRange /> 
+                {animeDetails.startDate
+                  ? `${animeDetails.startDate.year} ${animeDetails.startDate.month}, ${animeDetails.startDate.day}`
+                  : "Unknown Date"}
+              </span>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
