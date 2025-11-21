@@ -37,7 +37,7 @@ const formatDate = (dateObj: { year?: number; month?: number; day?: number }): s
 };
 
 // Fetch function for anime details
-const fetchAnimeDetails = async (id) => {
+const fetchAnimeDetails = async (id: any) => {
   const response = await fetch(`/api/anime-info?id=${id}`);
   if (!response.ok) {
     throw new Error('Network response was not ok for anime details');
@@ -58,7 +58,7 @@ function getSeasonNumberFromTitle(title: string | null | undefined): number {
 
 
 // Fetch function for anime episodes
-const fetchAnimeEpisodes = async (id) => {
+const fetchAnimeEpisodes = async (id : any) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
   if (!response.ok) {
     throw new Error('Network response was not ok for anime episodes');

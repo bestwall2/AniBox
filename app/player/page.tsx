@@ -6,9 +6,9 @@ import Episodes from "../../components/Episodes";
 import Image from "next/image";
 import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
-
 import { FaStar } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
+import { Skeleton } from "./../../components/ui/skeleton"; // Adjust path if your Skeleton component is elsewhere
 
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
@@ -105,60 +105,80 @@ const PlayerPageContent = () => {
 
       {/* Main Info + Cover */}
       {animeDetails && (
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Cover */}
-          <div className="flex-shrink-0 w-40 md:w-48 relative rounded-xl overflow-hidden">
-            <Image
-              src={animeDetails.coverImage.extraLarge}
-              alt={animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
-              width={192}
-              height={270}
-              className="rounded-xl object-cover"
-            />
-          </div>
-
-          {/* Info Vertical */}
-          <div className="flex flex-col justify-between text-white flex-1">
-            <div className="flex flex-col gap-2">
-              <h1 className="text-xl font-bold">
-                {animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
-              </h1>
-              <div className="flex items-center gap-2">
-                <FaStar className="text-yellow-400" />
-                <span className="text-yellow-400 font-semibold">
-                  {animeDetails.averageScore ? `${animeDetails.averageScore / 10}` : "N/A"}
-                </span>
+                <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
+              {/* Cover Image */}
+              <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
+                  {animeDetails?.coverImage?.extraLarge ? (
+                      <img
+                          src={animeDetails.coverImage.extraLarge}
+                          alt="Cover Image"
+                          className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
+                          loading="lazy"
+                      />
+                  ) : (                 
+                      <Skeleton className="SkeletonCard min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl " />
+                  )}
               </div>
-              <p className="text-gray-300 text-sm line-clamp-5">
-                {animeDetails.description ? parse(animeDetails.description) : "No description available"}
-              </p>
-            </div>
 
-            {/* Anime details: Format, Status, Date */}
-            <div className="flex flex-wrap gap-2 text-sm font-semibold mt-2">
-              <span>{animeDetails.format || "Unknown Format"}</span>
-              <span className={animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"}>
-                {animeDetails.status || "Unknown Status"}
-              </span>
-              <span className="flex items-center gap-1">
-                <MdDateRange /> 
-                {animeDetails.startDate
-                  ? `${animeDetails.startDate.year} ${animeDetails.startDate.month}, ${animeDetails.startDate.day}`
-                  : "Unknown Date"}
-              </span>
-            </div>
-
-            {/* Genres Tabs */}
-            <div className="flex flex-wrap gap-2 mt-2">
-              {animeDetails.genres?.map((gen: string) => (
-                <div key={gen} className="Geners flex items-center mb-2 space-x-2">
-                  <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
-                  <p className="text-white">{gen}</p>
-                </div>
-              ))}
-            </div>
+              <div className="InfoContainerPage flex-col ml-1 mt-0 items-center justify-center">
+                  {/* Title & Rating */}
+                  <div className="text-left px-4">
+                      {animeDetails?.title?.romaji ? (
+                          <h1 className="text-2xl font-bold line-clamp-2 text-white drop-shadow-lg break-words max-w-[200px]">
+                              {animeDetails.title.romaji}
+                          </h1>
+                      ) : (
+                          <Skeleton className="h-6 w-[200px] rounded" />
+                      )}
+                  </div>
+                  
+                  <div className="flex ml-3 mt-2 font-semibold items-left justify-start">
+                      <FaStar size={20} style={{ color: "yellow", padding: 1 }} />
+                      {animeDetails?.averageScore !== undefined && animeDetails?.status ? (
+                          <>
+                              <p className="text-md ml-1 self-center">
+                                  {animeDetails.averageScore / 10} |
+                              </p>
+                              <p
+                                  className={`ml-2 ${
+                                      animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"
+                                  }`}
+                              >
+                                  {animeDetails.status}
+                              </p>
+                          </>
+                      ) : (
+                          <Skeleton className="h-4 w-[100px] ml-2 rounded" />
+                      )}
+                  </div>
+                  
+                  <h1 className="flex ml-3 font-semibold items-left justify-start">
+                      <MdDateRange className="self-center mr-1" size={20} />
+                      {animeDetails?.startDate ? (
+                          `${animeDetails.startDate.year} / ${animeDetails.startDate.month} / ${animeDetails.startDate.day}`
+                      ) : (
+                          <Skeleton className="h-4 w-[120px] rounded" />
+                      )}
+                  </h1>
+                  
+                  <h1 className="CardGenres text-sm flex ml-3 items-left justify-start">
+                      {animeDetails?.genres?.length ? (
+                          animeDetails.genres.join(", ")
+                      ) : (
+                          <Skeleton className="h-4 w-[150px] rounded" />
+                      )}
+                  </h1>
+                  
+                  <h1 className="text-sm flex ml-3 font-semibold items-left justify-start">
+                      {animeDetails?.episodes !== undefined ? (
+                          `Episodes : ${animeDetails.episodes}`
+                      ) : (
+                          <Skeleton className="h-4 w-[100px] rounded" />
+                      )}
+                  </h1>
+              </div>
           </div>
-        </div>
+
       )}
 
       {/* Episodes List */}
