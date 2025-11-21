@@ -13,7 +13,18 @@ import { MdDateRange } from "react-icons/md";
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
   if (!response.ok) throw new Error("Failed to fetch episodes");
-  return response.json();
+  const data = await response.json();
+  if (Array.isArray(data)) {
+    return data.map((episode: any) => ({
+      id: episode.number ?? null,
+      number: episode.number ?? null,
+      title: episode.title ?? "",
+      img: episode.image ?? "",
+      description: episode.description ?? "",
+      isFiller: episode.isFiller ?? false,
+    }));
+  }
+  return [];
 };
 
 const fetchAnimeDetails = async (id: string) => {
@@ -63,20 +74,19 @@ const PlayerPageContent = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col gap-6">
-
       {/* Player */}
-      <div className="w-full h-[500px]">
+      <div className="w-full h-[500px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
             title={type === "MOVIE" ? "Movie Player" : `Episode ${episode}`}
-            className="w-full h-full rounded-xl"
+            className="w-full h-full"
             frameBorder="0"
             referrerPolicy="origin"
             allowFullScreen
           />
         ) : (
-          <div className="w-full h-full bg-black flex items-center justify-center rounded-xl">
+          <div className="w-full h-full bg-black flex items-center justify-center">
             <p className="text-white">Loading player...</p>
           </div>
         )}
@@ -93,6 +103,64 @@ const PlayerPageContent = () => {
         </div>
       )}
 
+      {/* Main Info + Cover */}
+      {animeDetails && (
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Cover */}
+          <div className="flex-shrink-0 w-40 md:w-48 relative rounded-xl overflow-hidden">
+            <Image
+              src={animeDetails.coverImage.extraLarge}
+              alt={animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
+              width={192}
+              height={270}
+              className="rounded-xl object-cover"
+            />
+          </div>
+
+          {/* Info Vertical */}
+          <div className="flex flex-col justify-between text-white flex-1">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-xl font-bold">
+                {animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
+              </h1>
+              <div className="flex items-center gap-2">
+                <FaStar className="text-yellow-400" />
+                <span className="text-yellow-400 font-semibold">
+                  {animeDetails.averageScore ? `${animeDetails.averageScore / 10}` : "N/A"}
+                </span>
+              </div>
+              <p className="text-gray-300 text-sm line-clamp-5">
+                {animeDetails.description ? parse(animeDetails.description) : "No description available"}
+              </p>
+            </div>
+
+            {/* Anime details: Format, Status, Date */}
+            <div className="flex flex-wrap gap-2 text-sm font-semibold mt-2">
+              <span>{animeDetails.format || "Unknown Format"}</span>
+              <span className={animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"}>
+                {animeDetails.status || "Unknown Status"}
+              </span>
+              <span className="flex items-center gap-1">
+                <MdDateRange /> 
+                {animeDetails.startDate
+                  ? `${animeDetails.startDate.year} ${animeDetails.startDate.month}, ${animeDetails.startDate.day}`
+                  : "Unknown Date"}
+              </span>
+            </div>
+
+            {/* Genres Tabs */}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {animeDetails.genres?.map((gen: string) => (
+                <div key={gen} className="Geners flex items-center mb-2 space-x-2">
+                  <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
+                  <p className="text-white">{gen}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
         <Episodes
@@ -104,47 +172,6 @@ const PlayerPageContent = () => {
           anilistId={parseInt(anilistId, 10)}
           type={type || "TV"}
         />
-      )}
-
-      {/* Anime Info (bottom) */}
-      {animeDetails && (
-        <div className="bg-zinc-900 p-4 rounded-xl shadow-lg flex flex-col gap-4">
-          <Image
-            src={animeDetails.coverImage.extraLarge}
-            alt={animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
-            width={500}
-            height={300}
-            className="rounded-xl w-full"
-          />
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xl font-bold text-white">
-              {animeDetails.title.english || animeDetails.title.romaji || "Unknown Title"}
-            </h1>
-            <div className="flex items-center gap-2">
-              <FaStar className="text-yellow-400" />
-              <span className="text-yellow-400 font-semibold">
-                {animeDetails.averageScore ? `${animeDetails.averageScore / 10}` : "N/A"}
-              </span>
-            </div>
-            <p className="text-gray-300 text-sm line-clamp-5">
-              {animeDetails.description ? parse(animeDetails.description) : "No description available"}
-            </p>
-            <div className="flex flex-wrap gap-2 text-sm font-semibold">
-              <span>{animeDetails.format || "Unknown Format"}</span>
-              <span
-                className={animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"}
-              >
-                {animeDetails.status || "Unknown Status"}
-              </span>
-              <span className="flex items-center gap-1">
-                <MdDateRange /> 
-                {animeDetails.startDate
-                  ? `${animeDetails.startDate.year} ${animeDetails.startDate.month}, ${animeDetails.startDate.day}`
-                  : "Unknown Date"}
-              </span>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );
