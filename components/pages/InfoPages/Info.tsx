@@ -205,7 +205,7 @@ function Info({ id }) {
               alt="user photo"
             />
         </div>      
-        <div className="relative z-10 flex flex-row items-left justify-center px-4 pt-24 space-y-6">
+        <div className="relative z-10 flex flex-row items-left  px-4 pt-24 space-y-6">
             {/* Cover Image */}
             <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
                 {animeDetails?.coverImage?.extraLarge ? (
