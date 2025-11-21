@@ -1,27 +1,32 @@
 import React from "react";
-import { Metadata } from 'next';
+import { Metadata } from "next";
 import Info from "../../../../components/pages/InfoPages/Info";
-import Navbar from "../../../../components/NavBar";
-import { fetchAnimeInfo } from "../../../../actions/ApiData.js";
 
 interface AnimeInfoParams {
   id: string;
 }
 
-// Function to strip HTML tags (basic implementation)
 const stripHtmlTags = (html: string) => {
-  if (!html) return '';
-  return html.replace(/<[^>]*>?/gm, '');
+  if (!html) return "";
+  return html.replace(/<[^>]*>?/gm, "");
 };
 
-export async function generateMetadata({ params }: { params: AnimeInfoParams }): Promise<Metadata> {
-  const id = params.id;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<AnimeInfoParams>;
+}): Promise<Metadata> {
+  // ✅ params هو Promise → لازم await
+  const { id } = await params;
+
+  // ✅ base URL ضروري
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://ani-box-nine.vercel.app";
 
   try {
-    const response = await fetch(`/api/anime-info?id=${id}`);           
+    // fetch يحتاج absolute URL
+    const response = await fetch(`${base}/api/anime-info?id=${id}`);
     const data = await response.json();
     const media = data?.Media;
-    //const data = await fetchAnimeInfo(id);
 
     if (!media) {
       return {
@@ -32,62 +37,52 @@ export async function generateMetadata({ params }: { params: AnimeInfoParams }):
 
     const title = media.title.english || media.title.romaji || "Untitled Anime";
     const pageTitle = `${title} | AniBox`;
-    const rawDescription = stripHtmlTags(media.description || "No description available.");
-    const description = rawDescription.length > 160 ? rawDescription.substring(0, 157) + '...' : rawDescription;
-    const imageUrl = media.coverImage.extraLarge || ""; // Default to empty string if no image
+
+    const rawDescription = stripHtmlTags(media.description || "");
+    const description =
+      rawDescription.length > 160
+        ? rawDescription.substring(0, 160) + "..."
+        : rawDescription;
+
+    const imageUrl = media.coverImage?.extraLarge || "";
 
     return {
+      metadataBase: new URL(base), // ❗ مهم جدا
       title: pageTitle,
-      description: description,
+      description,
       openGraph: {
         title: pageTitle,
-        description: description,
-        type: media.type === 'MOVIE' ? 'video.movie' : 'video.tv_show',
-        url: `https://ani-box-nine.vercel.app/anime/info/${id}`,
+        description,
+        url: `${base}/anime/info/${id}`,
         images: imageUrl ? [{ url: imageUrl }] : [],
       },
       twitter: {
         card: "summary_large_image",
         title: pageTitle,
-        description: description,
+        description,
         images: imageUrl ? [imageUrl] : [],
       },
     };
-  } catch (error) {
-    console.error("Error fetching anime info for metadata:", error);
+  } catch (err) {
+    console.error("Error fetching metadata:", err);
     return {
       title: "Error - AniBox",
-      description: "An error occurred while fetching anime details.",
+      description: "Failed to load anime data.",
     };
   }
 }
 
-export default async function AnimeInfoLayout({
+export default async function AnimeInfo({
   params,
 }: {
-  // The params prop is recognized by Next.js as a Promise in this context,
-  // but the actual type passed to the page after resolution will be AnimeInfoParams.
-  // However, generateMetadata expects params directly, not a Promise.
-  // For the page component itself, if you are accessing `id` directly,
-  // it's better to type `params` as `AnimeInfoParams` and handle the Promise resolution
-  // if Next.js passes it as a Promise (which is typical for server components).
-  // For this specific case, since `id` is extracted after `await params`,
-  // the `params` type for the function argument can be `Promise<AnimeInfoParams>`.
-  // But `generateMetadata` receives `params` directly as `{ id: string }`.
-  params: AnimeInfoParams; // Corrected based on how generateMetadata receives it.
+  params: Promise<AnimeInfoParams>;
 }) {
-  // If Next.js actually passes `params` as a Promise to the page component:
-  // const { id } = await params; // This line would be needed if params was Promise<AnimeInfoParams>
-  // But since generateMetadata defines it as AnimeInfoParams, and for consistency,
-  // we'll assume params is directly AnimeInfoParams here.
-  // If you log `params` in this component and see it's a Promise, then `await` is needed.
-  const id = params.id;
-
+  // params هو Promise → لازم await
+  const { id } = await params;
 
   return (
-    <div>     
-      <Info id={id} />   
-      
+    <div>
+      <Info id={id} />
     </div>
   );
 }
