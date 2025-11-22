@@ -98,7 +98,7 @@ const PlayerPageContent = () => {
       </div>
 
       {/* PUSH PAGE CONTENT BELOW FIXED NAVBAR */}
-      <div className="mt-16" />
+      <div className="mt-5" />
 
       {/* Player */}
       <div className="w-full h-[220px] rounded-xl overflow-hidden">
