@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Episodes from "../../components/Episodes";
 import Image from "next/image";
 import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
 import { Skeleton } from "./../../components/ui/skeleton"; // Adjust path if your Skeleton component is elsewhere
 import {
@@ -18,7 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import React from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const fetchAnimeEpisodes = async (id: string) => {
