@@ -7,6 +7,7 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
 import { Skeleton } from "./../../components/ui/skeleton"; // Adjust path if your Skeleton component is elsewhere
 import {
@@ -17,6 +18,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import React from "react";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
@@ -51,7 +54,7 @@ function getSeasonNumberFromTitle(title: string | null | undefined): number {
 const PlayerPageContent = () => {
   const searchParams = useSearchParams();
   const [iframeUrl, setIframeUrl] = useState("");
-
+  const router = useRouter();
   const tmdbId = searchParams.get("tmdbId");
   const type = searchParams.get("type");
   const season = searchParams.get("season");
@@ -82,6 +85,28 @@ const PlayerPageContent = () => {
 
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
+
+        {/* Back Arrow Button */}
+        <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
+            <button onClick={() => router.back()}>
+                <IoMdArrowRoundBack
+                size={30}
+                style={{
+                    color: "white",
+                    margin: 5,
+                }}
+                />
+            </button>
+        </div>
+        <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
+    
+            <img
+              className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
+              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
+              alt="user photo"
+            />
+        </div> 
+
       {/* Player */}
       <div className="w-full h-[220px] rounded-xl overflow-hidden">
         {iframeUrl ? (
