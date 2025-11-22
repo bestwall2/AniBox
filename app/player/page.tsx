@@ -84,7 +84,7 @@ const PlayerPageContent = () => {
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       {/* Back Arrow Button */}
-      <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
+      <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-2 left-2 z-20">
         <button onClick={() => router.back()}>
           <IoMdArrowRoundBack
             size={30}
@@ -95,7 +95,7 @@ const PlayerPageContent = () => {
           />
         </button>
       </div>
-      <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
+      <div className="absolute m-1 top-2 right-4 z-20 flex items-center space-x-3">
         <img
           className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
           src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
@@ -104,7 +104,7 @@ const PlayerPageContent = () => {
       </div>
 
       {/* Player */}
-      <div className="w-full h-[220px] mt-10 rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] mt-15 rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
