@@ -136,7 +136,7 @@ const PlayerPageContent = () => {
                 </p>
               </div>
 
-              <h2 className="text-[#00ff4c] text-m leading-relaxed">
+              <h2 className="text-green-300 text-m leading-relaxed">
                 Episode {episode || "1"}
               </h2>
 
