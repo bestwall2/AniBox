@@ -86,7 +86,7 @@ const PlayerPageContent = () => {
       <div className="w-full h-[220px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
-            src={iframeUrl}
+            src={""}
             title={type === "MOVIE" ? "Movie Player" : `Episode ${episode}`}
             className="w-full h-full"
             frameBorder="0"
@@ -132,7 +132,7 @@ const PlayerPageContent = () => {
       </div>
       
         {/* TITLE + META */}
-        <div className="flex flex-col items-center justify-center text-white w-full">
+        <div className="flex flex-col item-start justify-center text-white w-full">
 
           {/* TITLE */}
           <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words  drop-shadow-lg">
