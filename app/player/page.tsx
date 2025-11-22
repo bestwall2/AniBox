@@ -84,7 +84,7 @@ const PlayerPageContent = () => {
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       {/* Back Arrow Button */}
-      <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-2 left-2 z-20">
+      <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-2 z-20">
         <button onClick={() => router.back()}>
           <IoMdArrowRoundBack
             size={30}
@@ -95,16 +95,16 @@ const PlayerPageContent = () => {
           />
         </button>
       </div>
-      <div className="absolute m-1 top-2 right-4 z-20 flex items-center space-x-3">
+      // you will add here a drop menu for servers
+      <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
         <img
           className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
           src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
           alt="user photo"
         />
       </div>
-
       {/* Player */}
-      <div className="w-full h-[220px] mt-15 rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] mt-20 rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -120,12 +120,10 @@ const PlayerPageContent = () => {
           </div>
         )}
       </div>
-
       <div className="flex items-center space-x-2">
         <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
         <p className="text-md font-semibold">ANIME DETAILS</p>
       </div>
-
       <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
         <CardContent className="p-4">
           {/* IMAGE + TEXT SECTION */}
@@ -194,9 +192,21 @@ const PlayerPageContent = () => {
               )}
             </p>
           </div>
+          {animeDetails && (
+            <div className="mt-4 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
+              <p className="text-lg font-semibold text-white mb-2">
+                You are Watching
+              </p>
+              <h2 className="text-gray-300 text-sm leading-relaxed">
+                Episode {episode || "1"}
+              </h2>
+              <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                If current server doesn’t work, switch to another one.
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
-
       {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
         <Episodes
