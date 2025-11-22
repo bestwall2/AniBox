@@ -3,45 +3,80 @@
 
 import { NextResponse } from "next/server";
 
-// URL of the full anime list JSON
-const ANIME_LIST_URL = "https://raw.githubusercontent.com/Fribb/anime-lists/refs/heads/master/anime-list-full.json";
+const TMDB_API_KEY = "90a823390bd37b5c1ba175bef7e2d5a8";
+const ANIME_LIST_URL =
+  "https://raw.githubusercontent.com/Fribb/anime-lists/refs/heads/master/anime-list-full.json";
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id"); // expect AniList ID
-
-  if (!id) {
-    return NextResponse.json(
-      { error: "Missing anime ID" },
-      { status: 400 }
-    );
-  }
-
   try {
-    // Fetch the full anime list JSON
-    const response = await fetch(ANIME_LIST_URL);
-    if (!response.ok) throw new Error("Failed to fetch anime list");
+    const { searchParams } = new URL(request.url);
+    const anilistId = searchParams.get("id");
 
-    const animeList = await response.json();
+    if (!anilistId) {
+      return NextResponse.json({ error: "Missing anime ID" }, { status: 400 });
+    }
 
-    // Find the anime by AniList ID
-    const anime = animeList.find(a => a.anilist_id === Number(id));
+    // 1️⃣ Fetch TMDB ID from your JSON list
+    const listRes = await fetch(ANIME_LIST_URL);
+    if (!listRes.ok) throw new Error("Failed to fetch anime list");
+    const animeList = await listRes.json();
 
+    const anime = animeList.find((a) => a.anilist_id === Number(anilistId));
     if (!anime || !anime.themoviedb_id) {
+      return NextResponse.json({ error: "TMDb ID not found" }, { status: 404 });
+    }
+    const tmdbId = anime.themoviedb_id;
+
+    // 2️⃣ Fetch AniList anime details from your internal API
+    const aniRes = await fetch(
+      `/api/anime-info?id=${anilistId}`
+    );
+    if (!aniRes.ok) throw new Error("Failed to fetch AniList info");
+    const media = (await aniRes.json()).Media;
+
+    if (!media || !media.startDate) {
       return NextResponse.json(
-        { error: "TMDb ID not found for this anime" },
+        { error: "AniList startDate not found" },
         { status: 404 }
       );
     }
 
-    // Return only the TMDb ID
-    return NextResponse.json({ tmdb_id: anime.themoviedb_id });
+    const aniStartDate = new Date(
+      media.startDate.year,
+      media.startDate.month - 1,
+      media.startDate.day
+    );
 
-  } catch (error) {
-    console.error("Error fetching anime list:", error);
+    // 3️⃣ Fetch all TMDB seasons
+    const tmdbRes = await fetch(
+      `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+    );
+    if (!tmdbRes.ok) throw new Error("Failed to fetch TMDB TV details");
+    const tmdbData = await tmdbRes.json();
+    const seasons = tmdbData.seasons || [];
+
+    // 4️⃣ Find season with matching air_date
+    const matchingSeason = seasons.find((season) => {
+      if (!season.air_date) return false;
+      const seasonDate = new Date(season.air_date);
+      return (
+        seasonDate.getFullYear() === aniStartDate.getFullYear() &&
+        seasonDate.getMonth() === aniStartDate.getMonth() &&
+        seasonDate.getDate() === aniStartDate.getDate()
+      );
+    });
+
+    const currentSeason = matchingSeason?.season_number || 1;
+
+    return NextResponse.json({
+      tmdb_id: tmdbId,
+      current_season: currentSeason,
+    });
+  } catch (err) {
+    console.error("Error fetching TMDB & season:", err);
     return NextResponse.json(
-      { error: "Failed to fetch anime info" },
+      { error: err.message || "Internal Server Error" },
       { status: 500 }
     );
   }
-}
+} 

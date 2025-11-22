@@ -34,7 +34,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
     const fetchTmdbId = async () => {
       try {
         const res = await fetch(
-          `https://ani-box-nine.vercel.app/api/anime-id?id=${anilistId}`
+          `/api/anime-id?id=${anilistId}`
         );
         if (!res.ok) throw new Error("Failed to fetch TMDB ID");
         const data = await res.json();
