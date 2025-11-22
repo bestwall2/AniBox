@@ -5,31 +5,28 @@ import { NextResponse } from "next/server";
 
 export async function GET(req : any) {
   const { searchParams } = new URL(req.url);
-  const url = searchParams.get("url"); // encoded image url
+  const url = searchParams.get("url");
 
   if (!url) {
-    return NextResponse.json(
-      { error: "url parameter is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "url parameter is required" }, { status: 400 });
   }
 
   try {
     const response = await fetch(url, {
-      credentials: "include",
+      method: "GET",
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
-        Accept: "*/*",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin",
-        Priority: "u=0",
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+
+        // sec-ch
+        "sec-ch-ua":
+          "\"Chromium\";v=\"142\", \"Brave\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+
+        // Required
+        Referer: "https://animetsu.to/",
       },
-      referrer: req.headers.get("referer") || "",
-      method: "GET",
-      mode: "cors",
     });
 
     if (!response.ok) {
@@ -40,9 +37,9 @@ export async function GET(req : any) {
     }
 
     const contentType = response.headers.get("content-type") || "image/jpeg";
-    const arrayBuffer = await response.arrayBuffer();
+    const buffer = await response.arrayBuffer();
 
-    return new NextResponse(arrayBuffer, {
+    return new NextResponse(buffer, {
       status: 200,
       headers: {
         "Content-Type": contentType,
