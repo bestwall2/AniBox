@@ -110,7 +110,7 @@ const PlayerPageContent = () => {
             className="w-full h-full"
             frameBorder="0"
             referrerPolicy="origin"
-            sandbox="allow-same-origin allow-scripts allow-fullscreen"
+            sandbox="allow-scripts allow-fullscreen"
           />
         ) : (
           <div className="w-full h-full bg-black flex items-center justify-center">
