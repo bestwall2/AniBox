@@ -83,7 +83,7 @@ const PlayerPageContent = () => {
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       {/* Player */}
-      <div className="w-full h-[250px] rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -116,12 +116,12 @@ const PlayerPageContent = () => {
       <div className="flex flex-row gap-4">
 
         {/* COVER IMAGE */}
-        <div className="rounded-xl overflow-hidden shadow-xl">
+        <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
           {animeDetails?.coverImage?.extraLarge ? (
             <img
               src={animeDetails.coverImage.extraLarge}
               alt="Cover"
-              className="h-[24vh] w-[14vh] object-cover rounded-xl"
+              className="h-[19vh] w-[14vh] rounded-xl object-cover shadow-lg"
             />
           ) : (
             <Skeleton className="h-[160px] w-[110px] rounded-xl" />
