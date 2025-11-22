@@ -122,7 +122,7 @@ const PlayerPageContent = () => {
             <img
               src={animeDetails.coverImage.extraLarge}
               alt="Cover"
-              className="h-[19vh] w-[14vh] rounded-xl object-cover shadow-lg"
+              className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
             />
           ) : (
             <Skeleton className="h-[160px] w-[110px] rounded-xl" />
