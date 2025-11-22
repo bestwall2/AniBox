@@ -131,7 +131,7 @@ const PlayerPageContent = () => {
 
           {/* WATCHING BOX */}
           {animeDetails && (
-            <div className="mt-4 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
+            <div className="mt-0 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <div className="live-dot"></div>
                 <p className="text-lg font-semibold text-white">
