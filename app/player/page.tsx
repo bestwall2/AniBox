@@ -80,26 +80,18 @@ const PlayerPageContent = () => {
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       {/* ⭐ FIXED GLASS NAVBAR */}
-      <div
-        className="
-          fixed top-0 left-0 w-full z-50
-          px-4 py-3
-          flex items-center justify-between
-          bg-gradient-to-b from-[#0e0e0e]/80 to-transparent
-          backdrop-blur-md shadow-lg
-        "
-      >
+      <div className="w-full flex items-center justify-between px-2 py-2 absolute top-0 left-0 z-30">
         {/* Back Button */}
         <button
           onClick={() => router.back()}
           className="transition-all duration-300 hover:scale-90"
         >
-          <IoMdArrowRoundBack size={32} className="text-white" />
+          <IoMdArrowRoundBack size={30} className="text-white" />
         </button>
 
         {/* Profile */}
         <img
-          className="w-10 h-10 rounded-full border border-white/20 shadow-md transition-all duration-300 hover:scale-90"
+          className="w-9 h-9 rounded-full border-gray-600 border-2 transition-all duration-300 ease-out hover:scale-90"
           src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
           alt="User"
         />
