@@ -204,10 +204,10 @@ function Info({ id }) {
             <div className="Bannerbackground absolute" />
           </div>
         </div>
-        <div className="BannerbackgroundShadow absolute z-20 top-0 h-[40px]  w-full" />
+        <div className="BannerbackgroundShadow fixed z-20 top-0 h-[40px]  w-full" />
 
         {/* Back Arrow Button */}
-        <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
+        <div className="fixed transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
           <button onClick={() => router.back()}>
             <IoMdArrowRoundBack
               size={30}
@@ -218,7 +218,7 @@ function Info({ id }) {
             />
           </button>
         </div>
-        <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
+        <div className="fixed m-1 top-4 right-4 z-20 flex items-center space-x-3">
           <img
             className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
             src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
