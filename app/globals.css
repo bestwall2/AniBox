@@ -360,3 +360,15 @@ body {
     color: #e0ffff;
   }
 }
+
+/* Add this to globals.css */
+.backdrop-blur-xl {
+  backdrop-filter: blur(20px);
+}
+
+.line-clamp-[8] {
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

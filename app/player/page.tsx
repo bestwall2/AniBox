@@ -9,6 +9,14 @@ import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
 import { Skeleton } from "./../../components/ui/skeleton"; // Adjust path if your Skeleton component is elsewhere
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
@@ -73,9 +81,9 @@ const PlayerPageContent = () => {
   }, [tmdbId, type, season, episode]);
 
   return (
-    <div className="container mx-auto px-4 py-8 flex flex-col gap-6">
+    <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       {/* Player */}
-      <div className="w-full h-[500px] rounded-xl overflow-hidden">
+      <div className="w-full h-[300px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -92,94 +100,83 @@ const PlayerPageContent = () => {
         )}
       </div>
 
-      {/* Watching Now Panel */}
-      {animeDetails && (
-        <div className="bg-zinc-900 p-4 rounded-xl shadow-lg text-white">
-          <p className="text-sm mb-1">You are Watching</p>
-          <h2 className="text-pink-500 font-semibold text-lg mb-1">Episode {episode || "1"}</h2>
-          <p className="text-xs text-gray-400 mb-2">
-            If current server doesn’t work please try other servers beside.
+      <div className="flex items-center space-x-2">
+          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
+          <p className="text-md font-semibold">
+           ANIME DETAILS
           </p>
+      </div>
+
+
+      <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
+  <CardContent className="p-4">
+
+    {/* IMAGE + TEXT SECTION */}
+    {animeDetails && (
+      <div className="flex flex-row gap-4">
+
+        {/* COVER IMAGE */}
+        <div className="rounded-xl overflow-hidden shadow-xl">
+          {animeDetails?.coverImage?.extraLarge ? (
+            <img
+              src={animeDetails.coverImage.extraLarge}
+              alt="Cover"
+              className="min-h-[15vh] min-w-[15vh] max-h-[23vh] max-w-[14vh] object-cover rounded-xl"
+            />
+          ) : (
+            <Skeleton className="h-[160px] w-[110px] rounded-xl" />
+          )}
         </div>
-      )}
 
-      {/* Main Info + Cover */}
-      {animeDetails && (
-                <div className="relative z-10 flex flex-row items-left px-4  space-y-6">
-              {/* Cover Image */}
-              <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
-                  {animeDetails?.coverImage?.extraLarge ? (
-                      <img
-                          src={animeDetails.coverImage.extraLarge}
-                          alt="Cover Image"
-                          className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
-                          loading="lazy"
-                      />
-                  ) : (                 
-                      <Skeleton className="SkeletonCard min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl " />
-                  )}
-              </div>
+        {/* TITLE + META */}
+        <div className="flex flex-col justify-start text-white w-full">
 
-              <div className="InfoContainerPage flex-col ml-1 mt-0 items-center justify-center">
-                  {/* Title & Rating */}
-                  <div className="text-left px-4">
-                      {animeDetails?.title?.romaji ? (
-                          <h1 className="text-2xl font-bold line-clamp-2 text-white drop-shadow-lg break-words max-w-[200px]">
-                              {animeDetails.title.romaji}
-                          </h1>
-                      ) : (
-                          <Skeleton className="h-6 w-[200px] rounded" />
-                      )}
-                  </div>
-                  
-                  <div className="flex ml-3 mt-2 font-semibold items-left justify-start">
-                      <FaStar size={20} style={{ color: "yellow", padding: 1 }} />
-                      {animeDetails?.averageScore !== undefined && animeDetails?.status ? (
-                          <>
-                              <p className="text-md ml-1 self-center">
-                                  {animeDetails.averageScore / 10} |
-                              </p>
-                              <p
-                                  className={`ml-2 ${
-                                      animeDetails.status === "RELEASING" ? "text-green-500" : "text-red-500"
-                                  }`}
-                              >
-                                  {animeDetails.status}
-                              </p>
-                          </>
-                      ) : (
-                          <Skeleton className="h-4 w-[100px] ml-2 rounded" />
-                      )}
-                  </div>
-                  
-                  <h1 className="flex ml-3 font-semibold items-left justify-start">
-                      <MdDateRange className="self-center mr-1" size={20} />
-                      {animeDetails?.startDate ? (
-                          `${animeDetails.startDate.year} / ${animeDetails.startDate.month} / ${animeDetails.startDate.day}`
-                      ) : (
-                          <Skeleton className="h-4 w-[120px] rounded" />
-                      )}
-                  </h1>
-                  
-                  <h1 className="CardGenres text-sm flex ml-3 items-left justify-start">
-                      {animeDetails?.genres?.length ? (
-                          animeDetails.genres.join(", ")
-                      ) : (
-                          <Skeleton className="h-4 w-[150px] rounded" />
-                      )}
-                  </h1>
-                  
-                  <h1 className="text-sm flex ml-3 font-semibold items-left justify-start">
-                      {animeDetails?.episodes !== undefined ? (
-                          `Episodes : ${animeDetails.episodes}`
-                      ) : (
-                          <Skeleton className="h-4 w-[100px] rounded" />
-                      )}
-                  </h1>
-              </div>
+          {/* TITLE */}
+          <h1 className="text-2xl font-bold leading-tight line-clamp-2 drop-shadow-lg">
+            {animeDetails?.title?.romaji || "Unknown Title"}
+          </h1>
+
+          {/* RATING + STATUS */}
+          <div className="flex items-center mt-2 gap-2">
+            <FaStar size={18} className="text-yellow-400" />
+            <p className="text-md">{animeDetails.averageScore / 10}</p>
+            <p
+              className={`font-semibold ${
+                animeDetails.status === "RELEASING"
+                  ? "text-green-400"
+                  : "text-red-500"
+              }`}
+            >
+              {animeDetails.status}
+            </p>
           </div>
 
-      )}
+          {/* GENRES + EPISODES */}
+          <div className="text-sm text-gray-300 mt-2">
+            <p>{animeDetails.genres?.join(", ")}</p>
+            <p className="mt-1">
+              <span className="font-semibold text-white">Episodes :</span>{" "}
+              {animeDetails.episodes || "?"}
+            </p>
+          </div>
+
+        </div>
+      </div>
+    )}
+
+    {/* DESCRIPTION BOX */}
+    <div className="mt-6 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
+      <h2 className="text-lg font-semibold text-white mb-2">Description</h2>
+
+      <p className="text-gray-300 text-sm leading-relaxed line-clamp-[8]">
+        {animeDetails?.description
+          ? parse(animeDetails.description)
+          : <Skeleton className="h-20 w-full rounded" />}
+      </p>
+    </div>
+  </CardContent>
+</Card>
+
 
       {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
@@ -203,4 +200,4 @@ const PlayerPage = () => (
   </Suspense>
 );
 
-export default PlayerPage;
+export default PlayerPage;   

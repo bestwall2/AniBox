@@ -20,6 +20,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "artworks.thetvdb.com",
       },
+       {
+        protocol: "https",
+        hostname: "proxy.animetsu.to",
+      },
     ],
   },
 };
