@@ -83,27 +83,25 @@ const PlayerPageContent = () => {
 
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
-
-        {/* Back Arrow Button */}
-        <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
-            <button onClick={() => router.back()}>
-                <IoMdArrowRoundBack
-                size={30}
-                style={{
-                    color: "white",
-                    margin: 5,
-                }}
-                />
-            </button>
-        </div>
-        <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
-    
-            <img
-              className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
-              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
-              alt="user photo"
-            />
-        </div> 
+      {/* Back Arrow Button */}
+      <div className="relative transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-4 z-20">
+        <button onClick={() => router.back()}>
+          <IoMdArrowRoundBack
+            size={30}
+            style={{
+              color: "white",
+              margin: 5,
+            }}
+          />
+        </button>
+      </div>
+      <div className="relative m-1 top-4 right-4 z-20 flex items-center space-x-3">
+        <img
+          className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
+          src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
+          alt="user photo"
+        />
+      </div>
 
       {/* Player */}
       <div className="w-full h-[220px] rounded-xl overflow-hidden">
@@ -124,85 +122,80 @@ const PlayerPageContent = () => {
       </div>
 
       <div className="flex items-center space-x-2">
-          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
-          <p className="text-md font-semibold">
-           ANIME DETAILS
-          </p>
+        <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
+        <p className="text-md font-semibold">ANIME DETAILS</p>
       </div>
-
 
       <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
-  <CardContent className="p-4">
+        <CardContent className="p-4">
+          {/* IMAGE + TEXT SECTION */}
+          {animeDetails && (
+            <div className="flex flex-row gap-4">
+              <div>
+                {/* COVER IMAGE */}
+                <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
+                  {animeDetails?.coverImage?.extraLarge ? (
+                    <img
+                      src={animeDetails.coverImage.extraLarge}
+                      alt="Cover"
+                      className="min-h-[21vh] min-w-[14vh] max-h-[21vh] max-w-[14vh] rounded-xl object-cover"
+                    />
+                  ) : (
+                    <Skeleton className="h-[160px] w-[110px] rounded-xl" />
+                  )}
+                </div>
+              </div>
 
-    {/* IMAGE + TEXT SECTION */}
-    {animeDetails && (
-      <div className="flex flex-row gap-4"> 
-      <div>
+              {/* TITLE + META */}
+              <div className="flex flex-col item-start justify-center text-white w-full">
+                {/* TITLE */}
+                <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words  drop-shadow-lg">
+                  {animeDetails?.title?.romaji || "Unknown Title"}
+                </h1>
 
-     {/* COVER IMAGE */}
-        <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
-          {animeDetails?.coverImage?.extraLarge ? (
-            <img
-              src={animeDetails.coverImage.extraLarge}
-              alt="Cover"
-              className="min-h-[21vh] min-w-[14vh] max-h-[21vh] max-w-[14vh] rounded-xl object-cover"
-            />
-          ) : (
-            <Skeleton className="h-[160px] w-[110px] rounded-xl" />
+                {/* RATING + STATUS */}
+                <div className="flex items-center mt-2 gap-2">
+                  <FaStar size={18} className="text-yellow-400" />
+                  <p className="text-md">{animeDetails.averageScore / 10}</p>
+                  <p
+                    className={`font-semibold ${
+                      animeDetails.status === "RELEASING"
+                        ? "text-green-400"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {animeDetails.status}
+                  </p>
+                </div>
+
+                {/* GENRES + EPISODES */}
+                <div className="text-sm text-gray-300 mt-2">
+                  <p>{animeDetails.genres?.join(", ")}</p>
+                  <p className="mt-1">
+                    <span className="font-semibold text-white">Episodes :</span>{" "}
+                    {animeDetails.episodes || "?"}
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
-        </div>
 
-      </div>
-      
-        {/* TITLE + META */}
-        <div className="flex flex-col item-start justify-center text-white w-full">
+          {/* DESCRIPTION BOX */}
+          <div className="mt-6 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
+            <h2 className="text-lg font-semibold text-white mb-2">
+              Description
+            </h2>
 
-          {/* TITLE */}
-          <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words  drop-shadow-lg">
-            {animeDetails?.title?.romaji || "Unknown Title"}
-          </h1>
-
-          {/* RATING + STATUS */}
-          <div className="flex items-center mt-2 gap-2">
-            <FaStar size={18} className="text-yellow-400" />
-            <p className="text-md">{animeDetails.averageScore / 10}</p>
-            <p
-              className={`font-semibold ${
-                animeDetails.status === "RELEASING"
-                  ? "text-green-400"
-                  : "text-red-500"
-              }`}
-            >
-              {animeDetails.status}
+            <p className="text-gray-300 text-sm leading-relaxed line-clamp-[8]">
+              {animeDetails?.description ? (
+                parse(animeDetails.description)
+              ) : (
+                <Skeleton className="h-20 w-full rounded" />
+              )}
             </p>
           </div>
-
-          {/* GENRES + EPISODES */}
-          <div className="text-sm text-gray-300 mt-2">
-            <p>{animeDetails.genres?.join(", ")}</p>
-            <p className="mt-1">
-              <span className="font-semibold text-white">Episodes :</span>{" "}
-              {animeDetails.episodes || "?"}
-            </p>
-          </div>
-
-        </div>
-      </div>
-    )}
-
-    {/* DESCRIPTION BOX */}
-    <div className="mt-6 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
-      <h2 className="text-lg font-semibold text-white mb-2">Description</h2>
-
-      <p className="text-gray-300 text-sm leading-relaxed line-clamp-[8]">
-        {animeDetails?.description
-          ? parse(animeDetails.description)
-          : <Skeleton className="h-20 w-full rounded" />}
-      </p>
-    </div>
-  </CardContent>
-</Card>
-
+        </CardContent>
+      </Card>
 
       {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
