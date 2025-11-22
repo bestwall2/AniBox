@@ -86,7 +86,7 @@ const PlayerPageContent = () => {
       <div className="w-full h-[220px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
-            src={""}
+            src={iframeUrl}
             title={type === "MOVIE" ? "Movie Player" : `Episode ${episode}`}
             className="w-full h-full"
             frameBorder="0"
