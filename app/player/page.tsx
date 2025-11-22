@@ -83,7 +83,7 @@ const PlayerPageContent = () => {
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       {/* Player */}
-      <div className="w-full h-[300px] rounded-xl overflow-hidden">
+      <div className="w-full h-[250px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -121,7 +121,7 @@ const PlayerPageContent = () => {
             <img
               src={animeDetails.coverImage.extraLarge}
               alt="Cover"
-              className="min-h-[15vh] min-w-[15vh] max-h-[23vh] max-w-[14vh] object-cover rounded-xl"
+              className="h-[24vh] w-[14vh] object-cover rounded-xl"
             />
           ) : (
             <Skeleton className="h-[160px] w-[110px] rounded-xl" />
@@ -132,7 +132,7 @@ const PlayerPageContent = () => {
         <div className="flex flex-col justify-start text-white w-full">
 
           {/* TITLE */}
-          <h1 className="text-2xl font-bold leading-tight line-clamp-2 drop-shadow-lg">
+          <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words  drop-shadow-lg">
             {animeDetails?.title?.romaji || "Unknown Title"}
           </h1>
 
