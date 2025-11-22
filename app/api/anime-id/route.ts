@@ -29,7 +29,7 @@ export async function GET(request) {
 
     // 2️⃣ Fetch AniList anime details from your internal API
     const aniRes = await fetch(
-      `/api/anime-info?id=${anilistId}`
+      `${request.nextUrl.origin}/api/anime-info?id=${anilistId}`
     );
     if (!aniRes.ok) throw new Error("Failed to fetch AniList info");
     const media = (await aniRes.json()).Media;
