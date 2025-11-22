@@ -79,8 +79,9 @@ const PlayerPageContent = () => {
 
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
+      <div className="BannerbackgroundShadow fixed  z-30 top-0 h-[40px]  w-full" />
       {/* ⭐ FIXED GLASS NAVBAR */}
-      <div className="w-full flex items-center justify-between px-2 py-2 absolute top-0 left-0 z-30">
+      <div className="w-full flex items-center justify-between px-2 py-2 fixed  top-0 left-0 z-30">
         {/* Back Button */}
         <button
           onClick={() => router.back()}
