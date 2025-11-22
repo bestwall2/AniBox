@@ -106,7 +106,7 @@ const PlayerPageContent = () => {
         />
       </div>
       {/* Player */}
-      <div className="w-full h-[220px] mt-15 rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] mt-18 rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -128,7 +128,7 @@ const PlayerPageContent = () => {
       </div>
       <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
         <CardContent className="p-4">
-          
+
           {/* WATCHING BOX */}
           {animeDetails && (
             <div className="mt-4 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
