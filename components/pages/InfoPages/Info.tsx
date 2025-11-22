@@ -212,7 +212,7 @@ function Info({ id }) {
                     <img
                     src={animeDetails.coverImage.extraLarge}
                     alt="Cover Image"
-                    className="min-h-[22vh] min-w-[14vh] max-h-[22vh] max-w-[14vh] rounded-xl object-cover"
+                    className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
                     loading="lazy"
                     />
                 ) : (                 

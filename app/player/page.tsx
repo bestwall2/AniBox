@@ -122,7 +122,7 @@ const PlayerPageContent = () => {
             <img
               src={animeDetails.coverImage.extraLarge}
               alt="Cover"
-              className="min-h-[20vh] min-w-[14vh] max-h-[20vh] max-w-[14vh] rounded-xl object-cover"
+              className="min-h-[21vh] min-w-[14vh] max-h-[21vh] max-w-[14vh] rounded-xl object-cover"
             />
           ) : (
             <Skeleton className="h-[160px] w-[110px] rounded-xl" />
@@ -132,7 +132,7 @@ const PlayerPageContent = () => {
       </div>
       
         {/* TITLE + META */}
-        <div className="flex flex-col justify-start text-white w-full">
+        <div className="flex flex-col items-center justify-center text-white w-full">
 
           {/* TITLE */}
           <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words  drop-shadow-lg">
