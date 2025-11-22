@@ -113,9 +113,10 @@ const PlayerPageContent = () => {
 
     {/* IMAGE + TEXT SECTION */}
     {animeDetails && (
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4"> 
+      <div>
 
-        {/* COVER IMAGE */}
+     {/* COVER IMAGE */}
         <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
           {animeDetails?.coverImage?.extraLarge ? (
             <img
@@ -128,6 +129,8 @@ const PlayerPageContent = () => {
           )}
         </div>
 
+      </div>
+      
         {/* TITLE + META */}
         <div className="flex flex-col justify-start text-white w-full">
 
