@@ -7,22 +7,15 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
-import { MdDateRange } from "react-icons/md";
-import { Skeleton } from "./../../components/ui/skeleton"; // Adjust path if your Skeleton component is elsewhere
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { Skeleton } from "./../../components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
 
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
   if (!response.ok) throw new Error("Failed to fetch episodes");
   const data = await response.json();
+
   if (Array.isArray(data)) {
     return data.map((episode: any) => ({
       id: episode.number ?? null,
@@ -53,6 +46,7 @@ const PlayerPageContent = () => {
   const searchParams = useSearchParams();
   const [iframeUrl, setIframeUrl] = useState("");
   const router = useRouter();
+
   const tmdbId = searchParams.get("tmdbId");
   const type = searchParams.get("type");
   const season = searchParams.get("season");
@@ -76,37 +70,46 @@ const PlayerPageContent = () => {
       if (type === "MOVIE") {
         setIframeUrl(`https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`);
       } else if (type === "TV" && season && episode) {
-        setIframeUrl(`https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${season}&episode=${episode}`);
+        setIframeUrl(
+          `https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${season}&episode=${episode}`
+        );
       }
     }
   }, [tmdbId, type, season, episode]);
 
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
-      {/* Back Arrow Button */}
-      <div className="absolute transition-all duration-300 ease-out hover:scale-[0.90] top-4 left-2 z-20">
-        <button onClick={() => router.back()}>
-          <IoMdArrowRoundBack
-            size={30}
-            style={{
-              color: "white",
-              margin: 5,
-            }}
-          />
+      {/* ⭐ FIXED GLASS NAVBAR */}
+      <div
+        className="
+          fixed top-0 left-0 w-full z-50
+          px-4 py-3
+          flex items-center justify-between
+          bg-gradient-to-b from-[#0e0e0e]/80 to-transparent
+          backdrop-blur-md shadow-lg
+        "
+      >
+        {/* Back Button */}
+        <button
+          onClick={() => router.back()}
+          className="transition-all duration-300 hover:scale-90"
+        >
+          <IoMdArrowRoundBack size={32} className="text-white" />
         </button>
-      </div>
 
-      {/* you will add here a drop menu for servers */}
-
-      <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
+        {/* Profile */}
         <img
-          className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
+          className="w-10 h-10 rounded-full border border-white/20 shadow-md transition-all duration-300 hover:scale-90"
           src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
-          alt="user photo"
+          alt="User"
         />
       </div>
+
+      {/* PUSH PAGE CONTENT BELOW FIXED NAVBAR */}
+      <div className="mt-16" />
+
       {/* Player */}
-      <div className="w-full h-[220px] mt-18 rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -122,13 +125,15 @@ const PlayerPageContent = () => {
           </div>
         )}
       </div>
+
+      {/* Anime Details */}
       <div className="flex items-center space-x-2">
         <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
         <p className="text-md font-semibold">ANIME DETAILS</p>
       </div>
+
       <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
         <CardContent className="p-4">
-
           {/* WATCHING BOX */}
           {animeDetails && (
             <div className="mt-0 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
@@ -139,7 +144,7 @@ const PlayerPageContent = () => {
                 </p>
               </div>
 
-              <h2 className="text-green-300 text-m leading-relaxed">
+              <h2 className="text-[#00ff4c] text-m leading-relaxed">
                 Episode {episode || "1"}
               </h2>
 
@@ -149,35 +154,30 @@ const PlayerPageContent = () => {
             </div>
           )}
 
-          {/* IMAGE + TEXT SECTION */}
+          {/* IMAGE + TEXT */}
           {animeDetails && (
             <div className="flex flex-row gap-4">
-              <div>
-                {/* COVER IMAGE */}
-                <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
-                  {animeDetails?.coverImage?.extraLarge ? (
-                    <img
-                      src={animeDetails.coverImage.extraLarge}
-                      alt="Cover"
-                      className="min-h-[21vh] min-w-[14vh] max-h-[21vh] max-w-[14vh] rounded-xl object-cover"
-                    />
-                  ) : (
-                    <Skeleton className="h-[160px] w-[110px] rounded-xl" />
-                  )}
-                </div>
+              <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
+                {animeDetails?.coverImage?.extraLarge ? (
+                  <img
+                    src={animeDetails.coverImage.extraLarge}
+                    alt="Cover"
+                    className="min-h-[21vh] min-w-[14vh] max-h-[21vh] max-w-[14vh] rounded-xl object-cover"
+                  />
+                ) : (
+                  <Skeleton className="h-[160px] w-[110px] rounded-xl" />
+                )}
               </div>
 
-              {/* TITLE + META */}
-              <div className="flex flex-col item-start justify-center text-white w-full">
-                {/* TITLE */}
-                <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words  drop-shadow-lg">
+              <div className="flex flex-col justify-center text-white w-full">
+                <h1 className="text-2xl font-bold leading-tight line-clamp-2 break-words">
                   {animeDetails?.title?.romaji || "Unknown Title"}
                 </h1>
 
-                {/* RATING + STATUS */}
                 <div className="flex items-center mt-2 gap-2">
                   <FaStar size={18} className="text-yellow-400" />
                   <p className="text-md">{animeDetails.averageScore / 10}</p>
+
                   <p
                     className={`font-semibold ${
                       animeDetails.status === "RELEASING"
@@ -189,11 +189,10 @@ const PlayerPageContent = () => {
                   </p>
                 </div>
 
-                {/* GENRES + EPISODES */}
                 <div className="text-sm text-gray-300 mt-2">
                   <p>{animeDetails.genres?.join(", ")}</p>
                   <p className="mt-1">
-                    <span className="font-semibold text-white">Episodes :</span>{" "}
+                    <span className="font-semibold text-white">Episodes:</span>{" "}
                     {animeDetails.episodes || "?"}
                   </p>
                 </div>
@@ -201,7 +200,7 @@ const PlayerPageContent = () => {
             </div>
           )}
 
-          {/* DESCRIPTION BOX */}
+          {/* DESCRIPTION */}
           <div className="mt-6 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
             <h2 className="text-lg font-semibold text-white mb-2">
               Description
@@ -217,6 +216,7 @@ const PlayerPageContent = () => {
           </div>
         </CardContent>
       </Card>
+
       {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
         <Episodes
@@ -239,4 +239,4 @@ const PlayerPage = () => (
   </Suspense>
 );
 
-export default PlayerPage;   
+export default PlayerPage;
