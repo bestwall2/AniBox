@@ -95,7 +95,9 @@ const PlayerPageContent = () => {
           />
         </button>
       </div>
-      // you will add here a drop menu for servers
+
+      {/* you will add here a drop menu for servers */}
+
       <div className="absolute m-1 top-4 right-4 z-20 flex items-center space-x-3">
         <img
           className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
@@ -104,7 +106,7 @@ const PlayerPageContent = () => {
         />
       </div>
       {/* Player */}
-      <div className="w-full h-[220px] mt-20 rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] mt-15 rounded-xl overflow-hidden">
         {iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -126,6 +128,27 @@ const PlayerPageContent = () => {
       </div>
       <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
         <CardContent className="p-4">
+          
+          {/* WATCHING BOX */}
+          {animeDetails && (
+            <div className="mt-4 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="live-dot"></div>
+                <p className="text-lg font-semibold text-white">
+                  You are Watching
+                </p>
+              </div>
+
+              <h2 className="text-green-300 text-m leading-relaxed">
+                Episode {episode || "1"}
+              </h2>
+
+              <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                If current server doesn’t work, switch to another one.
+              </p>
+            </div>
+          )}
+
           {/* IMAGE + TEXT SECTION */}
           {animeDetails && (
             <div className="flex flex-row gap-4">
@@ -192,19 +215,6 @@ const PlayerPageContent = () => {
               )}
             </p>
           </div>
-          {animeDetails && (
-            <div className="mt-4 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
-              <p className="text-lg font-semibold text-white mb-2">
-                You are Watching
-              </p>
-              <h2 className="text-gray-300 text-sm leading-relaxed">
-                Episode {episode || "1"}
-              </h2>
-              <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                If current server doesn’t work, switch to another one.
-              </p>
-            </div>
-          )}
         </CardContent>
       </Card>
       {/* Episodes List */}
