@@ -144,6 +144,10 @@ const PlayerPageContent = () => {
               <p className="text-xs text-gray-300 mt-1 leading-relaxed">
                 If current server doesn’t work, switch to another one.
               </p>
+              <p className="text-xs text-red-300 font-semibold leading-relaxed">
+                Note: Servers are third-party. I have no control over the ads
+                they display.
+              </p>
             </div>
           )}
 
