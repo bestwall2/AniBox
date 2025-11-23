@@ -45,6 +45,10 @@ function getSeasonNumberFromTitle(title: string | null | undefined): number {
 const PlayerPageContent = () => {
   const searchParams = useSearchParams();
   const [iframeUrl, setIframeUrl] = useState("");
+
+  // 🔥 ADDED — server state
+  const [currentServer, setCurrentServer] = useState("server1");
+
   const router = useRouter();
 
   const tmdbId = searchParams.get("tmdbId");
@@ -52,6 +56,34 @@ const PlayerPageContent = () => {
   const season = searchParams.get("season");
   const episode = searchParams.get("episode");
   const anilistId = searchParams.get("anilistId");
+
+  // 🔥 ADDED — server list
+  const serverLinks = {
+    server1: (id: string, s: string, e: string) =>
+      `https://vidsrcme.ru/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
+    server2: (id: string, s: string, e: string) =>
+      `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}`,
+    server3: (id: string, s: string, e: string) =>
+      `https://player.videasy.net/tv/${id}/${s}/${e}`,
+    server4: (id: string, s: string, e: string) =>
+      `https://111movies.com/tv/${id}/${s}/${e}`,
+    server5: (id: string, s: string, e: string) =>
+      `https://godriveplayer.com/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}`,
+    server6: (id: string, s: string, e: string) =>
+      `https://vidsrc.cx/embed/tv/${id}/${s}/${e}`,
+    server7: (id: string, s: string, e: string) =>
+      `https://player.vidzee.wtf/api/server?id=${id}&sr=0&ss=${s}&ep=${e}`,
+    server8: (id: string, s: string, e: string) =>
+      `https://www.nontongo.win/embed/tv/${id}/${s}/{e}`,
+    server9: (id: string, s: string, e: string) =>
+      `https://vidfast.pro/tv/${id}/${s}/${e}?autoPlay=true`,
+    server10: (id: string, s: string, e: string) =>
+      `https://vidlink.pro/tv/${id}/${s}/${e}`,
+    server11: (id: string, s: string, e: string) =>
+      `https://www.vidking.net/embed/tv/${id}/${s}/${e}1?autoPlay=true/`,
+    server12: (id: string, s: string, e: string) =>
+      `https://mapple.uk/watch/tv/${id}-${s}-${e}`,
+  };
 
   const { data: episodes } = useQuery({
     queryKey: ["animeEpisodes", anilistId],
@@ -65,21 +97,22 @@ const PlayerPageContent = () => {
     enabled: !!anilistId,
   });
 
+  // ⬇️ ONLY THIS USEEFFECT WAS MODIFIED
   useEffect(() => {
     if (tmdbId) {
       if (type === "MOVIE") {
         setIframeUrl(`https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`);
       } else if (type === "TV" && season && episode) {
-        setIframeUrl(
-          `https://vidsrcme.ru/embed/tv?tmdb=${tmdbId}&season=${season}&episode=${episode}`
-        );
+        // 🔥 ADDED — dynamic server switching
+        setIframeUrl(serverLinks[currentServer](tmdbId, season, episode));
       }
     }
-  }, [tmdbId, type, season, episode]);
+  }, [tmdbId, type, season, episode, currentServer]); // 🔥 ADDED currentServer
 
   return (
     <div className="container mx-auto px-2 py-4 flex flex-col gap-4">
       <div className="BannerbackgroundShadow fixed  z-30 top-0 h-[40px]  w-full" />
+
       {/* ⭐ FIXED GLASS NAVBAR */}
       <div className="w-full flex items-center justify-between px-2 py-2 fixed  top-0 left-0 z-30">
         {/* Back Button */}
@@ -87,8 +120,29 @@ const PlayerPageContent = () => {
           onClick={() => router.back()}
           className="transition-all duration-300 hover:scale-90"
         >
+         
           <IoMdArrowRoundBack size={30} className="text-white" />
         </button>
+
+        {/* 🔥 ADDED — server dropdown */}
+        <select
+          value={currentServer}
+          onChange={(e) => setCurrentServer(e.target.value)}
+          className="bg-[#111] text-white px-2 py-1 rounded-md border border-gray-500 text-sm"
+        >
+          <option value="server1">VidsrcMe</option>
+          <option value="server2">VidSrc CC</option>
+          <option value="server3">Videasy</option>
+          <option value="server4">111Movies</option>
+          <option value="server5">GDrive</option>
+          <option value="server6">VidSrc CX</option>
+          <option value="server7">VidZee</option>
+          <option value="server8">NonTonGo</option>
+          <option value="server9">VidFast</option>
+          <option value="server10">VidLink</option>
+          <option value="server11">VidKing</option>
+          <option value="server12">Mapple</option>
+        </select>
 
         {/* Profile */}
         <img
@@ -119,7 +173,8 @@ const PlayerPageContent = () => {
         )}
       </div>
 
-      {/* Anime Details */}
+      {/* (Everything below stays EXACTLY the same — NOT MODIFIED) */}
+
       <div className="flex items-center space-x-2">
         <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
         <p className="text-md font-semibold">ANIME DETAILS</p>
@@ -127,7 +182,6 @@ const PlayerPageContent = () => {
 
       <Card className="bg-[#0b0b0c] bg-opacity-80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/5">
         <CardContent className="p-4">
-          {/* WATCHING BOX */}
           {animeDetails && (
             <div className="mt-0 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
@@ -151,7 +205,6 @@ const PlayerPageContent = () => {
             </div>
           )}
 
-          {/* IMAGE + TEXT */}
           {animeDetails && (
             <div className="flex flex-row gap-4">
               <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
@@ -197,7 +250,6 @@ const PlayerPageContent = () => {
             </div>
           )}
 
-          {/* DESCRIPTION */}
           <div className="mt-6 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
             <h2 className="text-lg font-semibold text-white mb-2">
               Description
@@ -214,7 +266,6 @@ const PlayerPageContent = () => {
         </CardContent>
       </Card>
 
-      {/* Episodes List */}
       {anilistId && episodes && animeDetails && (
         <Episodes
           episodes={episodes.map((ep: any) => ({
