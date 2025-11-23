@@ -16,7 +16,7 @@ export async function GET(request) {
       return NextResponse.json({ error: "Missing anime ID" }, { status: 400 });
     }
 
-    // 1️⃣ Fetch TMDB ID from the JSON list
+    // 1️⃣ Fetch TMDB ID from JSON list
     const listRes = await fetch(ANIME_LIST_URL);
     if (!listRes.ok) throw new Error("Failed to fetch anime list");
     const animeList = await listRes.json();
@@ -27,26 +27,21 @@ export async function GET(request) {
     }
     const tmdbId = anime.themoviedb_id;
 
-    // 2️⃣ Fetch AniList anime details from internal API
-    const aniRes = await fetch(
-      `${request.nextUrl.origin}/api/anime-info?id=${anilistId}`
-    );
+    // 2️⃣ Fetch AniList anime details
+    const aniRes = await fetch(`${request.nextUrl.origin}/api/anime-info?id=${anilistId}`);
     if (!aniRes.ok) throw new Error("Failed to fetch AniList info");
     const media = (await aniRes.json()).Media;
 
     if (!media) {
-      return NextResponse.json(
-        { error: "AniList media not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "AniList media not found" }, { status: 404 });
     }
 
-    // 3️⃣ If it's a movie, return tmdb_id with current_season: null
+    // 3️⃣ Handle movies
     if (media.format === "MOVIE") {
       return NextResponse.json({ tmdb_id: tmdbId, current_season: null });
     }
 
-    // 4️⃣ Otherwise, fetch TMDB TV show details
+    // 4️⃣ Fetch TMDB TV show details
     const tmdbRes = await fetch(
       `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
     );
@@ -54,29 +49,40 @@ export async function GET(request) {
     const tmdbData = await tmdbRes.json();
     const seasons = tmdbData.seasons || [];
 
-    // 5️⃣ Find season with matching air_date
-    const aniStartDate = new Date(
-      media.startDate?.year,
-      (media.startDate?.month || 1) - 1,
-      media.startDate?.day || 1
-    );
+    const aniYear = media.startDate?.year;
+    const aniMonth = media.startDate?.month || 1;
+    const aniEpisodes = media.episodes || 0;
+    const titleFinal = media.title?.romaji?.toUpperCase().includes("FINAL");
 
-    const matchingSeason = seasons.find((season) => {
+    // 5️⃣ Try to find season matching by year, month, total episodes
+    let matchingSeason = seasons.find((season) => {
       if (!season.air_date) return false;
       const seasonDate = new Date(season.air_date);
-      return (
-        seasonDate.getFullYear() === aniStartDate.getFullYear() &&
-        seasonDate.getMonth() === aniStartDate.getMonth() &&
-        seasonDate.getDate() === aniStartDate.getDate()
-      );
+      const sameYear = seasonDate.getFullYear() === aniYear;
+      const sameMonth = seasonDate.getMonth() + 1 === aniMonth;
+      const sameEpisodes = !season.episode_count || season.episode_count === aniEpisodes;
+      return sameYear && sameMonth && sameEpisodes;
     });
+
+    // 6️⃣ Optional: if multiple seasons match, prefer one with "FINAL" in name
+    if (!matchingSeason && titleFinal) {
+      matchingSeason = seasons.find((season) =>
+        season.name.toUpperCase().includes("FINAL")
+      );
+    }
+
+    // 7️⃣ Fallback: closest season by year/month
+    if (!matchingSeason) {
+      matchingSeason = seasons.find((season) => {
+        if (!season.air_date) return false;
+        const seasonDate = new Date(season.air_date);
+        return seasonDate.getFullYear() === aniYear && seasonDate.getMonth() + 1 === aniMonth;
+      });
+    }
 
     const currentSeason = matchingSeason?.season_number || 1;
 
-    return NextResponse.json({
-      tmdb_id: tmdbId,
-      current_season: currentSeason,
-    });
+    return NextResponse.json({ tmdb_id: tmdbId, current_season: currentSeason });
   } catch (err) {
     console.error("Error fetching TMDB & season:", err);
     return NextResponse.json(
