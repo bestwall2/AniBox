@@ -16,7 +16,7 @@ export async function GET(request) {
       return NextResponse.json({ error: "Missing anime ID" }, { status: 400 });
     }
 
-    // 1️⃣ Fetch TMDB ID from your JSON list
+    // 1️⃣ Fetch TMDB ID from the JSON list
     const listRes = await fetch(ANIME_LIST_URL);
     if (!listRes.ok) throw new Error("Failed to fetch anime list");
     const animeList = await listRes.json();
@@ -27,27 +27,26 @@ export async function GET(request) {
     }
     const tmdbId = anime.themoviedb_id;
 
-    // 2️⃣ Fetch AniList anime details from your internal API
+    // 2️⃣ Fetch AniList anime details from internal API
     const aniRes = await fetch(
       `${request.nextUrl.origin}/api/anime-info?id=${anilistId}`
     );
     if (!aniRes.ok) throw new Error("Failed to fetch AniList info");
     const media = (await aniRes.json()).Media;
 
-    if (!media || !media.startDate) {
+    if (!media) {
       return NextResponse.json(
-        { error: "AniList startDate not found" },
+        { error: "AniList media not found" },
         { status: 404 }
       );
     }
 
-    const aniStartDate = new Date(
-      media.startDate.year,
-      media.startDate.month - 1,
-      media.startDate.day
-    );
+    // 3️⃣ If it's a movie, return tmdb_id with current_season: null
+    if (media.format === "MOVIE") {
+      return NextResponse.json({ tmdb_id: tmdbId, current_season: null });
+    }
 
-    // 3️⃣ Fetch all TMDB seasons
+    // 4️⃣ Otherwise, fetch TMDB TV show details
     const tmdbRes = await fetch(
       `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
     );
@@ -55,7 +54,13 @@ export async function GET(request) {
     const tmdbData = await tmdbRes.json();
     const seasons = tmdbData.seasons || [];
 
-    // 4️⃣ Find season with matching air_date
+    // 5️⃣ Find season with matching air_date
+    const aniStartDate = new Date(
+      media.startDate?.year,
+      (media.startDate?.month || 1) - 1,
+      media.startDate?.day || 1
+    );
+
     const matchingSeason = seasons.find((season) => {
       if (!season.air_date) return false;
       const seasonDate = new Date(season.air_date);
@@ -79,4 +84,4 @@ export async function GET(request) {
       { status: 500 }
     );
   }
-} 
+}

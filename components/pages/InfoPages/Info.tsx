@@ -52,14 +52,6 @@ const fetchAnimeDetails = async (id: any) => {
   return data.Media; // Assuming the relevant data is in Media object
 };
 
-function getSeasonNumberFromTitle(title: string | null | undefined): number {
-  if (!title) return 1; // default season 1 if no title
-  const match = title.match(/Season\s+(\d+)/i); // regex looks for "Season 3", "Season 2", etc.
-  if (match && match[1]) {
-    return parseInt(match[1], 10);
-  }
-  return 1; // default to season 1
-}
 
 // Fetch function for anime episodes
 const fetchAnimeEpisodes = async (id: any) => {
@@ -491,14 +483,7 @@ function Info({ id }) {
             </TabsContent>
             <div className="flex flex-col gap-2">
               <Episodes
-                episodes={
-                  processedEpisodes?.map((ep) => ({
-                    ...ep,
-                    season: getSeasonNumberFromTitle(
-                      animeDetails?.title?.english
-                    ),
-                  })) || []
-                }
+                episodes={processedEpisodes}
                 imgbackup={animeDetails?.coverImage?.extraLarge}
                 anilistId={id}
                 type={animeType === "MOVIE" ? "MOVIE" : "TV"} // default to TV

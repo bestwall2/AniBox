@@ -14,7 +14,6 @@ interface Episode {
   description: string;
   img: string;
   imgb: string;
-  season?: number;
 }
 
 interface EpisodesProps {
@@ -29,7 +28,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [tmdbId, setTmdbId] = useState<number | null>(null);
-
+  const [season, setSeason] = useState<number | null>(null);
   useEffect(() => {
     const fetchTmdbId = async () => {
       try {
@@ -39,6 +38,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
         if (!res.ok) throw new Error("Failed to fetch TMDB ID");
         const data = await res.json();
         setTmdbId(data.tmdb_id);
+        setSeason(data.current_season); 
       } catch (error) {
         console.error(error);
       }
@@ -55,7 +55,9 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
   const handleEpisodeClick = (episode: Episode) => {
     if (tmdbId) {
       router.push(
-        `/player?tmdbId=${tmdbId}&type=${type}&season=${episode.season || 1}&episode=${episode.number}&anilistId=${anilistId}`
+        `/player?tmdbId=${tmdbId}&type=${type}&season=${season || 1}&episode=${
+          episode.number
+        }&anilistId=${anilistId}`
       );
     }
   };
