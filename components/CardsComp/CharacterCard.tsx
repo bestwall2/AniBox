@@ -15,6 +15,10 @@ const CharacterCard = ({ character, voiceActor, role }) => {
     ? `/api/proxy?url=${encodeURIComponent(voiceActor.image.large)}`
     : null;
 
+  console.log("CHAR:", character);
+  console.log("VA:", voiceActor);
+
+
   return (
     <div
       className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative rounded-2xl overflow-hidden"
