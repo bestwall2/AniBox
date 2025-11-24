@@ -1,6 +1,9 @@
-"use server";
+export const runtime = "nodejs"; // IMPORTANT!!!
+
+("use server");
 
 import { NextResponse } from "next/server";
+import fetch from "node-fetch"; // use same fetch that worked for you
 import { JSDOM } from "jsdom";
 
 export async function GET(request: Request) {
@@ -12,7 +15,7 @@ export async function GET(request: Request) {
 
     if (!anime || !ep) {
       return NextResponse.json(
-        { error: "Missing parameters: anime or ep" },
+        { error: "Missing anime or ep" },
         { status: 400 }
       );
     }
@@ -22,17 +25,13 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
 }
 
-export const getEpisodeServers = async (
-  animeName: string,
-  epNumber: string
-) => {
-  // Convert anime name into animelek slug
+export async function getEpisodeServers(animeName: string, epNumber: string) {
   const nameSlug = animeName
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -63,7 +62,7 @@ export const getEpisodeServers = async (
 
     return servers;
   } catch (error) {
-    console.error("Animelek Parsing Error:", error);
+    console.error("Scraping Error:", error);
     return [];
   }
-};
+}
