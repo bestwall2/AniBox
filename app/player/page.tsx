@@ -59,30 +59,65 @@ const PlayerPageContent = () => {
 
   // 🔥 ADDED — server list
   const serverLinks = {
-    server1: (id: string, s: string, e: string) =>
-      `https://vidsrcme.ru/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
-    server2: (id: string, s: string, e: string) =>
-      `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}`,
-    server3: (id: string, s: string, e: string) =>
-      `https://player.videasy.net/tv/${id}/${s}/${e}`,
-    server4: (id: string, s: string, e: string) =>
-      `https://111movies.com/tv/${id}/${s}/${e}`,
-    server5: (id: string, s: string, e: string) =>
-      `https://godriveplayer.com/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}`,
-    server6: (id: string, s: string, e: string) =>
-      `https://vidsrc.cx/embed/tv/${id}/${s}/${e}`,
-    server7: (id: string, s: string, e: string) =>
-      `https://player.vidzee.wtf/api/server?id=${id}&sr=0&ss=${s}&ep=${e}`,
-    server8: (id: string, s: string, e: string) =>
-      `https://www.nontongo.win/embed/tv/${id}/${s}/{e}`,
-    server9: (id: string, s: string, e: string) =>
-      `https://vidfast.pro/tv/${id}/${s}/${e}?autoPlay=true`,
-    server10: (id: string, s: string, e: string) =>
-      `https://vidlink.pro/tv/${id}/${s}/${e}`,
-    server11: (id: string, s: string, e: string) =>
-      `https://www.vidking.net/embed/tv/${id}/${s}/${e}1?autoPlay=true/`,
-    server12: (id: string, s: string, e: string) =>
-      `https://mapple.uk/watch/tv/${id}-${s}-${e}`,
+    server1: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://vidsrcme.ru/embed/movie?tmdb=${id}`
+        : `https://vidsrcme.ru/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
+
+    server2: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://vidsrc.cc/v2/embed/movie/${id}`
+        : `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}`,
+
+    server3: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://player.videasy.net/movie/${id}`
+        : `https://player.videasy.net/tv/${id}/${s}/${e}`,
+
+    server4: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://111movies.com/movie/${id}`
+        : `https://111movies.com/tv/${id}/${s}/${e}`,
+
+    server5: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://godriveplayer.com/player.php?type=movie&tmdb=${id}`
+        : `https://godriveplayer.com/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}`,
+
+    server6: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://vidsrc.cx/embed/movie/${id}`
+        : `https://vidsrc.cx/embed/tv/${id}/${s}/${e}`,
+
+    server7: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://player.vidzee.wtf/api/server?id=${id}&type=movie`
+        : `https://player.vidzee.wtf/api/server?id=${id}&sr=0&ss=${s}&ep=${e}`,
+
+    server8: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://www.nontongo.win/embed/movie/${id}`
+        : `https://www.nontongo.win/embed/tv/${id}/${s}/${e}`,
+
+    server9: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://vidfast.pro/movie/${id}?autoPlay=true`
+        : `https://vidfast.pro/tv/${id}/${s}/${e}?autoPlay=true`,
+
+    server10: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://vidlink.pro/movie/${id}`
+        : `https://vidlink.pro/tv/${id}/${s}/${e}`,
+
+    server11: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://www.vidking.net/embed/movie/${id}`
+        : `https://www.vidking.net/embed/tv/${id}/${s}/${e}`,
+
+    server12: (id: string, s: string, e: string, type: string = "TV") =>
+      type === "MOVIE"
+        ? `https://mapple.uk/watch/movie/${id}`
+        : `https://mapple.uk/watch/tv/${id}-${s}-${e}`,
   };
 
   const { data: episodes } = useQuery({
@@ -101,10 +136,14 @@ const PlayerPageContent = () => {
   useEffect(() => {
     if (tmdbId) {
       if (type === "MOVIE") {
-        setIframeUrl(`https://vidsrcme.ru/embed/movie?tmdb=${tmdbId}`);
+        setIframeUrl(
+          (serverLinks as any)[currentServer](tmdbId, "", "", type)
+        );
       } else if (type === "TV" && season && episode) {
         // 🔥 ADDED — dynamic server switching
-        setIframeUrl(serverLinks[currentServer](tmdbId, season, episode));
+        setIframeUrl(
+          (serverLinks as any)[currentServer](tmdbId, season, episode, type)
+        );
       }
     }
   }, [tmdbId, type, season, episode, currentServer]); // 🔥 ADDED currentServer
@@ -120,7 +159,6 @@ const PlayerPageContent = () => {
           onClick={() => router.back()}
           className="transition-all duration-300 hover:scale-90"
         >
-         
           <IoMdArrowRoundBack size={30} className="text-white" />
         </button>
 

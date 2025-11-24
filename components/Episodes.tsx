@@ -20,9 +20,8 @@ interface EpisodesProps {
   episodes: Episode[];
   imgbackup: string;
   anilistId: number;
-  type: string; // "MOVIE" or "TV"
+  type: string;
 }
-
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, type }) => {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
