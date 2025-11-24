@@ -25,7 +25,8 @@ const CharacterCard = ({ character, voiceActor, role }) => {
   return (
     <div
       className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative rounded-2xl overflow-hidden"
-      onClick={handleClick}
+      onMouseEnter={() => setHovered(true)}   // desktop hover start
+      onMouseLeave={() => setHovered(false)}  // desktop hover end
     >
       <Image
         key={hovered ? vaImage : charImage}  // dynamic key ensures new image is mounted
