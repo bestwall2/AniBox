@@ -258,7 +258,7 @@ body {
   padding-right: 5px;
   top: 54%;
   right: 10;
-  animation: pulseeffect 1.2s infinite ease-in-out;
+  
 }
 
 .Listcontainer {
@@ -354,8 +354,8 @@ body {
 
 .live-dot {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   background-color: #00ff4c; /* green */
   border-radius: 50%;
   box-shadow: 0 0 10px #00ff4c;
