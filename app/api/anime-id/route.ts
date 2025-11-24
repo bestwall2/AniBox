@@ -7,7 +7,7 @@ const TMDB_API_KEY = "90a823390bd37b5c1ba175bef7e2d5a8";
 const ANIME_LIST_URL =
   "https://raw.githubusercontent.com/Fribb/anime-lists/refs/heads/master/anime-list-full.json";
 
-export async function GET(request) {
+export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const anilistId = searchParams.get("id");
@@ -21,7 +21,9 @@ export async function GET(request) {
     if (!listRes.ok) throw new Error("Failed to fetch anime list");
     const animeList = await listRes.json();
 
-    const anime = animeList.find((a) => a.anilist_id === Number(anilistId));
+    const anime = animeList.find(
+      (a: { anilist_id: number }) => a.anilist_id === Number(anilistId),
+    );
     if (!anime || !anime.themoviedb_id) {
       return NextResponse.json({ error: "TMDb ID not found" }, { status: 404 });
     }
