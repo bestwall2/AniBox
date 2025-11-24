@@ -2,7 +2,7 @@
 
 import { getEpisodeServers } from "../../../actions/ApiData.js";
 
-export async function GET(request :any) {
+export async function GET(request : any) {
   const { searchParams } = new URL(request.url);
 
   const anime = searchParams.get("anime");
