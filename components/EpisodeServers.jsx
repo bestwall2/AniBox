@@ -10,7 +10,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
     async function loadServers() {
       try {
         const res = await fetch(
-          `/api/getServers?anime=${encodeURIComponent(
+          `/api/ep-servers?anime=${encodeURIComponent(
             animeName
           )}&ep=${episodeNumber}`
         );
