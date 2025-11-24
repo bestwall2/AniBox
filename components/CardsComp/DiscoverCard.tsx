@@ -24,7 +24,7 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
     <div className="Listcontainer  relative transition-all duration-300 ease-out hover:scale-[0.97]  rounded-2xl" >
       {/* Optimized Next.js Image */}
 
-      <Image src={img} alt={title} layout="fill" objectFit="cover" priority />
+      <Image src={`/api/proxy?url=${encodeURIComponent(img)}`} alt={title} layout="fill" objectFit="cover" priority />
       
 
       <div className="CardShadow absolute">
