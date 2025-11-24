@@ -4,9 +4,9 @@ import { useState } from "react";
 const CharacterCard = ({ character, voiceActor, role }) => {
   const [hovered, setHovered] = useState(false);
   const handleClick = () => {
-  setHovered(!hovered);
+    setHovered(!hovered);
   };
-  
+
   const charName = character?.name?.full || "Unknown";
   const vaName = voiceActor?.name?.full || "Unknown VA";
 
@@ -18,10 +18,6 @@ const CharacterCard = ({ character, voiceActor, role }) => {
     ? `/api/proxy?url=${encodeURIComponent(voiceActor.image.large)}`
     : null;
 
-  console.log("CHAR:", character);
-  console.log("VA:", voiceActor);
-
-
   return (
     <div
       className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative rounded-2xl overflow-hidden"
@@ -29,17 +25,16 @@ const CharacterCard = ({ character, voiceActor, role }) => {
       onMouseLeave={() => setHovered(false)}
       onTouchStart={() => setHovered(true)}
       onTouchEnd={() => setHovered(false)}
-  // desktop hover end
+      // desktop hover end
     >
       <Image
-        key={hovered ? vaImage : charImage}  // dynamic key ensures new image is mounted
+        key={hovered ? vaImage : charImage} // dynamic key ensures new image is mounted
         src={hovered && vaImage ? vaImage : charImage}
         alt={hovered ? vaName : charName}
         fill
         style={{ objectFit: "cover" }}
         unoptimized // optional: avoids Next.js cache issues
       />
-
 
       <div className="CardShadow absolute">
         <p className="Title absolute content-center text-center line-clamp-1">

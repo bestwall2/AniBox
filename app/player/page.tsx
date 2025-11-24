@@ -10,7 +10,7 @@ import { FaStar } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Skeleton } from "./../../components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-
+import EpisodeServers from "./../../components/EpisodeServers";
 const fetchAnimeEpisodes = async (id: string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
   if (!response.ok) throw new Error("Failed to fetch episodes");
@@ -134,6 +134,11 @@ const PlayerPageContent = () => {
 
   // ⬇️ ONLY THIS USEEFFECT WAS MODIFIED
   useEffect(() => {
+    if (currentServer === "built-ar") {
+      setIframeUrl("");
+      return;
+    }
+
     if (tmdbId) {
       if (type === "MOVIE") {
         setIframeUrl(
@@ -180,6 +185,7 @@ const PlayerPageContent = () => {
           <option value="server10">VidLink</option>
           <option value="server11">NetPlayz</option>
           <option value="server12">Mapple</option>
+          <option value="built-ar">Built Sub (AR)</option>
         </select>
 
         {/* Profile */}
@@ -195,7 +201,12 @@ const PlayerPageContent = () => {
 
       {/* Player */}
       <div className="w-full h-[220px] rounded-xl overflow-hidden">
-        {iframeUrl ? (
+        {currentServer === "built-ar" ? (
+          <EpisodeServers
+            animeName={animeDetails?.title?.romaji}
+            episodeNumber={episode}
+          />
+        ) : iframeUrl ? (
           <iframe
             src={iframeUrl}
             title={type === "MOVIE" ? "Movie Player" : `Episode ${episode}`}

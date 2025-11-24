@@ -5,6 +5,9 @@ import {
   top100AnimeQuery,
   animeinfo,
 } from "../actions/QueryActions";
+import fetch from "node-fetch";
+import { JSDOM } from "jsdom";
+
 
 const API_URL = "https://graphql.anilist.co";
 
@@ -102,3 +105,41 @@ const fetchAniList = async ({ query, variables = {} }) => {
     throw error;
   }
 };
+
+export const getEpisodeServers = async (animeName, epNumber) => {
+  // make the anime name suitable for URL slug
+  const nameSlug = animeName
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "");
+
+  const url = `https://animelek.live/episode/${nameSlug}-${epNumber}-الحلقة/`;
+
+  try {
+    const res = await fetch(url);
+    const html = await res.text();
+
+    const dom = new JSDOM(html);
+    const document = dom.window.document;
+
+    // All servers inside watch tab
+    const listItems = document.querySelectorAll(
+      "#watch #episode-servers li a[data-ep-url]"
+    );
+
+    const servers = [];
+
+    listItems.forEach((a) => {
+      servers.push({
+        serverName: a.textContent.trim(), // "mega HD"
+        quality: a.querySelector("small")?.textContent || "",
+        url: a.getAttribute("data-ep-url"), // iframe server link
+      });
+    });
+
+    return servers;
+  } catch (error) {
+    console.error("Error fetching servers:", error);
+    return [];
+  }
+}
