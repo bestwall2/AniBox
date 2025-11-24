@@ -81,7 +81,7 @@ const PlayerPageContent = () => {
 
     server5: (id: string, s: string, e: string, type: string = "TV") =>
       type === "MOVIE"
-        ? `https://godriveplayer.com/player.php?type=movie&tmdb=${id}`
+        ? `https://godriveplayer.com/player.php?tmdb=${id}`
         : `https://godriveplayer.com/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}`,
 
     server6: (id: string, s: string, e: string, type: string = "TV") =>
@@ -91,8 +91,8 @@ const PlayerPageContent = () => {
 
     server7: (id: string, s: string, e: string, type: string = "TV") =>
       type === "MOVIE"
-        ? `https://player.vidzee.wtf/api/server?id=${id}&type=movie`
-        : `https://player.vidzee.wtf/api/server?id=${id}&sr=0&ss=${s}&ep=${e}`,
+        ? `https://player.vidzee.wtf/embed/movie/${id}`
+        : `https://player.vidzee.wtf/embed/tv/${id}/${s}/${e}`,
 
     server8: (id: string, s: string, e: string, type: string = "TV") =>
       type === "MOVIE"
@@ -111,8 +111,8 @@ const PlayerPageContent = () => {
 
     server11: (id: string, s: string, e: string, type: string = "TV") =>
       type === "MOVIE"
-        ? `https://www.vidking.net/embed/movie/${id}`
-        : `https://www.vidking.net/embed/tv/${id}/${s}/${e}`,
+        ? `https://netplayz.live/watch?type=movie&id=${id}&play=true`
+        : `https://netplayz.live/watch?type=tv&id=${id}&s=${s}&e=${e}&play=true`,
 
     server12: (id: string, s: string, e: string, type: string = "TV") =>
       type === "MOVIE"
@@ -178,7 +178,7 @@ const PlayerPageContent = () => {
           <option value="server8">NonTonGo</option>
           <option value="server9">VidFast</option>
           <option value="server10">VidLink</option>
-          <option value="server11">VidKing</option>
+          <option value="server11">NetPlayz</option>
           <option value="server12">Mapple</option>
         </select>
 
