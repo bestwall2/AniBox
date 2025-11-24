@@ -3,7 +3,10 @@ import { useState } from "react";
 
 const CharacterCard = ({ character, voiceActor, role }) => {
   const [hovered, setHovered] = useState(false);
-
+  const handleClick = () => {
+  setHovered(!hovered);
+  };
+  
   const charName = character?.name?.full || "Unknown";
   const vaName = voiceActor?.name?.full || "Unknown VA";
 
@@ -22,10 +25,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
   return (
     <div
       className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative rounded-2xl overflow-hidden"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onTouchStart={() => setHovered(true)}
-      onTouchEnd={() => setHovered(false)}
+      onClick={handleClick}
     >
       <Image
         key={hovered ? vaImage : charImage}  // dynamic key ensures new image is mounted
