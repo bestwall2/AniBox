@@ -1,4 +1,5 @@
 "use server";
+
 import { NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 
@@ -14,6 +15,7 @@ export async function GET(request: Request) {
     );
   }
 
+  // make anime name URL safe
   const nameSlug = animeName
     .toLowerCase()
     .replace(/\s+/g, "-")
