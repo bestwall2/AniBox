@@ -353,6 +353,7 @@ body {
 }
 
 .live-dot {
+  display: inline-block;
   width: 10px;
   height: 10px;
   background-color: #00ff4c; /* green */
