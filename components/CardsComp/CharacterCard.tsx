@@ -4,36 +4,24 @@ import { useState } from "react";
 const CharacterCard = ({ character, voiceActor, role }) => {
   const [hovered, setHovered] = useState(false);
 
-  // Original image sources
-  const charImage = character?.image?.large;
-  const vaImage = voiceActor?.image?.large;
-
+  const charImage = `/api/proxy?url=${encodeURIComponent(character?.image?.large)}`;
   const charName = character?.name?.full || "Unknown";
+  const vaImage = `/api/proxy?url=${encodeURIComponent(voiceActor?.image?.large)}`;
   const vaName = voiceActor?.name?.full || "Unknown VA";
-
-  const imgbup = "/fallback.png"; // <-- your fallback backup image
-
-  // Proxy images
-  const proxiedCharImage = charImage
-    ? `/api/proxy?url=${encodeURIComponent(charImage)}`
-    : imgbup;
-
-  const proxiedVaImage = vaImage
-    ? `/api/proxy?url=${encodeURIComponent(vaImage)}`
-    : imgbup;
 
   return (
     <div
-      className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative rounded-2xl overflow-hidden"
+      className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative  rounded-2xl overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <Image
-        src={hovered && vaImage ? proxiedVaImage : proxiedCharImage}
+        src={hovered && vaImage ? vaImage : charImage}
         alt={hovered ? vaName : charName}
         layout="fill"
         objectFit="cover"
         priority
+        className=""
       />
 
       <div className="CardShadow absolute">
