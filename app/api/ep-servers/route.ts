@@ -1,9 +1,9 @@
-export const runtime = "nodejs"; // IMPORTANT!!!
+export const runtime = "nodejs"; // must be BEFORE imports
 
-("use server");
+"use server"; // must be at the very top (no parentheses)
 
 import { NextResponse } from "next/server";
-import fetch from "node-fetch"; // use same fetch that worked for you
+import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
 
 export async function GET(request: Request) {
@@ -22,6 +22,7 @@ export async function GET(request: Request) {
 
     const servers = await getEpisodeServers(anime, ep);
     return NextResponse.json(servers);
+
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
@@ -56,11 +57,12 @@ export async function getEpisodeServers(animeName: string, epNumber: string) {
       servers.push({
         serverName: a.textContent.trim(),
         quality: a.querySelector("small")?.textContent || "",
-        url: a.getAttribute("data-ep-url"),
+        url: a.getAttribute("data-ep-url")
       });
     });
 
     return servers;
+
   } catch (error) {
     console.error("Scraping Error:", error);
     return [];
