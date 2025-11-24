@@ -24,15 +24,18 @@ const CharacterCard = ({ character, voiceActor, role }) => {
       className="Listcontainer transition-all duration-300 ease-out hover:scale-[0.97] relative rounded-2xl overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onTouchStart={() => setHovered(true)}
+      onTouchEnd={() => setHovered(false)}
     >
       <Image
-        key={hovered ? "va" : "char"}          // 🟢 FIX
+        key={hovered ? vaImage : charImage}  // dynamic key ensures new image is mounted
         src={hovered && vaImage ? vaImage : charImage}
         alt={hovered ? vaName : charName}
         fill
         style={{ objectFit: "cover" }}
-        priority
+        unoptimized // optional: avoids Next.js cache issues
       />
+
 
       <div className="CardShadow absolute">
         <p className="Title absolute content-center text-center line-clamp-1">
