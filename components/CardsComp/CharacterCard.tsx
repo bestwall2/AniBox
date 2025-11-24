@@ -6,7 +6,7 @@ const CharacterCard = ({ character, voiceActor, role }) => {
 
   
   const charName = character?.name?.full || "Unknown";
-  const vaImage = `/api/proxy?url=${encodeURIComponent(voiceActor?.image?.large)}`;
+  const vaName = voiceActor?.name?.full || "Unknown VA";
   const charImage = character?.image?.large
   ? `/api/proxy?url=${encodeURIComponent(character.image.large)}`
   : null;
