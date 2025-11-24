@@ -1,3 +1,4 @@
+"use server";
 import { NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 
@@ -9,7 +10,7 @@ export async function GET(request: Request) {
   if (!animeName || !epNumber) {
     return NextResponse.json(
       { error: "Missing animeName or epNumber" },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
     const document = dom.window.document;
 
     const listItems = document.querySelectorAll(
-      "#watch #episode-servers li a[data-ep-url]",
+      "#watch #episode-servers li a[data-ep-url]"
     );
 
     const servers = Array.from(listItems).map((a) => ({
@@ -42,7 +43,7 @@ export async function GET(request: Request) {
     console.error("Error fetching servers:", error);
     return NextResponse.json(
       { error: "Failed to fetch servers" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
