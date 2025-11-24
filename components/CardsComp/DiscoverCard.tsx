@@ -46,16 +46,24 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
             style={{ color: "yellow", padding: 1 }}
           />
         </div>
-        <div className="CardActive  flex items-center justify-start">
-            <GoDotFill
-                size={17}
-                style={{
-                    color: status === "RELEASING" ? "#84d77b" : "#ef4444", // green or red
-                    padding: 1,
-                    textShadow: '0px 0px 10px black', // white shadow/glow
-                }}
-            />
-        </div>
+         {status === "RELEASING" ? (
+                // --- Condition is TRUE (Status is RELEASING) ---
+                <div className="live-dot flex items-center justify-start"></div>
+            ) : (
+                // --- Condition is FALSE (Status is NOT RELEASING) ---
+                <div className="CardActive flex items-center justify-start">
+                    <GoDotFill
+                        size={17}
+                        style={{
+                            // Since we are in the 'else' block, this will always be red (#ef4444)
+                            color: "#ef4444", 
+                            padding: 1,
+                            textShadow: '0px 0px 10px black',
+                        }}
+                    />
+                </div>
+            )}
+
       </div>
       <FaPlay className="PlayBtn " size={28}  style={{ color: "#3888E7", padding: 1 }} /> 
     </div>
