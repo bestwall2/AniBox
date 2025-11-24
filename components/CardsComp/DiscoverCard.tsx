@@ -48,7 +48,6 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
         </div>
         <div className="flex items-center gap-2">
           {status === "RELEASING" ? <div className="live-dot"></div> : <GoDotFill size={17} style={{ color:"#ef4444", textShadow:'0px 0px 10px black'}} />}
-          <span className="text-white font-semibold">You are Watching</span>
         </div>
       </div>
       <FaPlay className="PlayBtn " size={28}  style={{ color: "#3888E7", padding: 1 }} /> 
