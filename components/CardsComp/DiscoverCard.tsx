@@ -21,47 +21,51 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
   
 }) => {
   return (
-    <div className="Listcontainer relative transition-all duration-300 ease-out hover:scale-[0.97] rounded-2xl">
+    <div className="Listcontainer  relative transition-all duration-300 ease-out hover:scale-[0.97]  rounded-2xl" >
       {/* Optimized Next.js Image */}
+
       <Image src={img} alt={title} layout="fill" objectFit="cover" priority />
-    
-      {/* Card overlay */}
-      <div className="CardShadow absolute inset-0 p-3 flex flex-col justify-between">
+      
+
+      <div className="CardShadow absolute">
+      
         
-        {/* Green/Red dot in top-left */}
-        {status === "RELEASING" ? (
-          <div className="live-dot absolute top-2 left-2"></div>
-        ) : (
-          <GoDotFill
-            size={12}
-            className="absolute top-2 left-2"
-            style={{ color: "#ef4444", textShadow: "0px 0px 10px black" }}
-          />
-        )}
-    
-        {/* Title */}
-        <p className="Title absolute content-center text-center line-clamp-2">
+        <p className="Title  absolute  content-center  text-center line-clamp-2">
           {title}
         </p>
-    
-        {/* Bottom info */}
-        <div className="flex justify-between items-center">
-          <p className="MoreInfo text-gray-300 line-clamp-1">{info}</p>
-          <div className="CardBadge flex items-center gap-1">
-            <p className="CardBadgeText">{cardbadge}</p>
-            <FaStar size={12} style={{ color: "yellow", padding: 1 }} />
-          </div>
+              
+        <p className="MoreInfo text-gray-300 absolute line-clamp-1 bottom-0">
+          {" "}
+          {info}{" "}
+        </p>
+        <div className="CardBadge flex items-center justify-start">
+          <p className="CardBadgeText self-center">{cardbadge}</p>
+          <FaStar
+            
+            size={12}
+            style={{ color: "yellow", padding: 1 }}
+          />
         </div>
+        <div className="CardActive flex items-center justify-start">
+            {status === "RELEASING" ? (
+              // Pulsing green dot for releasing anime
+              <div className="live-dot absolute top-2 left-2"></div>
+            ) : (
+              // Red static dot for finished anime
+              <GoDotFill
+                size={17}
+                style={{
+                  color: "#ef4444",
+                  padding: 1,
+                  textShadow: '0px 0px 10px black',
+                }}
+              />
+            )}
+        </div>
+
       </div>
-    
-      {/* Play button */}
-      <FaPlay
-        className="PlayBtn absolute bottom-2 right-2"
-        size={28}
-        style={{ color: "#3888E7", padding: 1 }}
-      />
+      <FaPlay className="PlayBtn " size={28}  style={{ color: "#3888E7", padding: 1 }} /> 
     </div>
-    
   );
 };
 
