@@ -1,7 +1,4 @@
-"use server";
-export const runtime = "nodejs"; // must be BEFORE imports
-
- // must be at the very top (no parentheses)
+export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import fetch from "node-fetch";
@@ -23,7 +20,6 @@ export async function GET(request: Request) {
 
     const servers = await getEpisodeServers(anime, ep);
     return NextResponse.json(servers);
-
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
@@ -33,7 +29,7 @@ export async function GET(request: Request) {
   }
 }
 
-export async function getEpisodeServers(animeName: string, epNumber: string) {
+async function getEpisodeServers(animeName: string, epNumber: string) {
   const nameSlug = animeName
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -42,15 +38,20 @@ export async function getEpisodeServers(animeName: string, epNumber: string) {
   const url = `https://animelek.live/episode/${nameSlug}-${epNumber}-الحلقة/`;
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119 Safari/537.36",
+        Accept: "text/html",
+      },
+    });
+
+    if (!res.ok) {
+      console.error("Site blocked request:", res.status);
+      return [];
+    }
+
     const html = await res.text();
-    
-
-    console.log("STATUS:", res.status);
-    
-    console.log("HTML length:", html.length);
-    console.log("HTML preview:", html.slice(0, 200));
-
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
@@ -64,12 +65,11 @@ export async function getEpisodeServers(animeName: string, epNumber: string) {
       servers.push({
         serverName: a.textContent.trim(),
         quality: a.querySelector("small")?.textContent || "",
-        url: a.getAttribute("data-ep-url")
+        url: a.getAttribute("data-ep-url"),
       });
     });
 
     return servers;
-
   } catch (error) {
     console.error("Scraping Error:", error);
     return [];
