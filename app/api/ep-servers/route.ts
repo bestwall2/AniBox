@@ -1,4 +1,5 @@
 export const runtime = "nodejs";
+import fetch from "node-fetch";
 
 import { NextResponse } from "next/server";
 
@@ -38,13 +39,29 @@ async function getEpisodeServers(animeName: string, epNumber: string) {
   const url = `https://animelek.live/episode/${nameSlug}-${epNumber}-الحلقة/`;
 
   try {
-    const res = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119 Safari/537.36",
-        Accept: "text/html",
-      },
-    });
+   const res = await fetch(url, {
+     headers: {
+       accept:
+         "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+       "accept-language": "en-US,en;q=0.9",
+       "cache-control": "max-age=0",
+       priority: "u=0, i",
+       "sec-ch-ua": '"Chromium";v="142", "Brave";v="142", "Not_A Brand";v="99"',
+       "sec-ch-ua-mobile": "?0",
+       "sec-ch-ua-platform": '"Windows"',
+       "sec-fetch-dest": "document",
+       "sec-fetch-mode": "navigate",
+       "sec-fetch-site": "none",
+       "sec-fetch-user": "?1",
+       "sec-gpc": "1",
+       "upgrade-insecure-requests": "1",
+       cookie:
+         "pp_main_0cecf23bfab9ece29028ffd99f0e5e3f=1; pp_sub_0cecf23bfab9ece29028ffd99f0e5e3f=3; cf_clearance=Fb8f0gmIBVXs3uChIthWzVrvGq26SlSsY6pYefQVOCo-1764077374-1.2.1.1-5wz.xmG5j8x5pQhNvKYlIXluPKCeBtWWC7xMrKNsviW9gyn4lMuLPvM20JF3I6tXjcI3Lan159dI2ONJ7fcy2wXuEdhCA.tfKSP2kgitQtQUXosqVaW.0nMbwudPUWwHR9WZmjRgautio3biONg3oCHhildptL.cnOU.D7LXXN2gf827mZDGjDASKQJqcuwLKxElmEBWqziqn328p3Wc191FPyapYdMU0r1VGOzPCeI",
+     },
+     body: null,
+     method: "GET",
+   });
+    
 
     if (!res.ok) {
       console.error("Site blocked request:", res.status);
