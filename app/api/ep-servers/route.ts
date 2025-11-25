@@ -1,6 +1,7 @@
+"use server";
 export const runtime = "nodejs"; // must be BEFORE imports
 
-"use server"; // must be at the very top (no parentheses)
+ // must be at the very top (no parentheses)
 
 import { NextResponse } from "next/server";
 import fetch from "node-fetch";
