@@ -43,6 +43,12 @@ export async function getEpisodeServers(animeName: string, epNumber: string) {
   try {
     const res = await fetch(url);
     const html = await res.text();
+    
+
+    console.log("STATUS:", res.status);
+    
+    console.log("HTML length:", html.length);
+    console.log("HTML preview:", html.slice(0, 200));
 
     const dom = new JSDOM(html);
     const document = dom.window.document;
