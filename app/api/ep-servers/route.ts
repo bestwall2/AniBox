@@ -1,9 +1,9 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import fetch from "node-fetch";
-import { JSDOM } from "jsdom";
 
+import { JSDOM } from "jsdom";
+//fix missing user-agent issue by moving scraping logic to a separate function
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
