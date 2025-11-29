@@ -9,9 +9,14 @@ export async function GET(req: NextRequest) {
     const ep = url.searchParams.get("ep") || "1";
     // Generate slug
     const slug = anime
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9\-]/g, "");
+    .toLowerCase()
+    .normalize("NFKD")                 // remove accents safely
+    .replace(/["'’“”‘]/g, "")          // remove quotes
+    .replace(/&/g, "")              // replace & with "and"
+    .replace(/[^a-z0-9\s-]/g, "")      // remove all other symbols
+    .replace(/\s+/g, "-")              // replace spaces with -
+    .replace(/-+/g, "-")               // collapse multiple dashes
+    .replace(/^-|-$/g, "");
 
     const episodeUrl = `https://wb.animeluxe.org/episodes/${slug}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
     const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
