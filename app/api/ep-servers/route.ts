@@ -1,4 +1,4 @@
-"use server"; // <-- Explicitly marks this code to run on the server
+"use server";
 
 import { NextRequest, NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
@@ -19,7 +19,10 @@ export async function GET(req: NextRequest) {
   const ep = searchParams.get("ep");
 
   if (!anime || !ep) {
-    return NextResponse.json({ error: "anime & ep are required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "anime & ep are required" },
+      { status: 400 }
+    );
   }
 
   const slug = anime
@@ -39,21 +42,45 @@ export async function GET(req: NextRequest) {
     });
 
     if (!res.ok) {
-      return NextResponse.json({ error: "Failed to fetch page" }, { status: res.status });
+      return NextResponse.json(
+        { error: "Failed to fetch page or page not found" },
+        { status: res.status }
+      );
     }
 
     const html = await res.text();
+
+    // If HTML is empty or clearly invalid
+    if (!html || html.includes("404") || html.includes("Error")) {
+      return NextResponse.json(
+        { error: "There is no data or we can’t find this query" },
+        { status: 404 }
+      );
+    }
+
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
     const links = document.querySelectorAll(".server-list li a[data-url]");
+
+    if (!links || links.length === 0) {
+      return NextResponse.json(
+        { error: "There is no data or we can’t find this query" },
+        { status: 404 }
+      );
+    }
+
     const servers = [...links].map((a) => {
       const base64 = a.getAttribute("data-url") || "";
       let decoded: string | null = null;
 
-      try {
-        decoded = Buffer.from(base64, "base64").toString("utf-8");
-      } catch {}
+      if (base64) {
+        try {
+          decoded = Buffer.from(base64, "base64").toString("utf-8");
+        } catch {
+          decoded = null;
+        }
+      }
 
       return {
         name: a.textContent?.trim() || "",
@@ -65,6 +92,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ anime, ep, servers });
   } catch (err: any) {
     console.error("Scrape error:", err.message || err);
-    return NextResponse.json({ error: "Failed to scrape page" }, { status: 500 });
+    return NextResponse.json(
+      { error: "There is no data or request failed" },
+      { status: 500 }
+    );
   }
 }
