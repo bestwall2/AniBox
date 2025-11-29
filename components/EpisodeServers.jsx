@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function EpisodeServers({ animeName, episodeNumber }) {
+export default function EpisodeServers({ animeName, episodeNumber, onSelect }) {
   const [servers, setServers] = useState([]);
-  const [activeServer, setActiveServer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(false); // Hide buttons after click
 
   useEffect(() => {
     async function loadServers() {
@@ -27,24 +27,14 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
     loadServers();
   }, [animeName, episodeNumber]);
 
-  // If a server is selected → show ONLY fullscreen iframe
-  if (activeServer) {
-    return (
-      <iframe
-        src={activeServer}
-        allowFullScreen
-        className="w-full h-screen border-0"
-        style={{ display: "block" }}
-      />
-    );
-  }
+  if (selected) return null; // hide selector after choosing
 
   return (
     <div className="p-4">
-      {/* Loading */}
-      {loading && <p className="text-gray-300 animate-pulse">Loading servers...</p>}
+      {loading && (
+        <p className="text-gray-300 animate-pulse">Loading servers...</p>
+      )}
 
-      {/* Server Buttons */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 my-4">
         {servers.map((url, index) => {
           const hostname = (() => {
@@ -58,7 +48,10 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
           return (
             <button
               key={index}
-              onClick={() => setActiveServer(url)}
+              onClick={() => {
+                onSelect(url);  // send URL to parent
+                setSelected(true); // hide server buttons
+              }}
               className="p-3 rounded-xl border border-white/10 bg-[#1c1c1f] text-white text-sm hover:bg-[#27272c]"
             >
               {hostname}
