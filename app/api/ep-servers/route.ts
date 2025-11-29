@@ -7,8 +7,13 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const anime = url.searchParams.get("anime") || "sanda";
     const ep = url.searchParams.get("ep") || "1";
+    // Generate slug
+    const slug = anime
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9\-]/g, "");
 
-    const episodeUrl = `https://wb.animeluxe.org/episodes/${anime}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
+    const episodeUrl = `https://wb.animeluxe.org/episodes/${slug}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
     const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
       episodeUrl
     )}`;
