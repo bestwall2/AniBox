@@ -1,6 +1,5 @@
 "use server";
 
-
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -15,7 +14,8 @@ export async function GET(req: NextRequest) {
     )}`;
 
     const res = await fetch(workerUrl);
-    if (!res.ok) return NextResponse.json({ error: "Worker fetch failed" }, { status: res.status });
+    if (!res.ok)
+      return NextResponse.json({ error: "Worker fetch failed" }, { status: res.status });
 
     const html = await res.text();
 
@@ -25,29 +25,31 @@ export async function GET(req: NextRequest) {
 
     // Extract <ul class="server-list"> block
     const ulMatch = html.match(/<ul class="server-list">([\s\S]*?)<\/ul>/);
-    if (!ulMatch) return NextResponse.json({ error: "No servers found" }, { status: 404 });
+    if (!ulMatch)
+      return NextResponse.json({ error: "No servers found" }, { status: 404 });
 
     const ulContent = ulMatch[1];
 
-    // Extract <a data-url="..."> links
-    const linkRegex = /<a[^>]*data-url="([^"]+)"[^>]*>([^<]+)<\/a>/g;
-    const servers: { name: string; encoded: string; decodedUrl: string | null }[] = [];
+    // Keep your working regex, but make it a RegExp object
+    const linkRegex = new RegExp('data-url=\\\\"([^\\\\"]+)\\\\"', 'g');
+    const decodedUrls: string[] = [];
 
     let match;
     while ((match = linkRegex.exec(ulContent)) !== null) {
-      const encoded = match[1];
-      let decoded: string | null = null;
       try {
-        decoded = Buffer.from(encoded, "base64").toString("utf-8");
+        const decoded = Buffer.from(match[1], "base64").toString("utf-8");
+        decodedUrls.push(decoded);
       } catch {}
-      servers.push({ name: match[2].trim(), encoded, decodedUrl: decoded });
     }
 
-    if (servers.length === 0) return NextResponse.json({ error: "No servers found" + ulMatch}, { status: 404 });
+    if (decodedUrls.length === 0)
+      return NextResponse.json({ error: "No servers found" }, { status: 404 });
 
-    return NextResponse.json({ anime, ep, servers });
+    return NextResponse.json({ anime, ep, servers: decodedUrls });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || "Unknown server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: err.message || "Unknown server error" },
+      { status: 500 }
+    );
   }
 }
-
