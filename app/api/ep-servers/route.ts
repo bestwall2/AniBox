@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     const ulContent = ulMatch[1];
 
     // Keep your working regex, but make it a RegExp object
-    const linkRegex = new RegExp('data-url=\\\\"([^\\\\"]+)\\\\"', 'g');
+    const linkRegex = new RegExp('data-url=\\"([^\\"]+)', 'g');
     const decodedUrls: string[] = [];
 
     let match;
