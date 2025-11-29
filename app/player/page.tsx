@@ -206,10 +206,11 @@ const PlayerPageContent = () => {
             animeName={animeDetails?.title?.romaji}
             episodeNumber={episode}
             onSelect={(url) => {
-              setIframeUrl(url);     // load video in parent iframe
+              setIframeUrl(url);     
               setCurrentServer("built-ar");
             }}
           />
+
 
         ) : iframeUrl ? (
           <iframe
