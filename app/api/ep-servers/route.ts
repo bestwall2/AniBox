@@ -5,65 +5,31 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    // Original episode URL (no proxy)
-    const episodeUrl = "https://wb.animeluxe.org/episodes/sanda-الحلقة-1/";
+    // New Cloudflare Worker URL that returns HTML
+    const workerUrl =
+      "https://epservers.ahmed-dikha26.workers.dev/?url=" +
+      encodeURIComponent(
+        "https://wb.animeluxe.org/episodes/sanda-الحلقة-1/"
+      );
 
-    // ReqBin payload
-    const reqBinPayload = {
-      id: "0",
-      parentId: "0",
-      histKey: "",
-      name: "",
-      changed: true,
-      errors: "",
-      json: JSON.stringify({
-        method: "GET",
-        url: episodeUrl,
-        apiNode: "US",
-        contentType: "",
-        headers: "",
-        errors: "",
-        curlCmd: "",
-        codeCmd: "",
-        jsonCmd: "",
-        xmlCmd: "",
-        lang: "",
-        auth: {
-          auth: "noAuth",
-          bearerToken: "",
-          basicUsername: "",
-          basicPassword: "",
-          customHeader: "",
-          encrypted: "",
-        },
-        compare: false,
-        idnUrl: episodeUrl,
-      }),
-      sessionId: 1764376141051,
-      deviceId: "9ae63925-24b3-41be-aa21-25d9a5661ae4R",
-    };
-
-    // Send POST request to ReqBin
-    const response = await fetch("https://apius.reqbin.com/api/v1/requests", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reqBinPayload),
-    });
+    // Fetch HTML from your Worker
+    const response = await fetch(workerUrl);
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: `ReqBin request failed: ${response.statusText}` },
+        { error: `Worker request failed: ${response.statusText}` },
         { status: response.status }
       );
     }
 
-    const data = await response.json();
+    const html = await response.text(); // Get raw HTML as text
 
-    if (!data || Object.keys(data).length === 0) {
-      return NextResponse.json({ message: "No data returned from ReqBin." });
+    if (!html || html.length === 0) {
+      return NextResponse.json({ message: "No HTML returned from Worker." });
     }
 
-    return NextResponse.json({ success: true, data });
+    // Return HTML as JSON
+    return NextResponse.json({ success: true, html });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message || "Unknown server error." },
