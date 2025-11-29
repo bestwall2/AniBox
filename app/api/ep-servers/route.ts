@@ -2,12 +2,11 @@
 
 // File: /app/api/ep-servers/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { JSDOM } from "jsdom";
 
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    const anime = url.searchParams.get("anime") || "sanda"; // default example
+    const anime = url.searchParams.get("anime") || "sanda";
     const ep = url.searchParams.get("ep") || "1";
 
     // Construct episode URL
@@ -20,7 +19,6 @@ export async function GET(req: NextRequest) {
 
     // Fetch HTML from worker
     const res = await fetch(workerUrl);
-
     if (!res.ok) {
       return NextResponse.json(
         { error: `Worker request failed: ${res.statusText}` },
@@ -37,32 +35,36 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Parse HTML using jsdom
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-    const links = document.querySelectorAll(".server-list li a[data-url]");
-
-    if (!links || links.length === 0) {
+    // Fast regex to extract all <a data-url="...">...</a> inside .server-list
+    const serverListMatch = html.match(/<ul class="server-list">([\s\S]*?)<\/ul>/);
+    if (!serverListMatch) {
       return NextResponse.json(
         { error: "No servers found for this episode" },
         { status: 404 }
       );
     }
 
-    // Extract server info
-    const servers = [...links].map((a) => {
-      const base64 = a.getAttribute("data-url") || "";
+    const ulContent = serverListMatch[1];
+
+    const linkRegex = /<a[^>]*data-url="([^"]+)"[^>]*>([^<]+)<\/a>/g;
+    const servers: { name: string; encoded: string; decodedUrl: string | null }[] = [];
+
+    let match;
+    while ((match = linkRegex.exec(ulContent)) !== null) {
+      const encoded = match[1];
       let decoded: string | null = null;
       try {
-        decoded = Buffer.from(base64, "base64").toString("utf-8");
+        decoded = Buffer.from(encoded, "base64").toString("utf-8");
       } catch {}
+      servers.push({ name: match[2].trim(), encoded, decodedUrl: decoded });
+    }
 
-      return {
-        name: a.textContent?.trim() || "",
-        encoded: base64,
-        decodedUrl: decoded,
-      };
-    });
+    if (servers.length === 0) {
+      return NextResponse.json(
+        { error: "No servers found for this episode" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({ anime, ep, servers });
   } catch (err: any) {
