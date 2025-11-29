@@ -1,66 +1,62 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function EpisodeServers({ animeName, episodeNumber }) {
-  const [servers, setServers] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function ServerPlayer({ servers }) {
+  const [selectedUrl, setSelectedUrl] = useState("");
 
-  // When user selects a server → show iframe
-  const [selectedUrl, setSelectedUrl] = useState(null);
+  const handleSelect = (url) => {
+    setSelectedUrl(url);
+  };
 
-  useEffect(() => {
-    async function loadServers() {
-      try {
-        const res = await fetch(
-          `/api/ep-servers?anime=${encodeURIComponent(animeName)}&ep=${episodeNumber}`
-        );
+  const handleBack = () => {
+    setSelectedUrl("");
+  };
 
-        const data = await res.json();
-        setServers(data.servers || []);
-      } catch (err) {
-        console.error("Failed to load servers:", err);
-      } finally {
-        setLoading(false);
-      }
+  // Extract domain as clean server name
+  const getDomainName = (url) => {
+    try {
+      const hostname = new URL(url).hostname;
+      return hostname.replace("www.", "");
+    } catch {
+      return "Unknown Server";
     }
-
-    loadServers();
-  }, [animeName, episodeNumber]);
-
-  // 👉 If a server is chosen → show full iframe (fills parent's height)
-  if (selectedUrl) {
-    return (
-      <iframe
-        src={selectedUrl}
-        className="w-full h-full"
-        frameBorder="0"
-        allowFullScreen
-        referrerPolicy="origin"
-      />
-    );
-  }
-
-  if (loading) {
-    return <p className="text-gray-300 animate-pulse">Loading servers...</p>;
-  }
+  };
 
   return (
-    <div className="w-full h-full p-0 m-0 flex flex-col gap-4 bg-transparent">
-
-      <h2 className="text-white text-lg font-semibold">Arabic Sub Servers</h2>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {servers.map((url, index) => (
+    <div className="w-full">
+      {selectedUrl ? (
+        <div className="w-full">
           <button
-            key={index}
-            onClick={() => setSelectedUrl(url)}
-            className="p-3 rounded-xl border border-white/10
-                       bg-[#1c1c1f] text-white hover:bg-[#27272c]"
+            onClick={handleBack}
+            className="mb-3 w-full py-3 rounded-lg bg-gray-800 text-white font-semibold hover:bg-gray-700 transition"
           >
-            Server {index + 1}
+            ⬅️ Back to Servers
           </button>
-        ))}
-      </div>
+
+          <div className="w-full h-[75vh] bg-black">
+            <iframe
+              src={selectedUrl}
+              allowFullScreen
+              className="w-full h-full border-0 p-0 m-0"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3 w-full">
+          {servers.map((server, index) => {
+            const serverName = getDomainName(server.url);
+            return (
+              <button
+                key={index}
+                onClick={() => handleSelect(server.url)}
+                className="w-full py-4 rounded-xl bg-[#0f0f10] text-white text-lg font-medium border border-white/10 hover:border-white/30 hover:bg-[#1a1a1c] transition shadow-lg"
+              >
+                {serverName}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
