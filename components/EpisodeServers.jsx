@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 
 export default function EpisodeServers({ animeName, episodeNumber }) {
-  const [servers, setServers] = useState<string[]>([]);
-  const [activeServer, setActiveServer] = useState<string | null>(null);
+  const [servers, setServers] = useState([]); // no type annotations
+  const [activeServer, setActiveServer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,6 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
         );
         const data = await res.json();
 
-        // API returns { anime, ep, servers: string[] }
         if (data.servers && Array.isArray(data.servers)) {
           setServers(data.servers);
           setActiveServer(data.servers[0] || null); // optional: default to first server
@@ -31,18 +30,14 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
 
   return (
     <div className="p-4">
-      {/* Title */}
       <h1 className="text-xl font-bold text-white mb-4">
         Servers for Episode {episodeNumber}
       </h1>
 
-      {/* Loading State */}
       {loading && <p className="text-gray-300 animate-pulse">Loading servers...</p>}
 
-      {/* Server Buttons */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 my-4">
         {servers.map((url, index) => {
-          // generate a simple server name
           const hostname = (() => {
             try {
               return new URL(url).hostname.replace("www.", "");
@@ -66,7 +61,6 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
         })}
       </div>
 
-      {/* Video Player */}
       {activeServer && (
         <div className="mt-6 bg-black p-3 rounded-xl shadow-lg">
           <iframe
