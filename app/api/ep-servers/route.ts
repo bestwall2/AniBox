@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     .replace(/[^a-z0-9\s]+/g, "")         // remove all symbols
     .trim()                                // remove spaces at start/end
     .replace(/\s+/g, "-");
-
+    console.log(slug);
     const episodeUrl = `https://wb.animeluxe.org/episodes/${slug}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
     const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
       episodeUrl
