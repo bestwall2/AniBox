@@ -1,6 +1,6 @@
 "use server";
 
-// File: /app/api/ep-servers/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -9,43 +9,27 @@ export async function GET(req: NextRequest) {
     const anime = url.searchParams.get("anime") || "sanda";
     const ep = url.searchParams.get("ep") || "1";
 
-    // Construct episode URL
     const episodeUrl = `https://wb.animeluxe.org/episodes/${anime}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
-
-    // Cloudflare Worker URL
     const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
       episodeUrl
     )}`;
 
-    // Fetch HTML from worker
     const res = await fetch(workerUrl);
-    if (!res.ok) {
-      return NextResponse.json(
-        { error: `Worker request failed: ${res.statusText}` },
-        { status: res.status }
-      );
-    }
+    if (!res.ok) return NextResponse.json({ error: "Worker fetch failed" }, { status: res.status });
 
     const html = await res.text();
 
-    if (!html || html.includes("404") || html.includes("Error")) {
-      return NextResponse.json(
-        { error: "There is no data or we can't find this query" },
-        { status: 404 }
-      );
+    if (!html || html.includes("404")) {
+      return NextResponse.json({ error: "No data or page not found" }, { status: 404 });
     }
 
-    // Fast regex to extract all <a data-url="...">...</a> inside .server-list
-    const serverListMatch = html.match(/<ul class="server-list">([\s\S]*?)<\/ul>/);
-    if (!serverListMatch) {
-      return NextResponse.json(
-        { error: "No servers found for this episode" },
-        { status: 404 }
-      );
-    }
+    // Extract <ul class="server-list"> block
+    const ulMatch = html.match(/<ul class="server-list">([\s\S]*?)<\/ul>/);
+    if (!ulMatch) return NextResponse.json({ error: "No servers found" }, { status: 404 });
 
-    const ulContent = serverListMatch[1];
+    const ulContent = ulMatch[1];
 
+    // Extract <a data-url="..."> links
     const linkRegex = /<a[^>]*data-url="([^"]+)"[^>]*>([^<]+)<\/a>/g;
     const servers: { name: string; encoded: string; decodedUrl: string | null }[] = [];
 
@@ -59,18 +43,11 @@ export async function GET(req: NextRequest) {
       servers.push({ name: match[2].trim(), encoded, decodedUrl: decoded });
     }
 
-    if (servers.length === 0) {
-      return NextResponse.json(
-        { error: "No servers found for this episode" },
-        { status: 404 }
-      );
-    }
+    if (servers.length === 0) return NextResponse.json({ error: "No servers found" }, { status: 404 });
 
     return NextResponse.json({ anime, ep, servers });
   } catch (err: any) {
-    return NextResponse.json(
-      { error: err.message || "Unknown server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err.message || "Unknown server error" }, { status: 500 });
   }
 }
+
