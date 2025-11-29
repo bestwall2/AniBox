@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
       servers.push({ name: match[2].trim(), encoded, decodedUrl: decoded });
     }
 
-    if (servers.length === 0) return NextResponse.json({ error: "No servers found" }, { status: 404 });
+    if (servers.length === 0) return NextResponse.json({ error: "No servers found" + ulMatch}, { status: 404 });
 
     return NextResponse.json({ anime, ep, servers });
   } catch (err: any) {
