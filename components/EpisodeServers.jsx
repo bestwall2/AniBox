@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 export default function EpisodeServers({ animeName, episodeNumber }) {
-  const [servers, setServers] = useState([]); // no type annotations
+  const [servers, setServers] = useState([]);
   const [activeServer, setActiveServer] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,6 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
 
         if (data.servers && Array.isArray(data.servers)) {
           setServers(data.servers);
-          setActiveServer(data.servers[0] || null); // optional: default to first server
         }
       } catch (err) {
         console.error("Failed to load servers:", err);
@@ -28,14 +27,24 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
     loadServers();
   }, [animeName, episodeNumber]);
 
+  // If a server is selected → show ONLY fullscreen iframe
+  if (activeServer) {
+    return (
+      <iframe
+        src={activeServer}
+        allowFullScreen
+        className="w-full h-screen border-0"
+        style={{ display: "block" }}
+      />
+    );
+  }
+
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold text-white mb-4">
-        Servers for Episode {episodeNumber}
-      </h1>
-
+      {/* Loading */}
       {loading && <p className="text-gray-300 animate-pulse">Loading servers...</p>}
 
+      {/* Server Buttons */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 my-4">
         {servers.map((url, index) => {
           const hostname = (() => {
@@ -50,26 +59,13 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
             <button
               key={index}
               onClick={() => setActiveServer(url)}
-              className={`p-3 rounded-xl border border-white/10 shadow-md transition 
-                bg-[#1c1c1f] hover:bg-[#27272c] hover:shadow-lg text-white text-sm
-                ${activeServer === url ? "ring-2 ring-blue-500" : ""}
-              `}
+              className="p-3 rounded-xl border border-white/10 bg-[#1c1c1f] text-white text-sm hover:bg-[#27272c]"
             >
-              <span className="font-semibold">{hostname}</span>
+              {hostname}
             </button>
           );
         })}
       </div>
-
-      {activeServer && (
-        <div className="mt-6 bg-black p-3 rounded-xl shadow-lg">
-          <iframe
-            src={activeServer}
-            allowFullScreen
-            className="w-full h-[420px] rounded-lg border border-white/10"
-          />
-        </div>
-      )}
     </div>
   );
 }
