@@ -1,94 +1,70 @@
-export const runtime = "nodejs";
-import fetch from "node-fetch";
+"use server"; // <-- Explicitly marks this code to run on the server
 
-import { NextResponse } from "next/server";
-
+import { NextRequest, NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
-//fix missing user-agent issue by moving scraping logic to a separate function
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
 
-    const anime = searchParams.get("anime");
-    const ep = searchParams.get("ep");
+const SCRAPEOPS_KEY = "aa333f67-8ca9-4f7f-bc00-2370f3a80570";
 
-    if (!anime || !ep) {
-      return NextResponse.json(
-        { error: "Missing anime or ep" },
-        { status: 400 }
-      );
-    }
+const USER_AGENTS = [
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+];
 
-    const servers = await getEpisodeServers(anime, ep);
-    return NextResponse.json(servers);
-  } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+const pickUA = () => USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const anime = searchParams.get("anime");
+  const ep = searchParams.get("ep");
+
+  if (!anime || !ep) {
+    return NextResponse.json({ error: "anime & ep are required" }, { status: 400 });
   }
-}
 
-async function getEpisodeServers(animeName: string, epNumber: string) {
-  const nameSlug = animeName
+  const slug = anime
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9\-]/g, "");
 
-  const url = `https://animelek.live/episode/${nameSlug}-${epNumber}-الحلقة/`;
+  const targetUrl = `https://wb.animeluxe.org/episodes/${slug}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
 
   try {
-   const res = await fetch(url, {
-     headers: {
-       accept:
-         "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-       "accept-language": "en-US,en;q=0.9",
-       "cache-control": "max-age=0",
-       priority: "u=0, i",
-       "sec-ch-ua": '"Chromium";v="142", "Brave";v="142", "Not_A Brand";v="99"',
-       "sec-ch-ua-mobile": "?0",
-       "sec-ch-ua-platform": '"Windows"',
-       "sec-fetch-dest": "document",
-       "sec-fetch-mode": "navigate",
-       "sec-fetch-site": "none",
-       "sec-fetch-user": "?1",
-       "sec-gpc": "1",
-       "upgrade-insecure-requests": "1",
-       cookie:
-         "pp_main_0cecf23bfab9ece29028ffd99f0e5e3f=1; pp_sub_0cecf23bfab9ece29028ffd99f0e5e3f=3; cf_clearance=Fb8f0gmIBVXs3uChIthWzVrvGq26SlSsY6pYefQVOCo-1764077374-1.2.1.1-5wz.xmG5j8x5pQhNvKYlIXluPKCeBtWWC7xMrKNsviW9gyn4lMuLPvM20JF3I6tXjcI3Lan159dI2ONJ7fcy2wXuEdhCA.tfKSP2kgitQtQUXosqVaW.0nMbwudPUWwHR9WZmjRgautio3biONg3oCHhildptL.cnOU.D7LXXN2gf827mZDGjDASKQJqcuwLKxElmEBWqziqn328p3Wc191FPyapYdMU0r1VGOzPCeI",
-     },
-     body: null,
-     method: "GET",
-   });
-    
+    const apiUrl = `https://proxy.scrapeops.io/v1/?api_key=${SCRAPEOPS_KEY}&url=${encodeURIComponent(
+      targetUrl
+    )}`;
+
+    const res = await fetch(apiUrl, {
+      headers: { "User-Agent": pickUA() },
+    });
 
     if (!res.ok) {
-      console.error("Site blocked request:", res.status);
-      return [];
+      return NextResponse.json({ error: "Failed to fetch page" }, { status: res.status });
     }
 
     const html = await res.text();
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
-    const listItems = document.querySelectorAll(
-      "#watch #episode-servers li a[data-ep-url]"
-    );
+    const links = document.querySelectorAll(".server-list li a[data-url]");
+    const servers = [...links].map((a) => {
+      const base64 = a.getAttribute("data-url") || "";
+      let decoded: string | null = null;
 
-    const servers: any[] = [];
+      try {
+        decoded = Buffer.from(base64, "base64").toString("utf-8");
+      } catch {}
 
-    listItems.forEach((a: any) => {
-      servers.push({
-        serverName: a.textContent.trim(),
-        quality: a.querySelector("small")?.textContent || "",
-        url: a.getAttribute("data-ep-url"),
-      });
+      return {
+        name: a.textContent?.trim() || "",
+        encoded: base64,
+        decodedUrl: decoded,
+      };
     });
 
-    return servers;
-  } catch (error) {
-    console.error("Scraping Error:", error);
-    return [];
+    return NextResponse.json({ anime, ep, servers });
+  } catch (err: any) {
+    console.error("Scrape error:", err.message || err);
+    return NextResponse.json({ error: "Failed to scrape page" }, { status: 500 });
   }
 }
