@@ -64,7 +64,7 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
             
             <Swiper
                 modules={[Navigation, FreeMode]}
-                slidesPerView={2.8}
+                slidesPerView={2.7}
                 spaceBetween={5}
                 navigation={true}
                 freeMode={true}
