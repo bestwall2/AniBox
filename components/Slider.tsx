@@ -120,7 +120,7 @@ const Slider = () => {
                             </h1>
                         </div>
                         <Button
-                            className="SliderButton p-4 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] font-semibold rounded-xl mr-2"
+                            className="SliderButton pt-6 pb-6 p-4 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] font-semibold rounded-xl mr-2"
                             variant="styled"
                         >
                             <FaPlay size={12} /> Play Now 
