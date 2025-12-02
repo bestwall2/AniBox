@@ -15,8 +15,14 @@ const FirstPage = () => {
         <div className="flex-1 overflow-auto">
           <Slider />
           <div className="Items container mx-auto p-4 pt-0 pb-5 flex flex-col">
-            <ListItems geners="Trending Anime 🔥" apiPath="/api/trending-anime" />
-            <ListItems geners="Top 100 Anime 🔝" apiPath="/api/top-anime" />
+            <ListItems 
+              geners="Trending Anime 🔥" 
+              apiPath="/api/trending-anime" 
+              param="font-semibold"/>
+            <ListItems 
+              geners="Top 100 Anime 🔝" 
+              apiPath="/api/top-anime" 
+              param="font-semibold"/>
             <ListItems
               geners="Favorites Anime ❤️"
               apiPath="/api/favorites-anime"
