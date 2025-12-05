@@ -11,6 +11,7 @@ export default function EpisodeServers({ animeName, episodeNumber, malId }) {
 
   useEffect(() => {
     async function loadServers() {
+      console.log("EpisodeServers: loading with", { animeName, episodeNumber, malId });
       try {
         const params = new URLSearchParams();
         if (animeName) params.set("anime", animeName);

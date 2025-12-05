@@ -28,6 +28,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "TMDb ID not found" }, { status: 404 });
     }
     const tmdbId = anime.themoviedb_id;
+    const malid = anime.mal_id;
 
     // 2️⃣ Fetch AniList anime details
     const aniRes = await fetch(`${request.nextUrl.origin}/api/anime-info?id=${anilistId}`);
@@ -84,7 +85,7 @@ export async function GET(request: Request) {
 
     const currentSeason = matchingSeason?.season_number || 1;
 
-    return NextResponse.json({ tmdb_id: tmdbId, current_season: currentSeason });
+    return NextResponse.json({ tmdb_id: tmdbId, current_season: currentSeason, mal_id: malid });
   } catch (err) {
     console.error("Error fetching TMDB & season:", err);
     return NextResponse.json(

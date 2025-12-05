@@ -24,6 +24,7 @@ const fetchAnimeEpisodes = async (id: string) => {
       img: episode.image ?? "",
       description: episode.description ?? "",
       isFiller: episode.isFiller ?? false,
+     
     }));
   }
   return [];
@@ -56,6 +57,7 @@ const PlayerPageContent = () => {
   const season = searchParams.get("season");
   const episode = searchParams.get("episode");
   const anilistId = searchParams.get("anilistId");
+  const malId = searchParams.get("malId");
 
   // 🔥 ADDED — server list
   const serverLinks = {
@@ -205,7 +207,7 @@ const PlayerPageContent = () => {
           <EpisodeServers
             animeName={animeDetails?.title?.romaji}
             episodeNumber={episode}
-            malId={animeDetails?.idMal}
+            malId={malId}
             />
 
 
