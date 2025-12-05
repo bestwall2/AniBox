@@ -31,7 +31,8 @@ export async function GET(request: Request) {
     const malid = anime.mal_id;
 
     // 2️⃣ Fetch AniList anime details
-    const aniRes = await fetch(`${request.nextUrl.origin}/api/anime-info?id=${anilistId}`);
+    const origin = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const aniRes = await fetch(`${origin}/api/anime-info?id=${anilistId}`);
     if (!aniRes.ok) throw new Error("Failed to fetch AniList info");
     const media = (await aniRes.json()).Media;
 
@@ -58,7 +59,7 @@ export async function GET(request: Request) {
     const titleFinal = media.title?.romaji?.toUpperCase().includes("FINAL");
 
     // 5️⃣ Try to find season matching by year, month, total episodes
-    let matchingSeason = seasons.find((season) => {
+    let matchingSeason = seasons.find((season: any) => {
       if (!season.air_date) return false;
       const seasonDate = new Date(season.air_date);
       const sameYear = seasonDate.getFullYear() === aniYear;
@@ -69,14 +70,14 @@ export async function GET(request: Request) {
 
     // 6️⃣ Optional: if multiple seasons match, prefer one with "FINAL" in name
     if (!matchingSeason && titleFinal) {
-      matchingSeason = seasons.find((season) =>
+      matchingSeason = seasons.find((season: any) =>
         season.name.toUpperCase().includes("FINAL")
       );
     }
 
     // 7️⃣ Fallback: closest season by year/month
     if (!matchingSeason) {
-      matchingSeason = seasons.find((season) => {
+      matchingSeason = seasons.find((season: any) => {
         if (!season.air_date) return false;
         const seasonDate = new Date(season.air_date);
         return seasonDate.getFullYear() === aniYear && seasonDate.getMonth() + 1 === aniMonth;
@@ -86,10 +87,10 @@ export async function GET(request: Request) {
     const currentSeason = matchingSeason?.season_number || 1;
 
     return NextResponse.json({ tmdb_id: tmdbId, current_season: currentSeason, mal_id: malid });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Error fetching TMDB & season:", err);
     return NextResponse.json(
-      { error: err.message || "Internal Server Error" },
+      { error: (err as any).message || "Internal Server Error" },
       { status: 500 }
     );
   }

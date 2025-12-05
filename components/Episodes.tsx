@@ -110,6 +110,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
         ).map((episode) => {
           const href = tmdbId
             ? `/player?tmdbId=${tmdbId}&type=${type}&season=${season || 1}&episode=${episode.number}&anilistId=${anilistId}&malId=${malId}`
+            : "";
 
           const card = (
             <EpisodeCard
