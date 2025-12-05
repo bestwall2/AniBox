@@ -11,9 +11,11 @@ export async function GET(req: NextRequest) {
     const slug = anime
     .toLowerCase()                        // convert to lowercase
     .normalize("NFKD")                     // normalize accents
-    .replace(/[^a-z0-9\s\-]+/g, "")       // remove all symbols except hyphens
+    .replace(/[\u0300-\u036f]/g, "")      // remove diacritics
+    .replace(/[^a-z0-9\s\-]+/g, "")       // remove all symbols except hyphens and spaces
     .trim()                                // remove spaces at start/end
-    .replace(/\s+/g, "-");
+    .replace(/\s+/g, "-")                 // convert spaces to hyphens
+    .replace(/-+/g, "-");                 // collapse multiple hyphens to single
     console.log(slug);
 
     const servers: Array<{ name: string; url: string }> = [];
