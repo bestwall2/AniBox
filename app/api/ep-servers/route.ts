@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (servers.length === 0)
-      return NextResponse.json({ error: "No servers found" + slug}, { status: 404 });
+      return NextResponse.json({ error: "No servers found \n" + slug}, { status: 404 });
 
     return NextResponse.json({ anime, ep, slug, servers });
   } catch (err: any) {

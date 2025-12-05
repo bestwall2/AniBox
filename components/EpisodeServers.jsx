@@ -7,6 +7,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
 
   // When user selects a server → show iframe
   const [selectedUrl, setSelectedUrl] = useState(null);
+  const [sername, setSername] = useState(null);
 
   useEffect(() => {
     async function loadServers() {
@@ -17,6 +18,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
 
         const data = await res.json();
         setServers(data.servers || []);
+        setSername(data.servers?.map(server => server.name) || []);
       } catch (err) {
         console.error("Failed to load servers:", err);
       } finally {
@@ -50,14 +52,14 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
       <h2 className="text-white text-lg font-semibold">Arabic Sub Servers</h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {servers.map((url, index) => (
+        {servers.map((server, index) => (
           <button
             key={index}
-            onClick={() => setSelectedUrl(url)}
+            onClick={() => setSelectedUrl(server.url)}
             className="p-3 rounded-xl border border-white/10
                        bg-[#1c1c1f] text-white hover:bg-[#27272c]"
           >
-            Server {index + 1}
+            {server.name.charAt(0).toUpperCase() + server.name.slice(1)}
           </button>
         ))}
       </div>
