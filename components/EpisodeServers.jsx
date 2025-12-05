@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import * as Dialog from "@radix-ui/react-dialog";
+import { FaPlay } from "react-icons/fa";
 
 export default function EpisodeServers({ animeName, episodeNumber }) {
   const [servers, setServers] = useState([]);
@@ -33,23 +34,18 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
   return (
     <div className="w-full h-full flex flex-col gap-5">
 
-      <h2 className="text-white text-lg font-semibold">
-        Arabic Sub Servers
-      </h2>
+      <h2 className="text-white text-lg font-semibold">Arabic Sub Servers</h2>
 
       {/* ░░░ Loading skeleton ░░░ */}
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-12 rounded-xl bg-white/5 animate-pulse"
-            />
+            <div key={i} className="h-12 rounded-xl bg-white/5 animate-pulse" />
           ))}
         </div>
       ) : (
         <>
-          {/* ░░░ Server Select via Radix ToggleGroup ░░░ */}
+          {/* ░░░ Server Select Buttons ░░░ */}
           <ToggleGroup.Root
             type="single"
             className="grid grid-cols-2 sm:grid-cols-3 gap-3"
@@ -67,16 +63,19 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
                 key={server.name}
                 value={server.name}
                 className={`
-                  p-3 text-center rounded-xl border border-white/10
+                  p-3 rounded-xl border border-white/10
                   text-white bg-[#1c1c1f]
-                  transition-all 
+                  transition-all flex items-center justify-center gap-2
                   hover:bg-[#27272c]
                   radix-state-on:bg-white/20
                   radix-state-on:border-white/20
                   radix-state-on:scale-[0.98]
                 `}
               >
-                {server.name.charAt(0).toUpperCase() + server.name.slice(1)}
+                <FaPlay className="text-white text-sm" />
+                <span>
+                  {server.name.charAt(0).toUpperCase() + server.name.slice(1)}
+                </span>
               </ToggleGroup.Item>
             ))}
           </ToggleGroup.Root>
