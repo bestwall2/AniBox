@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const slug = anime
     .toLowerCase()                        // convert to lowercase
     .normalize("NFKD")                     // normalize accents
-    .replace(/[^a-z0-9\s]+/g, "")         // remove all symbols
+    .replace(/[^a-z0-9\s\-]+/g, "")       // remove all symbols except hyphens
     .trim()                                // remove spaces at start/end
     .replace(/\s+/g, "-");
     console.log(slug);
@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (servers.length === 0)
-      return NextResponse.json({ error: "No servers found \n" + slug}, { status: 404 });
+      return NextResponse.json({ error: "No servers found /n" + slug}, { status: 404 });
 
     return NextResponse.json({ anime, ep, slug, servers });
   } catch (err: any) {
