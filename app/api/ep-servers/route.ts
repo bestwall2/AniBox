@@ -5,42 +5,16 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    let anime = url.searchParams.get("anime") || "";
+    const anime = url.searchParams.get("anime") || "sanda";
     const ep = url.searchParams.get("ep") || "1";
-    const malId = url.searchParams.get("malId");
-    //let anime; 
-    // If malId is provided, fetch title from Jikan API
-    if (malId) {
-      try {
-        const jikanRes = await fetch(`https://api.jikan.moe/v4/anime/${malId}`);
-        if (jikanRes.ok) {
-          const jikanData = await jikanRes.json();
-          // Use the full Japanese title from the title field
-          anime = jikanData.data?.titles?.find((t: any) => t.type === "Default")?.title || jikanData.data?.title || anime;
-          console.log("Fetched title from Jikan:", anime);
-        }
-      } catch (err) {
-        console.log("Jikan API fetch failed, using fallback anime name:", err);
-      }
-    }
-
-    // Fallback if anime is still empty
-    if (!anime) {
-      anime = "sanda";
-    }
-
-    // Generate slug - preserve hyphens from original, convert spaces to hyphens
-    function slugify(str: string) {
-      return str
-        .trim()                // remove space from start and end
-        .toLowerCase()         // lowercase
-        .replace(/[^a-z0-9 -]/g, "") // remove all symbols except letters, numbers, space, and -
-        .replace(/\s+/g, "-"); // replace spaces with -
-    }
-
-    const slug = slugify(anime);
+    // Generate slug
+    const slug = anime
+    .toLowerCase()                        // convert to lowercase
+    .normalize("NFKD")                     // normalize accents
+    .replace(/[^a-z0-9\s]+/g, "")         // remove all symbols
+    .trim()                                // remove spaces at start/end
+    .replace(/\s+/g, "-");
     console.log(slug);
-
 
     const servers: Array<{ name: string; url: string }> = [];
 
@@ -124,7 +98,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (servers.length === 0)
-      return NextResponse.json({ error: "No servers found \n\n" + slug + malId}, { status: 404 });
+      return NextResponse.json({ error: "No servers found \n" + slug}, { status: 404 });
 
     return NextResponse.json({ anime, ep, slug, servers });
   } catch (err: any) {
