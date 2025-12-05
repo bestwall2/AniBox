@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function EpisodeServers({ animeName, episodeNumber, malId }) {
+export default function EpisodeServers({ animeName, episodeNumber }) {
   const [servers, setServers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -11,14 +11,10 @@ export default function EpisodeServers({ animeName, episodeNumber, malId }) {
 
   useEffect(() => {
     async function loadServers() {
-      console.log("EpisodeServers: loading with", { animeName, episodeNumber, malId });
       try {
-        const params = new URLSearchParams();
-        if (animeName) params.set("anime", animeName);
-        params.set("ep", String(episodeNumber));
-        if (malId) params.set("malId", String(malId));
-
-        const res = await fetch(`/api/ep-servers?${params.toString()}`);
+        const res = await fetch(
+          `/api/ep-servers?anime=${encodeURIComponent(animeName)}&ep=${episodeNumber}`
+        );
 
         const data = await res.json();
         setServers(data.servers || []);
@@ -31,7 +27,7 @@ export default function EpisodeServers({ animeName, episodeNumber, malId }) {
     }
 
     loadServers();
-  }, [animeName, episodeNumber, malId]);
+  }, [animeName, episodeNumber]);
 
   // 👉 If a server is chosen → show full iframe (fills parent's height)
   if (selectedUrl) {
