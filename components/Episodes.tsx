@@ -5,7 +5,7 @@ import EpisodeCard from "./CardsComp/EpisodesCard";
 import { FaSearch } from "react-icons/fa";
 import SearchInput from "./ui/SearchInput";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Episode {
   id: string;
@@ -20,10 +20,11 @@ interface EpisodesProps {
   episodes: Episode[];
   imgbackup: string;
   anilistId: number;
-  type: string;
+  type: string; // "MOVIE" or "TV"
 }
+
 const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, type }) => {
-  const router = useRouter();
+  
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [tmdbId, setTmdbId] = useState<number | null>(null);
@@ -51,15 +52,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
     ep.number?.toString().includes(searchValue || "")
   );
 
-  const handleEpisodeClick = (episode: Episode) => {
-    if (tmdbId) {
-      router.push(
-        `/player?tmdbId=${tmdbId}&type=${type}&season=${season || 1}&episode=${
-          episode.number
-        }&anilistId=${anilistId}`
-      );
-    }
-  };
+  // navigation handled via Next.js Link below
 
   return (
     <div className="EpisodesList mt-2">
@@ -112,12 +105,12 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
               },
             ]
           : filteredEpisodes
-        ).map((episode) => (
-          <div
-            key={episode.id}
-            onClick={() => handleEpisodeClick(episode)}
-            className="cursor-pointer"
-          >
+        ).map((episode) => {
+          const href = tmdbId
+            ? `/player?tmdbId=${tmdbId}&type=${type}&season=${season || 1}&episode=${episode.number}&anilistId=${anilistId}`
+            : undefined;
+
+          const card = (
             <EpisodeCard
               title={episode.title}
               description={episode.description}
@@ -125,8 +118,18 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
               number={episode.number}
               imgbup={imgbackup}
             />
-          </div>
-        ))}
+          );
+
+          return href ? (
+            <Link key={episode.id} href={href} className="cursor-pointer">
+              {card}
+            </Link>
+          ) : (
+            <div key={episode.id} className="cursor-default">
+              {card}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
