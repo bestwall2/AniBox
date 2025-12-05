@@ -7,15 +7,13 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const anime = url.searchParams.get("anime") || "sanda";
     const ep = url.searchParams.get("ep") || "1";
-    // Generate slug
+    // Generate slug - preserve hyphens from original, convert spaces to hyphens
     const slug = anime
     .toLowerCase()                        // convert to lowercase
-    .normalize("NFKD")                     // normalize accents
-    .replace(/[\u0300-\u036f]/g, "")      // remove diacritics
-    .replace(/[^a-z0-9\s\-]+/g, "")       // remove all symbols except hyphens and spaces
-    .trim()                                // remove spaces at start/end
+    .replace(/["'&!?]+/g, "")             // remove quotes and punctuation only
     .replace(/\s+/g, "-")                 // convert spaces to hyphens
-    .replace(/-+/g, "-");                 // collapse multiple hyphens to single
+    .replace(/-+/g, "-")                  // collapse multiple hyphens
+    .replace(/^-+|-+$/g, "");             // remove leading/trailing hyphens
     console.log(slug);
 
     const servers: Array<{ name: string; url: string }> = [];
