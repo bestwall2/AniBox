@@ -12,9 +12,12 @@ export default function EpisodeServers({ animeName, episodeNumber, malId }) {
   useEffect(() => {
     async function loadServers() {
       try {
-        const res = await fetch(
-          `/api/ep-servers?anime=${encodeURIComponent(animeName)}&ep=${episodeNumber}&malId=${malId}`
-        );
+        const params = new URLSearchParams();
+        if (animeName) params.set("anime", animeName);
+        params.set("ep", String(episodeNumber));
+        if (malId) params.set("malId", String(malId));
+
+        const res = await fetch(`/api/ep-servers?${params.toString()}`);
 
         const data = await res.json();
         setServers(data.servers || []);
@@ -27,7 +30,7 @@ export default function EpisodeServers({ animeName, episodeNumber, malId }) {
     }
 
     loadServers();
-  }, [animeName, episodeNumber]);
+  }, [animeName, episodeNumber, malId]);
 
   // 👉 If a server is chosen → show full iframe (fills parent's height)
   if (selectedUrl) {
