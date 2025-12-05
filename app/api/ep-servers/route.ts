@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    let anime = url.searchParams.get("anime") || "";
+    //let anime = url.searchParams.get("anime") || "";
     const ep = url.searchParams.get("ep") || "1";
     const malId = url.searchParams.get("malId");
-
+    let anime; 
     // If malId is provided, fetch title from Jikan API
     if (malId) {
       try {
@@ -124,7 +124,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (servers.length === 0)
-      return NextResponse.json({ error: "No servers found \n\n" + slug}, { status: 404 });
+      return NextResponse.json({ error: "No servers found \n\n" + slug + malId}, { status: 404 });
 
     return NextResponse.json({ anime, ep, slug, servers });
   } catch (err: any) {
