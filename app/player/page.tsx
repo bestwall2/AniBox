@@ -205,6 +205,7 @@ const PlayerPageContent = () => {
           <EpisodeServers
             animeName={animeDetails?.title?.romaji}
             episodeNumber={episode}
+            malId={animeDetails?.idMal}
             />
 
 

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function EpisodeServers({ animeName, episodeNumber }) {
+export default function EpisodeServers({ animeName, episodeNumber, malId }) {
   const [servers, setServers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +13,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
     async function loadServers() {
       try {
         const res = await fetch(
-          `/api/ep-servers?anime=${encodeURIComponent(animeName)}&ep=${episodeNumber}`
+          `/api/ep-servers?anime=${encodeURIComponent(animeName)}&ep=${episodeNumber}&malId=${malId}`
         );
 
         const data = await res.json();

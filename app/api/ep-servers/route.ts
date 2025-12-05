@@ -5,11 +5,31 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    const anime = url.searchParams.get("anime") || "sanda";
+    let anime = url.searchParams.get("anime") || "";
     const ep = url.searchParams.get("ep") || "1";
-    // Generate slug - preserve hyphens from original, convert spaces to hyphens
-   
+    const malId = url.searchParams.get("malId");
 
+    // If malId is provided, fetch title from Jikan API
+    if (malId) {
+      try {
+        const jikanRes = await fetch(`https://api.jikan.moe/v4/anime/${malId}`);
+        if (jikanRes.ok) {
+          const jikanData = await jikanRes.json();
+          // Use the full Japanese title from the title field
+          anime = jikanData.data?.titles?.find((t: any) => t.type === "Default")?.title || jikanData.data?.title || anime;
+          console.log("Fetched title from Jikan:", anime);
+        }
+      } catch (err) {
+        console.log("Jikan API fetch failed, using fallback anime name:", err);
+      }
+    }
+
+    // Fallback if anime is still empty
+    if (!anime) {
+      anime = "sanda";
+    }
+
+    // Generate slug - preserve hyphens from original, convert spaces to hyphens
     function slugify(str: string) {
       return str
         .trim()                // remove space from start and end
@@ -18,7 +38,7 @@ export async function GET(req: NextRequest) {
         .replace(/\s+/g, "-"); // replace spaces with -
     }
 
-    const slug = slugify(anime);             // remove leading/trailing hyphens
+    const slug = slugify(anime);
     console.log(slug);
 
 
