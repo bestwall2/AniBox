@@ -8,13 +8,19 @@ export async function GET(req: NextRequest) {
     const anime = url.searchParams.get("anime") || "sanda";
     const ep = url.searchParams.get("ep") || "1";
     // Generate slug - preserve hyphens from original, convert spaces to hyphens
-    const slug = anime
-    .toLowerCase()                        // convert to lowercase
-    .replace(/["'&!?]+/g, "")             // remove quotes and punctuation only
-    .replace(/\s+/g, "-")                 // convert spaces to hyphens
-    .replace(/-+/g, "-")                  // collapse multiple hyphens
-    .replace(/^-+|-+$/g, "");             // remove leading/trailing hyphens
+   
+
+    function slugify(str: string) {
+      return str
+        .trim()                // remove space from start and end
+        .toLowerCase()         // lowercase
+        .replace(/[^a-z0-9 -]/g, "") // remove all symbols except letters, numbers, space, and -
+        .replace(/\s+/g, "-"); // replace spaces with -
+    }
+
+    const slug = slugify(anime);             // remove leading/trailing hyphens
     console.log(slug);
+
 
     const servers: Array<{ name: string; url: string }> = [];
 
