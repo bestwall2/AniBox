@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     .replace(/\s+/g, "-");
     console.log(slug);
 
-    const decodedUrls: string[] = [];
+    const servers: Array<{ name: string; url: string }> = [];
 
     // Try animeluxe.org (existing source)
     try {
@@ -40,7 +40,16 @@ export async function GET(req: NextRequest) {
             while ((match = linkRegex.exec(ulContent)) !== null) {
               try {
                 const decoded = Buffer.from(match[1], "base64").toString("utf-8");
-                decodedUrls.push(decoded);
+                
+                // Extract domain name from URL (e.g., https://mega.nz/ → mega)
+                let serverName = "unknown";
+                const urlObj = new URL(decoded);
+                const hostParts = urlObj.hostname.split(".");
+                if (hostParts.length > 0) {
+                  serverName = hostParts[hostParts.length - 2] || hostParts[0];
+                }
+                
+                servers.push({ name: serverName, url: decoded });
               } catch {}
             }
           }
@@ -70,7 +79,17 @@ export async function GET(req: NextRequest) {
           // Extract data-src from <a> tag within the span
           const dataSrcMatch = spanContent.match(/data-src="([^"]+)"/);
           if (dataSrcMatch && dataSrcMatch[1]) {
-            decodedUrls.push(dataSrcMatch[1]);
+            // Extract domain name from URL (e.g., https://bkvideo.online/ → bkvideo)
+            let serverName = "blkom";
+            try {
+              const urlObj = new URL(dataSrcMatch[1]);
+              const hostParts = urlObj.hostname.split(".");
+              if (hostParts.length > 0) {
+                serverName = hostParts[hostParts.length - 2] || hostParts[0];
+              }
+            } catch {}
+            
+            servers.push({ name: serverName, url: dataSrcMatch[1] });
           }
         }
       }
@@ -78,10 +97,10 @@ export async function GET(req: NextRequest) {
       console.log("Blkom fetch failed:", err);
     }
 
-    if (decodedUrls.length === 0)
+    if (servers.length === 0)
       return NextResponse.json({ error: "No servers found" }, { status: 404 });
 
-    return NextResponse.json({ anime, ep, servers: decodedUrls });
+    return NextResponse.json({ anime, ep, slug, servers });
   } catch (err: any) {
     return NextResponse.json(
       { error: err.message || "Unknown server error" },
