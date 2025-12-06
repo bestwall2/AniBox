@@ -38,8 +38,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
   return (
     <div className="w-full h-full flex flex-col gap-5">
 
-      <h2 className="text-white text-lg font-semibold">Arabic Sub Servers</h2>
-
+     
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -50,7 +49,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
         <>
           {/* ░░░ FLOATING DROPDOWN OVER IFRAME ░░░ */}
           {selectedUrl && (
-            <div className="relative w-full h-[70vh] rounded-xl overflow-hidden border border-white/10">
+            <div className="relative w-full h-full rounded-xl overflow-hidden border border-white/10">
 
               {/* Floating dropdown */}
               <div className="absolute top-3 right-3 z-50">
