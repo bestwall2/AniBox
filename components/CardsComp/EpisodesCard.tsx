@@ -13,7 +13,7 @@ const EpisodeCard = ({ title, description, image, number, imgbup }) => {
   const safeDesc = description?.includes("$undefined") ? "" : description || "";
 
   return (
-    <div className="bg-zinc-800 h-[75px] transition-all pt-2 pb-2 duration-300 ease-out hover:scale-[0.97] rounded-xl shadow-xl flex items-center">
+    <div className="bg-[#13131a] h-[75px] transition-all pt-2 pb-2 duration-300 ease-out hover:scale-[0.97] rounded-xl shadow-xl flex items-center">
       {/* Image Box */}
       <div className="relative transition-all duration-300 ease-out hover:scale-[0.97] w-[120px] min-h-[75px] max-h-[75px] rounded-lg overflow-hidden flex-shrink-0">
         <Image
