@@ -14,6 +14,7 @@ import {
 import { FaSearch } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { IoClose } from "react-icons/io5";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -56,43 +57,53 @@ const Navbar = () => {
         }`}
       >
         <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-0 pr-4 py-4">
-          <a
-            href="/"
-            className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0"
-          >
-            <img
-              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
-              className="h-14"
-              alt="AniBox"
-            />
-          </a>
+          <div className="flex items-center">
+            <a
+              href="/"
+              className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0 flex-shrink-0"
+            >
+              <img
+                src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
+                className="h-14"
+                alt="AniBox"
+              />
+            </a>
+          </div>
+
           <div className="flex items-center md:order-0 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {isSearchVisible ? (
-              <form
-                onSubmit={handleSearchSubmit}
-                className="relative"
-                onBlur={() => setIsSearchVisible(false)}
-              >
-                <input
-                  autoFocus
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-gray-800 text-white rounded-full py-2 px-4 focus:outline-none"
-                  placeholder="Search anime..."
-                />
-                <button
-                  type="button"
-                  onClick={() => setIsSearchVisible(false)}
-                  className="absolute right-10 top-1/2 -translate-y-1/2"
+            <AnimatePresence>
+              {isSearchVisible && (
+                <motion.form
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: "auto", opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  onSubmit={handleSearchSubmit}
+                  className="relative"
+                  onBlur={() => setIsSearchVisible(false)}
                 >
-                  <IoClose size={20} />
-                </button>
-                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2">
-                  <FaSearch size={20} />
-                </button>
-              </form>
-            ) : (
+                  <input
+                    autoFocus
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="bg-gray-800 text-white rounded-full py-2 px-4 focus:outline-none"
+                    placeholder="Search anime..."
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsSearchVisible(false)}
+                    className="absolute right-10 top-1/2 -translate-y-1/2"
+                  >
+                    <IoClose size={20} />
+                  </button>
+                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <FaSearch size={20} />
+                  </button>
+                </motion.form>
+              )}
+            </AnimatePresence>
+
+            {!isSearchVisible && (
               <button
                 type="button"
                 onClick={handleSearchToggle}
