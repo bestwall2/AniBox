@@ -4,6 +4,7 @@ import {
   TrendingAnimeQuery,
   top100AnimeQuery,
   animeinfo,
+  advancedsearch,
 } from "../actions/QueryActions";
 
 
@@ -19,6 +20,20 @@ export const fetchTrendingAnime = async () => {
   } catch (error) {
     console.error("Error fetching trending anime:", error);
     return []; // Fallback in case of failure
+  }
+};
+
+// for Search
+export const fetchSearch = async (query) => {
+  try {
+    const response = await fetchAniList({
+      query: advancedsearch,
+      variables: { search: query },
+    });
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+    return { data: null, error: "Failed to fetch search results." };
   }
 };
 
