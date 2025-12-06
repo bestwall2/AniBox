@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
-import * as Dialog from "@radix-ui/react-dialog";
 import { FaPlay } from "react-icons/fa";
 
 export default function EpisodeServers({ animeName, episodeNumber }) {
@@ -45,7 +44,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
         </div>
       ) : (
         <>
-          {/* ░░░ Server Select Buttons ░░░ */}
+          {/* ░░░ Server Buttons ░░░ */}
           <ToggleGroup.Root
             type="single"
             className="grid grid-cols-2 sm:grid-cols-3 gap-3"
@@ -80,37 +79,18 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
             ))}
           </ToggleGroup.Root>
 
-          {/* ░░░ Player Dialog ░░░ */}
-          <Dialog.Root open={!!selectedUrl} onOpenChange={() => setSelectedUrl(null)}>
-            <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
-
-              <Dialog.Content
-                className="
-                  fixed top-1/2 left-1/2 
-                  -translate-x-1/2 -translate-y-1/2 
-                  w-[90%] max-w-4xl h-[80vh]
-                  bg-black/90 border border-white/10 rounded-xl
-                  shadow-xl animate-fadeIn
-                  flex flex-col
-                "
-              >
-                <Dialog.Close className="absolute top-3 right-3 text-white text-xl">
-                  ✕
-                </Dialog.Close>
-
-                {selectedUrl && (
-                  <iframe
-                    src={selectedUrl}
-                    className="w-full h-full rounded-b-xl"
-                    allowFullScreen
-                    frameBorder="0"
-                    referrerPolicy="origin"
-                  />
-                )}
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+          {/* ░░░ Inline Video Player (No Dialog) ░░░ */}
+          {selectedUrl && (
+            <div className="w-full h-[70vh] rounded-xl overflow-hidden border border-white/10">
+              <iframe
+                src={selectedUrl}
+                className="w-full h-full"
+                allowFullScreen
+                frameBorder="0"
+                referrerPolicy="origin"
+              />
+            </div>
+          )}
         </>
       )}
     </div>

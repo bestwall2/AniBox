@@ -57,6 +57,7 @@ body {
     transform: translateY(-100%);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -67,17 +68,21 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-black text-foreground;
   }
 }
+
 #__next {
   height: 100%;
 }
+
 .swiper {
   width: 100%;
   height: auto;
 }
+
 .swiper-animation {
   .swiper-wrapper {
     -webkit-transition-timing-function: linear;
@@ -102,6 +107,7 @@ body {
   width: 100%;
   height: 100vh;
 }
+
 .InfoContainer {
   animation: slideDown 1s ease-out forwards;
   position: absolute;
@@ -121,15 +127,18 @@ body {
   margin: 0px;
   padding: 0px;
 }
+
 .swiper-slide .container img {
   display: block;
   width: 100%;
   max-height: 60vh;
   object-fit: cover;
 }
+
 .NavBarLayout {
   background: linear-gradient(to bottom, #000 3%, #000000df, #00000000);
 }
+
 .BannerbackgroundShadow {
   background: linear-gradient(to bottom, #000 1%, #000000df, #00000000);
 }
@@ -141,6 +150,7 @@ body {
   justify-items: center;
   content: center;
 }
+
 .InfoContainer .Trending {
   font-size: 1rem;
 }
@@ -151,21 +161,24 @@ body {
   padding-right: 2px;
   word-wrap: break-word;
 }
+
 .InfoContainer .Description {
   animation: slideDown 1.5s ease-out forwards;
 }
+
 .InfoListsForAni {
   animation: slideDown 1.5s ease-out forwards;
 }
+
 .EpisodesList {
   animation: slideDown 1.5s ease-out forwards;
 }
+
 .InfoContainer h1 {
   display: flex;
 }
 
-.InfoContainer > .Addtion > .State {
-}
+.InfoContainer>.Addtion>.State {}
 
 .container .Geners {
   font-size: 1.3rem;
@@ -174,13 +187,14 @@ body {
   letter-spacing: 2;
 }
 
-.Listcontainer > img {
+.Listcontainer>img {
   border-radius: 8px;
   object-fit: cover;
   display: block;
   width: 100%;
   height: 50vh;
 }
+
 .Listcontainer .Title {
   font-size: 14px;
   text-align: center;
@@ -193,30 +207,27 @@ body {
   width: 100%;
   animation: slideDown 1s ease-out forwards;
 }
+
 .Listcontainer .MoreInfo {
   font-size: 10px;
   text-align: center;
   bottom: 0px;
   height: auto;
   width: 100%;
-  background: linear-gradient(
-    to top,
-    #000000f3 1%,
-    #00000000,
-    #00000000,
-    #00000000
-  );
+  background: linear-gradient(to top,
+      #000000f3 1%,
+      #00000000,
+      #00000000,
+      #00000000);
 }
 
 .Listcontainer .CardShadow {
   bottom: 0px;
-  background: linear-gradient(
-    to top,
-    #000000f3 1%,
-    #00000000,
-    #00000000,
-    #00000000
-  );
+  background: linear-gradient(to top,
+      #000000f3 1%,
+      #00000000,
+      #00000000,
+      #00000000);
   height: 49vh;
   width: 100%;
   margin-bottom: 0px;
@@ -250,6 +261,7 @@ body {
   border-bottom-left-radius: 8px;
   background: #000000b7;
 }
+
 .CardActive {
   width: auto;
   height: fit-content;
@@ -258,7 +270,7 @@ body {
   padding-right: 5px;
   top: 54%;
   right: 10;
-  
+
 }
 
 .Listcontainer {
@@ -278,6 +290,7 @@ body {
 .Listcontainer:hover .PlayBtn {
   display: block;
 }
+
 .Listcontainer:hover .CardShadow {
   background: linear-gradient(to bottom, transparent, black 92%);
 }
@@ -291,9 +304,11 @@ body {
   width: 100%;
   height: auto;
 }
+
 .BackgroundImageOfInfo {
   height: 10vh;
 }
+
 .frogroundShadow {
   height: 30vh;
   background: linear-gradient(to bottom, transparent, black 80%);
@@ -306,7 +321,8 @@ body {
 
 /* شكل الشريط */
 #nprogress .bar {
-  height: 3px; /* يمكن تزيد الطول */
+  height: 3px;
+  /* يمكن تزيد الطول */
 }
 
 /* لون الخلفية ديال الـ spinner */
@@ -322,20 +338,26 @@ body {
 }
 
 .lighting-text {
-  will-change: filter, color; /* Hint for filter changes */
+  will-change: filter, color;
+  /* Hint for filter changes */
   text-align: center;
-  animation: lightEffect 2s infinite alternate; /* Slower animation */
+  animation: lightEffect 2s infinite alternate;
+  /* Slower animation */
 }
 
 @keyframes lightEffect {
+
   0%,
   100% {
     /* Simpler initial/final state */
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   }
+
   50% {
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
-      /* Slightly reduced blur */ 0 0 30px rgba(0, 255, 255, 0.7); /* Fewer layers, smaller max blur */
+      /* Slightly reduced blur */
+      0 0 30px rgba(0, 255, 255, 0.7);
+    /* Fewer layers, smaller max blur */
     color: #e0ffff;
   }
 }
@@ -356,7 +378,8 @@ body {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background-color: #00ff4c; /* green */
+  background-color: #00ff4c;
+  /* green */
   border-radius: 50%;
   box-shadow: 0 0 10px #00ff4c;
   animation: pulseeffect 1.2s infinite ease-in-out;
@@ -367,10 +390,12 @@ body {
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.6);
     opacity: 0.5;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
