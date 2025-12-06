@@ -12,17 +12,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FaSearch } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { IoClose } from "react-icons/io5";
 
 const Navbar = () => {
   const [scrollY, setScrollY] = useState(0);
   const [hidden, setHidden] = useState(false);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > scrollY && window.scrollY > 50) {
-        setHidden(false); // Hide navbar on scroll down
+        setHidden(false);
       } else {
-        setHidden(false); // Show navbar on scroll up
+        setHidden(false);
       }
       setScrollY(window.scrollY);
     };
@@ -30,6 +35,18 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollY]);
+
+  const handleSearchToggle = () => {
+    setIsSearchVisible(!isSearchVisible);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${searchQuery}`);
+      setIsSearchVisible(false);
+    }
+  };
 
   return (
     <>
@@ -41,7 +58,8 @@ const Navbar = () => {
         <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-0 pr-4 py-4">
           <a
             href="/"
-            className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0">
+            className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0"
+          >
             <img
               src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
               className="h-14"
@@ -49,26 +67,48 @@ const Navbar = () => {
             />
           </a>
           <div className="flex items-center md:order-0 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <button
-              type="button"
-              className="flex text-sm rounded-full md:me-0 focus:outline-none   "
-              id="user-menu-button"
-              aria-expanded="false"
-              data-dropdown-toggle="user-dropdown"
-              data-dropdown-placement="bottom"
-            >
-              <div className="flex items-center space-x-3">
+            {isSearchVisible ? (
+              <form
+                onSubmit={handleSearchSubmit}
+                className="relative"
+                onBlur={() => setIsSearchVisible(false)}
+              >
+                <input
+                  autoFocus
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-gray-800 text-white rounded-full py-2 px-4 focus:outline-none"
+                  placeholder="Search anime..."
+                />
+                <button
+                  type="button"
+                  onClick={() => setIsSearchVisible(false)}
+                  className="absolute right-10 top-1/2 -translate-y-1/2"
+                >
+                  <IoClose size={20} />
+                </button>
+                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2">
+                  <FaSearch size={20} />
+                </button>
+              </form>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSearchToggle}
+                className="flex text-sm rounded-full md:me-0 focus:outline-none"
+              >
                 <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] transition-all duration-300 ease-out hover:scale-[0.97] shadow-xl rounded-xl p-2">
                   <FaSearch size={20} />
                 </div>
+              </button>
+            )}
 
-                <img
-                  className="w-10 h-10 transition-all duration-300 ease-out hover:scale-[0.97] rounded-full border-gray-600 border-2"
-                  src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
-                  alt="user photo"
-                />
-              </div>
-            </button>
+            <img
+              className="w-10 h-10 transition-all duration-300 ease-out hover:scale-[0.97] rounded-full border-gray-600 border-2"
+              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
+              alt="user photo"
+            />
           </div>
         </div>
       </nav>
