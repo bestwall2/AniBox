@@ -64,11 +64,27 @@ const ListItems = ({ geners, apiPath , param }: ListItemsProps) => {
             
             <Swiper
                 modules={[Navigation, FreeMode]}
-                slidesPerView={3}
-                spaceBetween={5}
                 navigation={true}
                 freeMode={true}
                 className="swiper-animation"
+                breakpoints={{
+                    320: {
+                      slidesPerView: 3,
+                      spaceBetween: 5,
+                    },
+                    768: {
+                      slidesPerView: 5,
+                      spaceBetween: 10,
+                    },
+                    1024: {
+                      slidesPerView: 7,
+                      spaceBetween: 10,
+                    },
+                    1280: {
+                        slidesPerView: 8,
+                        spaceBetween: 10,
+                    },
+                }}
             >
             
             {isLoading ? (

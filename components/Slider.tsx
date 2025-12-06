@@ -57,7 +57,8 @@ const Slider = () => {
       {isLoading ? (
         <Skeleton className="SkeletonCard h-[60vh] w-[100%]" />
       ) : (
-        <Swiper
+        <div className="lg:px-20">
+            <Swiper
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           speed={999}
           loop={true}
@@ -139,9 +140,10 @@ const Slider = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        </div>
       )}
       
-      </>   
+      </>
   );
 };
 export default Slider;
