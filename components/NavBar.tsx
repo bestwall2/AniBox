@@ -26,7 +26,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > scrollY && window.scrollY > 50) {
-        setHidden(false);
+        setHidden(true);
       } else {
         setHidden(false);
       }
@@ -79,7 +79,6 @@ const Navbar = () => {
                   exit={{ width: 0, opacity: 0 }}
                   onSubmit={handleSearchSubmit}
                   className="absolute sm:relative right-14 sm:right-0"
-                  onBlur={() => setIsSearchVisible(false)}
                 >
                   <input
                     autoFocus
