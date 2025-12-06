@@ -41,7 +41,7 @@ const Navbar = () => {
     setIsSearchVisible(!isSearchVisible);
   };
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/search?q=${searchQuery}`);

@@ -3,18 +3,33 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchSearch } from "@/actions/ApiData";
-// NOTE: The SearchCard component was created to match the new design provided by the user in a screenshot.
-// This new design requirement superseded the initial request to reuse existing card components.
-import SearchCard from "@/components/CardsComp/SearchCard";
+import DiscoverCard from "@/components/CardsComp/DiscoverCard";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
+
+interface Anime {
+  id: number;
+  title: {
+    english: string | null;
+    romaji: string | null;
+  };
+  format: string;
+  startDate: {
+    year: number | null;
+  };
+  coverImage: {
+    large: string;
+  };
+  averageScore: number | null;
+  status: string;
+}
 
 const SearchResults = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialQuery);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +44,8 @@ const SearchResults = () => {
         }
         setLoading(false);
       });
+    } else {
+      setLoading(false)
     }
   }, [initialQuery]);
 
@@ -40,9 +57,12 @@ const SearchResults = () => {
   };
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Search</h1>
+        <div className="Geners flex text-white items-center mb-4 space-x-2">
+          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
+          <p className="font-bold text-2xl">Search</p>
+        </div>
         <form onSubmit={handleSearch} className="relative mb-8">
           <input
             type="text"
@@ -63,15 +83,15 @@ const SearchResults = () => {
             <p className="text-xl text-red-500">{error}</p>
           </div>
         ) : results.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {results.map((anime: any) => (
-              <Link href={`/anime/${anime.id}`} key={anime.id}>
-                <SearchCard
-                  title={anime.title.english || anime.title.romaji}
-                  format={anime.format}
-                  year={anime.startDate.year}
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {results.map((anime) => (
+              <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                <DiscoverCard
+                  title={anime.title.english || anime.title.romaji || "No title"}
+                  info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"}`}
                   img={anime.coverImage.large}
-                  rating={anime.averageScore}
+                  cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
+                  status={anime.status}
                 />
               </Link>
             ))}
