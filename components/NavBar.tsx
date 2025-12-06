@@ -78,7 +78,7 @@ const Navbar = () => {
                   animate={{ width: "auto", opacity: 1 }}
                   exit={{ width: 0, opacity: 0 }}
                   onSubmit={handleSearchSubmit}
-                  className="relative"
+                  className="absolute sm:relative right-14 sm:right-0"
                   onBlur={() => setIsSearchVisible(false)}
                 >
                   <input
