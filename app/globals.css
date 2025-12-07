@@ -402,59 +402,98 @@ body {
   }
 }
 
-
 .searchCard {
+  height: 23vh;
   position: relative;
+}
+
+.searchCard > img {
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
   width: 100%;
-  aspect-ratio: 2/3;
+  height: 50vh;
 }
 
-.searchCardOverlay {
-  background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent 70%);
-  padding: 8px;
-}
-
-.searchCardTitle {
-  bottom: 35px;
+.searchCard .searchCardOverlay {
+  bottom: 0px;
+  background: linear-gradient(to top,
+      #000000f3 1%,
+      #00000000,
+      #00000000,
+      #00000000);
+  height: 49vh;
   width: 100%;
-  padding: 0 6px;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.searchCardInfo {
-  width: 100%;
-  padding: 0 6px;
-  font-size: 0.85rem;
-}
-
-.searchCardBadge {
+  margin-bottom: 0px;
+  margin-top: auto;
   position: absolute;
-  bottom: 55px;
-  left: 6px;
-  background: rgba(0,0,0,0.5);
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 0.75rem;
 }
 
-.searchCardStatus .live-dot {
-  width: 12px;
-  height: 12px;
-  background: #22c55e;
-  border-radius: 50%;
-  animation: pulseLive 1.2s infinite;
-}
-
-@keyframes pulseLive {
-  0%   { transform: scale(0.9); opacity: 0.6; }
-  50%  { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.6; }
-}
-
-.searchCardPlay {
+.searchCard .searchCardTitle {
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+  bottom: 13px;
+  color: white;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: auto;
+  width: 100%;
+  animation: slideDown 1s ease-out forwards;
   position: absolute;
-  bottom: 10px;
+}
+
+.searchCard .searchCardInfo {
+  font-size: 10px;
+  text-align: center;
+  bottom: 0px;
+  height: auto;
+  width: 100%;
+  background: linear-gradient(to top,
+      #000000f3 1%,
+      #00000000,
+      #00000000,
+      #00000000);
+  position: absolute;
+}
+
+.searchCard .searchCardBadge {
+  width: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-left-radius: 8px;
+  font-size: 12px;
+  height: fit-content;
+  background: #000000b7;
+  position: absolute;
+  top: 53%;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.searchCard .searchCardActive {
+  width: auto;
+  height: fit-content;
+  position: absolute;
+  padding-left: 5px;
+  padding-right: 5px;
+  top: 54%;
   right: 10px;
-  color: #3888E7;
+}
+
+.searchCard .searchCardPlay {
+  display: none;
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.searchCard:hover .searchCardPlay {
+  display: block;
+}
+
+.searchCard:hover .searchCardOverlay {
+  background: linear-gradient(to bottom, transparent, black 92%);
 }
