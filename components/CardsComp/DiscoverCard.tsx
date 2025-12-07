@@ -3,13 +3,13 @@ import React from "react";
 import { FaStar } from "react-icons/fa6";
 import { FaPlay } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
-
 interface ListItemsProps {
   title: string;
   info: string;
   img: string;
   cardbadge: string;
   status: string;
+  // Ensure "boolean" is lowercase in TypeScript
 }
 
 const DiscoverCard: React.FC<ListItemsProps> = ({
@@ -18,103 +18,53 @@ const DiscoverCard: React.FC<ListItemsProps> = ({
   img,
   cardbadge,
   status,
+  
 }) => {
   return (
-    <div
-      className="
-        relative
-        rounded-xl
-        overflow-hidden
-        bg-black
-        cursor-pointer
-        transition-all
-        duration-300
-        hover:scale-[0.97]
-        group
-        pointer-events-auto
-      "
-    >
-      {/* Image */}
-      <Image
-        src={`/api/proxy?url=${encodeURIComponent(img)}`}
-        alt={title}
-        fill
-        priority
-        className="object-cover pointer-events-none"
-      />
+    <div className="Listcontainer  relative transition-all duration-300 ease-out hover:scale-[0.97]  rounded-2xl" >
+      {/* Optimized Next.js Image */}
 
-      {/* Card Overlay */}
-      <div
-        className="
-          absolute inset-0
-          bg-gradient-to-t
-          from-black/90
-          via-black/40
-          to-transparent
-          pointer-events-none
-        "
-      />
+      <Image src={`/api/proxy?url=${encodeURIComponent(img)}`} alt={title} layout="fill" objectFit="cover" priority />
+      
 
-      {/* Title */}
-      <p
-        className="
-          absolute bottom-10 left-2 right-2
-          text-sm font-semibold
-          text-white
-          line-clamp-2
-          pointer-events-none
-        "
-      >
-        {title}
-      </p>
+      <div className="CardShadow absolute">
+      
+        
+        <p className="Title  absolute  content-center  text-center line-clamp-2">
+          {title}
+        </p>
+              
+        <p className="MoreInfo text-gray-300 absolute line-clamp-1 bottom-0">
+          {" "}
+          {info}{" "}
+        </p>
+        <div className="CardBadge flex items-center justify-start">
+          <p className="CardBadgeText self-center">{cardbadge}</p>
+          <FaStar
+            
+            size={12}
+            style={{ color: "yellow", padding: 1 }}
+          />
+        </div>
+        <div className="CardActive flex items-center justify-start">
+            {status === "RELEASING" ? (
+              // Pulsing green dot for releasing anime
+              <div className="live-dot absolute top-2 left-2"></div>
+            ) : (
+              // Red static dot for finished anime
+              <GoDotFill
+                size={17}
+                style={{
+                  color: "#ef4444",
+                  padding: 1,
+                  textShadow: '0px 0px 10px black',
+                }}
+              />
+            )}
+        </div>
 
-      {/* Info */}
-      <p
-        className="
-          absolute bottom-4 left-2 right-2
-          text-xs text-gray-300
-          line-clamp-1
-          pointer-events-none
-        "
-      >
-        {info}
-      </p>
-
-      {/* Rating */}
-      <div
-        className="
-          absolute top-2 right-2
-          bg-black/60 backdrop-blur-md
-          px-2 py-1
-          rounded-md text-xs
-          flex items-center gap-1
-          pointer-events-none
-        "
-      >
-        <span className="text-white">{cardbadge}</span>
-        <FaStar size={12} className="text-yellow-400" />
       </div>
-
-      {/* Status */}
-      <div className="absolute top-2 left-2 pointer-events-none">
-        {status === "RELEASING" ? (
-          <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-        ) : (
-          <GoDotFill size={18} className="text-red-500" />
-        )}
-      </div>
-
-      {/* Play Button */}
-      <FaPlay
-        className="
-          absolute bottom-1 right-1
-          text-blue-400
-          opacity-0 group-hover:opacity-100
-          transition
-          pointer-events-none
-        "
-        size={26}
-      />
+      <FaPlay className="PlayBtn " size={28}  style={{ color: "#3888E7", padding: 1 }} /> 
     </div>
   );
 };
