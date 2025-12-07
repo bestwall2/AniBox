@@ -74,12 +74,13 @@ const SearchResults = () => {
       <div className="h-20 mt-4" />
       <div className="container mx-auto px-4">
         {/* Title */}
-        <div className="flex items-center mb-5 space-x-2">
+        <div className="flex items-center mb-[12px] space-x-2">
+          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
           <p className="text-2xl font-bold">Search</p>
         </div>
 
         {/* Search Input */}
-        <div className="relative mb-10 max-w-2xl mx-auto">
+        <div className="relative mb-[15px] max-w-2xl mx-auto">
           <input
             type="text"
             value={query}
@@ -139,7 +140,6 @@ const SearchResults = () => {
         ) : (
           // ⭐ SHOW TRENDING WHEN NO SEARCH QUERY
           <>
-            
             {loadingTrending ? (
               <div className="flex justify-center items-center h-40">
                 <p className="text-gray-500">Loading anime...</p>
