@@ -15,15 +15,21 @@ import { FaSearch } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 interface NavbarProps {
-  showSearch?: boolean; // optional prop to show search button
+  showSearch?: boolean;
+  hideOnScroll?: boolean; // NEW OPTION
 }
 
-const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  showSearch = true,
+  hideOnScroll = true, // default = true
+}) => {
   const [scrollY, setScrollY] = useState(0);
   const [hidden, setHidden] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    if (!hideOnScroll) return; // <-- NEW: disable scroll behavior completely
+
     const handleScroll = () => {
       if (window.scrollY > scrollY && window.scrollY > 50) {
         setHidden(true);
@@ -35,13 +41,17 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollY]);
+  }, [scrollY, hideOnScroll]);
 
   return (
     <>
       <nav
         className={`NavBarLayout rounded-bl-lg rounded-br-lg bg-blue-900 fixed top-0 left-0 w-full z-50 transition-transform ${
-          hidden ? "-translate-y-full" : "translate-y-0"
+          hideOnScroll
+            ? hidden
+              ? "-translate-y-full"
+              : "translate-y-0"
+            : "translate-y-0"
         }`}
       >
         <div className="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pl-0 pr-4 py-4">
@@ -80,13 +90,13 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
         </div>
       </nav>
 
-      {/* Floating category dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] shadow-xl w-[50px] transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
             <BiSolidCategory size={22} />
           </div>
         </DropdownMenuTrigger>
+
         <DropdownMenuPortal>
           <DropdownMenuContent
             align="start"

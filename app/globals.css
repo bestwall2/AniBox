@@ -403,7 +403,7 @@ body {
 }
 
 .searchCard {
-  height: 23vh;
+  height: 25vh;
   position: relative;
 }
 
@@ -422,7 +422,7 @@ body {
       #00000000,
       #00000000,
       #00000000);
-  height: 49vh;
+  height: 53.5vh;
   width: 100%;
   margin-bottom: 0px;
   margin-top: auto;

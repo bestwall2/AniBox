@@ -412,64 +412,101 @@ query ($id: Int) {
 `
 
 export const advancedsearch = `
-query ($page: Int = 1, $id: Int, $type: MediaType, $search: String, $format: [MediaFormat], $status: MediaStatus, $countryOfOrigin: CountryCode, $source: MediaSource, $season: MediaSeason, $seasonYear: Int, $year: String, $onList: Boolean, $episodeLesser: Int, $episodeGreater: Int, $genres: [String], $tags: [String], $sort: [MediaSort] = [POPULARITY_DESC, SCORE_DESC]) {
+query (
+  $page: Int = 1,
+  $id: Int,
+  $type: MediaType,
+  $search: String,
+  $format: [MediaFormat],
+  $status: MediaStatus,
+  $countryOfOrigin: CountryCode,
+  $source: MediaSource,
+  $season: MediaSeason,
+  $seasonYear: Int,
+  $year: String,
+  $onList: Boolean,
+  $episodeLesser: Int,
+  $episodeGreater: Int,
+  $genres: [String],
+  $tags: [String],
+  $sort: [MediaSort] = [POPULARITY_DESC, SCORE_DESC]
+) {
   Page(page: $page, perPage: 20) {
-	pageInfo {
-	  total
-	  perPage
-	  currentPage
-	  lastPage
-	  hasNextPage
-	}
-	media(id: $id, type: $type, season: $season, format_in: $format, status: $status, countryOfOrigin: $countryOfOrigin, source: $source, search: $search, onList: $onList, seasonYear: $seasonYear, startDate_like: $year, episodes_lesser: $episodeLesser, episodes_greater: $episodeGreater, genre_in: $genres, tag_in: $tags, sort: $sort) {
-	  id
-	  title {
-		english
-		romaji
-		userPreferred
-	  }
-	  coverImage {
-		extraLarge
-		large
-		color
-	  }
-	  startDate {
-		year
-		month
-		day
-	  }
-	  endDate {
-		year
-		month
-		day
-	  }
-	  bannerImage
-	  season
-	  seasonYear
-	  description
-	  type
-	  format
-	  status(version: 2)
-	  episodes
-	  duration
-	  chapters
-	  volumes
-	  genres
-	  isAdult
-	  averageScore
-	  popularity
-	  nextAiringEpisode {
-		airingAt
-		timeUntilAiring
-		episode
-	  }
-	  mediaListEntry {
-		id
-		status
-	  }
-	}
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    media(
+      id: $id,
+      type: $type,
+      season: $season,
+      format_in: $format,
+      status: $status,
+      countryOfOrigin: $countryOfOrigin,
+      source: $source,
+      search: $search,
+      onList: $onList,
+      seasonYear: $seasonYear,
+      startDate_like: $year,
+      episodes_lesser: $episodeLesser,
+      episodes_greater: $episodeGreater,
+      genre_in: $genres,
+      tag_in: $tags,
+      sort: $sort,
+      isAdult: false        # 🔥 This removes hentai NSFW content
+    ) {
+      id
+      title {
+        english
+        romaji
+        userPreferred
+      }
+      coverImage {
+        extraLarge
+        large
+        color
+      }
+      startDate {
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+      bannerImage
+      season
+      seasonYear
+      description
+      type
+      format
+      status(version: 2)
+      episodes
+      duration
+      chapters
+      volumes
+      genres
+      isAdult
+      averageScore
+      popularity
+      nextAiringEpisode {
+        airingAt
+        timeUntilAiring
+        episode
+      }
+      mediaListEntry {
+        id
+        status
+      }
+    }
   }
 }`;
+
 
 
 export const notifications = `query ($page: Int) {

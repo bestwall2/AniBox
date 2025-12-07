@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { fetchSearch } from "@/actions/ApiData";
 import DiscoverCard from "@/components/CardsComp/DiscoverCard";
 import Link from "next/link";
@@ -21,62 +20,52 @@ interface Anime {
   };
   coverImage: {
     large: string;
+    extraLarge: string;
   };
   averageScore: number | null;
   status: string;
 }
 
 const SearchResults = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") || "";
-  const [query, setQuery] = useState(initialQuery);
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState<Anime[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch Data
+  // 🔥 LIVE SEARCH WITH DEBOUNCE
   useEffect(() => {
-    if (initialQuery) {
-      setLoading(true);
-      fetchSearch(initialQuery).then(({ data, error }) => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+
+    setLoading(true);
+
+    const delay = setTimeout(() => {
+      fetchSearch(query.trim()).then(({ data, error }) => {
         if (error) setError(error);
         else setResults(data.Page.media);
         setLoading(false);
       });
-    } else {
-      setLoading(false);
-    }
-  }, [initialQuery]);
+    }, 400); // 400ms debounce
 
-  // Handle Search
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
-    }
-  };
+    return () => clearTimeout(delay);
+  }, [query]);
 
   return (
     <div className="bg-black text-white min-h-screen pb-10">
-      {/* Space for Navbar */}
-      {/* Navbar without search button */}
-      <Navbar showSearch={false} />
+      {/* Navbar */}
+      <Navbar showSearch={false} hideOnScroll={false} />
 
       <div className="h-20 mt-4" />
       <div className="container mx-auto px-4">
         {/* Title */}
         <div className="flex items-center mb-6 space-x-2">
-          
-          {/* <span className="w-1.5 h-6 rounded-full bg-gradient-to-br from-blue-500 via-cyan-400 to-pink-500" /> */}
           <p className="text-2xl font-bold">Search</p>
         </div>
 
         {/* Search Input */}
-        <form
-          onSubmit={handleSearch}
-          className="relative mb-10 max-w-2xl mx-auto"
-        >
+        <div className="relative mb-10 max-w-2xl mx-auto">
           <input
             type="text"
             value={query}
@@ -94,12 +83,12 @@ const SearchResults = () => {
             "
           />
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-        </form>
+        </div>
 
         {/* Loading */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <p className="text-xl animate-pulse text-gray-300">Loading...</p>
+            <p className="text-xl animate-pulse text-gray-300">Searching...</p>
           </div>
         ) : error ? (
           <div className="flex justify-center items-center h-64">
@@ -119,7 +108,7 @@ const SearchResults = () => {
                       info={`${anime.format} • ${
                         anime.startDate?.year || "Unknown Year"
                       }`}
-                      img={anime.coverImage.large}
+                      img={anime.coverImage.extraLarge}
                       cardbadge={
                         anime.averageScore
                           ? `${anime.averageScore / 10}`
@@ -132,11 +121,15 @@ const SearchResults = () => {
               </div>
             </div>
           </>
-        ) : (
+        ) : query.trim() ? (
           <div className="flex justify-center items-center h-64">
             <p className="text-xl text-gray-400">
-              No results found for "{initialQuery}".
+              No results found for "{query}".
             </p>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center h-40">
+            <p className="text-gray-500">Start typing to search...</p>
           </div>
         )}
       </div>
@@ -145,11 +138,13 @@ const SearchResults = () => {
 };
 
 const SearchPage = () => (
-  <Suspense fallback={
-    <div className="bg-black text-white min-h-screen flex justify-center items-center">
-      <p className="text-gray-400">Loading...</p>
-    </div>
-  }>
+  <Suspense
+    fallback={
+      <div className="bg-black text-white min-h-screen flex justify-center items-center">
+        <p className="text-gray-400">Loading...</p>
+      </div>
+    }
+  >
     <SearchResults />
   </Suspense>
 );
