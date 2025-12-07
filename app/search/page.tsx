@@ -7,6 +7,7 @@ import DiscoverCard from "@/components/CardsComp/DiscoverCard";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import Navbar from "@/components/NavBar";
+import SearchCard from "@/components/CardsComp/SearchCard";
 
 interface Anime {
   id: number;
@@ -109,7 +110,7 @@ const SearchResults = () => {
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
                 {results.map((anime) => (
                   <Link href={`/anime/info/${anime.id}`} key={anime.id}>
-                    <DiscoverCard
+                    <SearchCard
                       title={
                         anime.title.english || anime.title.romaji || "No title"
                       }
