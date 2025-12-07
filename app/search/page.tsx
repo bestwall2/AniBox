@@ -62,7 +62,8 @@ const SearchResults = () => {
       {/* Space for Navbar */}
       {/* Navbar without search button */}
       <Navbar showSearch={false} />
-      <div className="h-30" />
+
+      <div className="h-20 mt-4" />
       <div className="container mx-auto px-4">
         {/* Title */}
         <div className="flex items-center mb-6 space-x-2">
@@ -108,7 +109,7 @@ const SearchResults = () => {
           <>
             {/* Results grid */}
             <div className="relative pointer-events-auto">
-              <div className="grid gap-y-8 gap-x-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+              <div className="grid gap-y-4 gap-x-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
                 {results.map((anime) => (
                   <Link href={`/anime/info/${anime.id}`} key={anime.id}>
                     <SearchCard

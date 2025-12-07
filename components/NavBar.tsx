@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BiSolidCategory } from "react-icons/bi";
-import { FiSettings, FiUser, FiInfo } from "react-icons/fi"; // Removed FiSearch
+import { FiSettings, FiUser, FiInfo } from "react-icons/fi";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FaSearch } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
   showSearch?: boolean; // optional prop to show search button
@@ -20,6 +21,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
   const [scrollY, setScrollY] = useState(0);
   const [hidden, setHidden] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,11 +62,11 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
             {showSearch && (
               <button
                 type="button"
+                onClick={() => router.push("/search")}
                 className="flex text-sm rounded-full md:me-0 focus:outline-none"
               >
                 <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] transition-all duration-300 ease-out hover:scale-[0.97] shadow-xl rounded-xl p-2">
-                  <FaSearch size={20} className="text-white" />{" "}
-                  {/* Keep the search icon */}
+                  <FaSearch size={20} className="text-white" />
                 </div>
               </button>
             )}
