@@ -11,6 +11,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { FaSearch } from "react-icons/fa";
 
 interface NavbarProps {
   showSearch?: boolean; // optional prop to show search button
