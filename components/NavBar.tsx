@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BiSolidCategory } from "react-icons/bi";
-import { FiSettings, FiUser, FiSearch, FiInfo } from "react-icons/fi"; // Import icons
+import { FiSettings, FiUser, FiInfo } from "react-icons/fi"; // Removed FiSearch
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,17 +11,14 @@ import {
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FaSearch } from "react-icons/fa";
-import { useRouter } from "next/navigation";
-import { IoClose } from "react-icons/io5";
-import { motion, AnimatePresence } from "framer-motion";
 
-const Navbar = () => {
+interface NavbarProps {
+  showSearch?: boolean; // optional prop to show search button
+}
+
+const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
   const [scrollY, setScrollY] = useState(0);
   const [hidden, setHidden] = useState(false);
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,18 +33,6 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollY]);
-
-  const handleSearchToggle = () => {
-    setIsSearchVisible(!isSearchVisible);
-  };
-
-  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/search?q=${searchQuery}`);
-      setIsSearchVisible(false);
-    }
-  };
 
   return (
     <>
@@ -71,45 +56,14 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:order-0 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <AnimatePresence>
-              {isSearchVisible && (
-                <motion.form
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: "auto", opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  onSubmit={handleSearchSubmit}
-                  className="absolute sm:relative right-14 sm:right-0"
-                >
-                  <input
-                    autoFocus
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="bg-gray-800 text-white rounded-full py-2 px-4 focus:outline-none"
-                    placeholder="Search anime..."
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setIsSearchVisible(false)}
-                    className="absolute right-10 top-1/2 -translate-y-1/2"
-                  >
-                    <IoClose size={20} />
-                  </button>
-                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2">
-                    <FaSearch size={20} />
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
-
-            {!isSearchVisible && (
+            {showSearch && (
               <button
                 type="button"
-                onClick={handleSearchToggle}
                 className="flex text-sm rounded-full md:me-0 focus:outline-none"
               >
                 <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] transition-all duration-300 ease-out hover:scale-[0.97] shadow-xl rounded-xl p-2">
-                  <FaSearch size={20} />
+                  <FaSearch size={20} className="text-white" />{" "}
+                  {/* Keep the search icon */}
                 </div>
               </button>
             )}
@@ -122,9 +76,11 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      {/* Floating category dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] shadow-xl w-[50px]  transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
+          <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] shadow-xl w-[50px] transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
             <BiSolidCategory size={22} />
           </div>
         </DropdownMenuTrigger>
@@ -143,9 +99,6 @@ const Navbar = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <FiUser className="mr-2" /> Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <FiSearch className="mr-2" /> Search
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenuPortal>

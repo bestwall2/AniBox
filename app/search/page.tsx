@@ -60,13 +60,14 @@ const SearchResults = () => {
   return (
     <div className="bg-black text-white min-h-screen pb-10">
       {/* Space for Navbar */}
-      <Navbar />
-      <div className="h-20" />
-
+      {/* Navbar without search button */}
+      <Navbar showSearch={false} />
+      <div className="h-30" />
       <div className="container mx-auto px-4">
         {/* Title */}
         <div className="flex items-center mb-6 space-x-2">
-          <span className="w-1.5 h-6 rounded-full bg-gradient-to-br from-blue-500 via-cyan-400 to-pink-500" />
+          
+          {/* <span className="w-1.5 h-6 rounded-full bg-gradient-to-br from-blue-500 via-cyan-400 to-pink-500" /> */}
           <p className="text-2xl font-bold">Search</p>
         </div>
 
@@ -87,7 +88,7 @@ const SearchResults = () => {
               rounded-xl
               py-3 pl-12 pr-4
               border border-white/10
-              focus:outline-none focus:ring-2 focus:ring-pink-500
+              focus:outline-none focus:ring-2 focus:ring-gray-500
               transition-all
             "
           />
@@ -107,7 +108,7 @@ const SearchResults = () => {
           <>
             {/* Results grid */}
             <div className="relative pointer-events-auto">
-              <div className="grid gap-y-16 gap-x-8 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+              <div className="grid gap-y-8 gap-x-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
                 {results.map((anime) => (
                   <Link href={`/anime/info/${anime.id}`} key={anime.id}>
                     <SearchCard
