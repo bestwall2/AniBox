@@ -12,6 +12,10 @@ interface SearchCardProps {
   status: string;
 }
 
+// A grid‑friendly version of DiscoverCard WITHOUT redesigning the layout
+// Uses your same CSS classes (Listcontainer, Title, MoreInfo, etc.)
+// Only changed wrapper class names to avoid conflicts.
+
 const SearchCard: React.FC<SearchCardProps> = ({
   title,
   info,
@@ -20,46 +24,50 @@ const SearchCard: React.FC<SearchCardProps> = ({
   status,
 }) => {
   return (
-    <div className="searchCard relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[0.97]">
-      {/* Cover Image */}
+    <div className="SearchCard relative transition-all duration-300 ease-out hover:scale-[0.97] rounded-2xl Listcontainer">
+      {/* Image */}
       <Image
         src={`/api/proxy?url=${encodeURIComponent(img)}`}
         alt={title}
-        fill
-        className="object-cover"
+        layout="fill"
+        objectFit="cover"
         priority
       />
 
-      {/* Overlay */}
-      <div className="searchCardOverlay absolute inset-0">
-        {/* Title */}
-        <p className="searchCardTitle absolute text-center line-clamp-2">
-          {title}
-        </p>
+      {/* Shadow overlay */}
+      <div className="CardShadow absolute">
+        <p className="Title absolute text-center line-clamp-2">{title}</p>
 
-        {/* Info */}
-        <p className="searchCardInfo absolute bottom-0 text-gray-300 line-clamp-1">
+        <p className="MoreInfo text-gray-300 absolute line-clamp-1 bottom-0">
           {info}
         </p>
 
-        {/* Score Badge */}
-        <div className="searchCardBadge flex items-center">
-          <p className="searchCardBadgeText">{cardbadge}</p>
-          <FaStar size={12} className="text-yellow-400 ml-1" />
+        <div className="CardBadge flex items-center justify-start">
+          <p className="CardBadgeText self-center">{cardbadge}</p>
+          <FaStar size={12} style={{ color: "yellow", padding: 1 }} />
         </div>
 
-        {/* Status Indicator */}
-        <div className="searchCardStatus absolute top-2 left-2">
+        <div className="CardActive flex items-center justify-start">
           {status === "RELEASING" ? (
-            <div className="live-dot"></div>
+            <div className="live-dot absolute top-2 left-2"></div>
           ) : (
-            <GoDotFill size={16} className="text-red-500 drop-shadow" />
+            <GoDotFill
+              size={17}
+              style={{
+                color: "#ef4444",
+                padding: 1,
+                textShadow: "0px 0px 10px black",
+              }}
+            />
           )}
         </div>
       </div>
 
-      {/* Play Button */}
-      <FaPlay className="searchCardPlay" size={26} />
+      <FaPlay
+        className="PlayBtn"
+        size={28}
+        style={{ color: "#3888E7", padding: 1 }}
+      />
     </div>
   );
 };
