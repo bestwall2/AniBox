@@ -455,7 +455,7 @@ query (
       tag_in: $tags,
       sort: $sort,
       isAdult: false , # 🔥 This removes hentai NSFW content
-	  type: ANIME       
+	       
     ) {
       id
       title {

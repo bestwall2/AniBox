@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { fetchSearch } from "@/actions/ApiData";
-import DiscoverCard from "@/components/CardsComp/DiscoverCard";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import Navbar from "@/components/NavBar";
@@ -31,6 +30,21 @@ const SearchResults = () => {
   const [results, setResults] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [trending, setTrending] = useState<Anime[]>([]);
+  const [loadingTrending, setLoadingTrending] = useState(true);
+
+  // 🔥  FETCH TRENDING ANIME ON PAGE LOAD
+  useEffect(() => {
+    fetch("/api/trending-anime")
+      .then((res) => res.json())
+      .then((data) => {
+        setTrending(data?.Page?.media || []);
+        setLoadingTrending(false);
+      })
+      .catch(() => {
+        setLoadingTrending(false);
+      });
+  }, []);
 
   // 🔥 LIVE SEARCH WITH DEBOUNCE
   useEffect(() => {
@@ -47,7 +61,7 @@ const SearchResults = () => {
         else setResults(data.Page.media);
         setLoading(false);
       });
-    }, 400); // 400ms debounce
+    }, 400);
 
     return () => clearTimeout(delay);
   }, [query]);
@@ -60,7 +74,7 @@ const SearchResults = () => {
       <div className="h-20 mt-4" />
       <div className="container mx-auto px-4">
         {/* Title */}
-        <div className="flex items-center mb-6 space-x-2">
+        <div className="flex items-center mb-5 space-x-2">
           <p className="text-2xl font-bold">Search</p>
         </div>
 
@@ -85,7 +99,7 @@ const SearchResults = () => {
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
         </div>
 
-        {/* Loading */}
+        {/* Loading Search */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <p className="text-xl animate-pulse text-gray-300">Searching...</p>
@@ -94,16 +108,52 @@ const SearchResults = () => {
           <div className="flex justify-center items-center h-64">
             <p className="text-xl text-red-400">{error}</p>
           </div>
-        ) : results.length > 0 ? (
+        ) : query.trim().length > 0 ? (
+          results.length > 0 ? (
+            <div className="grid gap-y-4 gap-x-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+              {results.map((anime) => (
+                <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                  <SearchCard
+                    title={
+                      anime.title.english ?? anime.title.romaji ?? "No title"
+                    }
+                    info={`${anime.format} • ${
+                      anime.startDate?.year || "Unknown Year"
+                    }`}
+                    img={anime.coverImage.extraLarge}
+                    cardbadge={
+                      anime.averageScore ? anime.averageScore / 10 + "" : "N/A"
+                    }
+                    status={anime.status}
+                  />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-xl text-gray-400">
+                No results found for "{query}".
+              </p>
+            </div>
+          )
+        ) : (
+          // ⭐ SHOW TRENDING WHEN NO SEARCH QUERY
           <>
-            {/* Results grid */}
-            <div className="relative pointer-events-auto">
+            <p className="text-xl font-semibold mb-4 text-gray-300">
+              Trending Anime
+            </p>
+
+            {loadingTrending ? (
+              <div className="flex justify-center items-center h-40">
+                <p className="text-gray-500">Loading trending anime...</p>
+              </div>
+            ) : (
               <div className="grid gap-y-4 gap-x-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-                {results.map((anime) => (
+                {trending.map((anime) => (
                   <Link href={`/anime/info/${anime.id}`} key={anime.id}>
                     <SearchCard
                       title={
-                        anime.title.english || anime.title.romaji || "No title"
+                        anime.title.english ?? anime.title.romaji ?? "No title"
                       }
                       info={`${anime.format} • ${
                         anime.startDate?.year || "Unknown Year"
@@ -111,7 +161,7 @@ const SearchResults = () => {
                       img={anime.coverImage.extraLarge}
                       cardbadge={
                         anime.averageScore
-                          ? `${anime.averageScore / 10}`
+                          ? anime.averageScore / 10 + ""
                           : "N/A"
                       }
                       status={anime.status}
@@ -119,18 +169,8 @@ const SearchResults = () => {
                   </Link>
                 ))}
               </div>
-            </div>
+            )}
           </>
-        ) : query.trim() ? (
-          <div className="flex justify-center items-center h-64">
-            <p className="text-xl text-gray-400">
-              No results found for "{query}".
-            </p>
-          </div>
-        ) : (
-          <div className="flex justify-center items-center h-40">
-            <p className="text-gray-500">Start typing to search...</p>
-          </div>
         )}
       </div>
     </div>
