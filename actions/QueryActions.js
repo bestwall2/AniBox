@@ -246,7 +246,7 @@ query($perPage: Int, $page: Int) {
 }`
 
 export const animeinfo = `
-query (id: $id) {
+query (id: Int) {
 	Media (id: $id , type: ANIME) {
 	  id
 	  idMal
