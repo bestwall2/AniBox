@@ -246,7 +246,7 @@ query($perPage: Int, $page: Int) {
 }`
 
 export const animeinfo = `
-query (id: Int) {
+query ($id: Int) {
 	Media (id: $id) {
 	  id
 	  idMal
@@ -410,7 +410,6 @@ query (id: Int) {
     }
   }
 `
-
 export const advancedsearch = `
 query (
   $page: Int = 1,
