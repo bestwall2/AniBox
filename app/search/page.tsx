@@ -57,12 +57,10 @@ const SearchResults = () => {
 
   return (
     <div className="bg-black text-white min-h-screen pb-10">
-
       {/* Space for Navbar */}
       <div className="h-20" />
 
       <div className="container mx-auto px-4">
-
         {/* Title */}
         <div className="flex items-center mb-6 space-x-2">
           <span className="w-1.5 h-6 rounded-full bg-gradient-to-br from-blue-500 via-cyan-400 to-pink-500" />
@@ -70,7 +68,10 @@ const SearchResults = () => {
         </div>
 
         {/* Search Input */}
-        <form onSubmit={handleSearch} className="relative mb-10 max-w-2xl mx-auto">
+        <form
+          onSubmit={handleSearch}
+          className="relative mb-10 max-w-2xl mx-auto"
+        >
           <input
             type="text"
             value={query}
@@ -102,14 +103,20 @@ const SearchResults = () => {
         ) : results.length > 0 ? (
           <>
             {/* Results grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
               {results.map((anime) => (
                 <Link href={`/anime/info/${anime.id}`} key={anime.id}>
                   <DiscoverCard
-                    title={anime.title.english || anime.title.romaji || "No title"}
-                    info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"}`}
+                    title={
+                      anime.title.english || anime.title.romaji || "No title"
+                    }
+                    info={`${anime.format} • ${
+                      anime.startDate?.year || "Unknown Year"
+                    }`}
                     img={anime.coverImage.large}
-                    cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
+                    cardbadge={
+                      anime.averageScore ? `${anime.averageScore / 10}` : "N/A"
+                    }
                     status={anime.status}
                   />
                 </Link>
@@ -118,7 +125,9 @@ const SearchResults = () => {
           </>
         ) : (
           <div className="flex justify-center items-center h-64">
-            <p className="text-xl text-gray-400">No results found for "{initialQuery}".</p>
+            <p className="text-xl text-gray-400">
+              No results found for "{initialQuery}".
+            </p>
           </div>
         )}
       </div>
