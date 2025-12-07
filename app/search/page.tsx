@@ -107,7 +107,7 @@ const SearchResults = () => {
           <>
             {/* Results grid */}
             <div className="relative pointer-events-auto">
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+              <div className="grid gap-y-16 gap-x-8 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
                 {results.map((anime) => (
                   <Link href={`/anime/info/${anime.id}`} key={anime.id}>
                     <SearchCard

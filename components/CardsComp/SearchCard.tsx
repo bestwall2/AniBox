@@ -20,7 +20,7 @@ const SearchCard: React.FC<SearchCardProps> = ({
   status,
 }) => {
   return (
-    <div className="searchCard relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[0.97]">
+    <div className="searchCard relative overflow-hidden rounded-2x transition-all duration-300 hover:scale-[0.97]">
       {/* Cover Image */}
       <Image
         src={`/api/proxy?url=${encodeURIComponent(img)}`}
@@ -59,7 +59,11 @@ const SearchCard: React.FC<SearchCardProps> = ({
       </div>
 
       {/* Play Button */}
-      <FaPlay className="searchCardPlay" size={26} />
+      <FaPlay
+        className="searchCardPlay"
+        size={28}
+        style={{ color: "#3888E7", padding: 1 }}
+      />
     </div>
   );
 };
