@@ -6,6 +6,7 @@ import { fetchSearch } from "@/actions/ApiData";
 import DiscoverCard from "@/components/CardsComp/DiscoverCard";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
+import Navbar from "@/components/NavBar";
 
 interface Anime {
   id: number;
@@ -58,6 +59,7 @@ const SearchResults = () => {
   return (
     <div className="bg-black text-white min-h-screen pb-10">
       {/* Space for Navbar */}
+      <Navbar />
       <div className="h-20" />
 
       <div className="container mx-auto px-4">
@@ -103,24 +105,28 @@ const SearchResults = () => {
         ) : results.length > 0 ? (
           <>
             {/* Results grid */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-              {results.map((anime) => (
-                <Link href={`/anime/info/${anime.id}`} key={anime.id}>
-                  <DiscoverCard
-                    title={
-                      anime.title.english || anime.title.romaji || "No title"
-                    }
-                    info={`${anime.format} • ${
-                      anime.startDate?.year || "Unknown Year"
-                    }`}
-                    img={anime.coverImage.large}
-                    cardbadge={
-                      anime.averageScore ? `${anime.averageScore / 10}` : "N/A"
-                    }
-                    status={anime.status}
-                  />
-                </Link>
-              ))}
+            <div className="relative pointer-events-auto">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+                {results.map((anime) => (
+                  <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                    <DiscoverCard
+                      title={
+                        anime.title.english || anime.title.romaji || "No title"
+                      }
+                      info={`${anime.format} • ${
+                        anime.startDate?.year || "Unknown Year"
+                      }`}
+                      img={anime.coverImage.large}
+                      cardbadge={
+                        anime.averageScore
+                          ? `${anime.averageScore / 10}`
+                          : "N/A"
+                      }
+                      status={anime.status}
+                    />
+                  </Link>
+                ))}
+              </div>
             </div>
           </>
         ) : (
