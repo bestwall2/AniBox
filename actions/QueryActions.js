@@ -440,6 +440,7 @@ query (
     }
     media(
       id: $id,
+      type: $type,
       season: $season,
       format_in: $format,
       status: $status,
@@ -454,8 +455,9 @@ query (
       genre_in: $genres,
       tag_in: $tags,
       sort: $sort,
-      isAdult: false , # 🔥 This removes hentai NSFW content
-	       
+      
+      # 🔥 BLOCK ALL NSFW
+      isAdult: false
     ) {
       id
       title {

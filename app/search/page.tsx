@@ -139,13 +139,10 @@ const SearchResults = () => {
         ) : (
           // ⭐ SHOW TRENDING WHEN NO SEARCH QUERY
           <>
-            <p className="text-xl font-semibold mb-4 text-gray-300">
-              Trending Anime
-            </p>
-
+            
             {loadingTrending ? (
               <div className="flex justify-center items-center h-40">
-                <p className="text-gray-500">Loading trending anime...</p>
+                <p className="text-gray-500">Loading anime...</p>
               </div>
             ) : (
               <div className="grid gap-y-4 gap-x-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
