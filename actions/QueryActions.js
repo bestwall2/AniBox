@@ -246,7 +246,7 @@ query($perPage: Int, $page: Int) {
 }`
 
 export const animeinfo = `
-query ($id: Int) {
+query (id: $id, type: ANIME) {
 	Media (id: $id) {
 	  id
 	  idMal
@@ -441,7 +441,6 @@ query (
     }
     media(
       id: $id,
-      type: $type,
       season: $season,
       format_in: $format,
       status: $status,
@@ -456,7 +455,8 @@ query (
       genre_in: $genres,
       tag_in: $tags,
       sort: $sort,
-      isAdult: false        # 🔥 This removes hentai NSFW content
+      isAdult: false , # 🔥 This removes hentai NSFW content
+	  type: ANIME       
     ) {
       id
       title {
@@ -780,7 +780,7 @@ query ($username: String, $status: MediaListStatus) {
 `
 
 export const schedule = ` 
-query($page: Int, $perPage: Int, $from: Int, $to: Int){
+query($page: Int, $perPage: Int, $from: Int, $to:  , type: ANIME){
   Page(page: $page, perPage: $perPage){
 	pageInfo{
 	  hasNextPage
