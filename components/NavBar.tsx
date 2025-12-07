@@ -92,7 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] shadow-xl w-[50px] transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
+          <div className="bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] hidden shadow-xl w-[50px] transition-all duration-300 ease-out hover:scale-[0.97] flex items-center justify-center h-[50px] fixed rounded-full bottom-0 mb-5 left-10 z-50">
             <BiSolidCategory size={22} />
           </div>
         </DropdownMenuTrigger>

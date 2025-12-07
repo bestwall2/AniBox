@@ -45,6 +45,21 @@ const SearchResults = () => {
         setLoadingTrending(false);
       });
   }, []);
+  // 🔄 Reload trending when search input is cleared
+  useEffect(() => {
+    if (query.trim().length === 0) {
+      setLoadingTrending(true);
+      fetch("/api/trending-anime")
+        .then((res) => res.json())
+        .then((data) => {
+          setTrending(data?.Page?.media || []);
+          setLoadingTrending(false);
+        })
+        .catch(() => {
+          setLoadingTrending(false);
+        });
+    }
+  }, [query]);
 
   // 🔥 LIVE SEARCH WITH DEBOUNCE
   useEffect(() => {
