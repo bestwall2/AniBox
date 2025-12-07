@@ -33,22 +33,21 @@ const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch Data
   useEffect(() => {
     if (initialQuery) {
       setLoading(true);
       fetchSearch(initialQuery).then(({ data, error }) => {
-        if (error) {
-          setError(error);
-        } else {
-          setResults(data.Page.media);
-        }
+        if (error) setError(error);
+        else setResults(data.Page.media);
         setLoading(false);
       });
     } else {
-      setLoading(false)
+      setLoading(false);
     }
   }, [initialQuery]);
 
+  // Handle Search
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (query.trim()) {
@@ -57,48 +56,69 @@ const SearchResults = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        <div className="Geners flex text-white items-center mb-4 space-x-2">
-          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
-          <p className="font-bold text-2xl">Search</p>
+    <div className="bg-black text-white min-h-screen pb-10">
+
+      {/* Space for Navbar */}
+      <div className="h-20" />
+
+      <div className="container mx-auto px-4">
+
+        {/* Title */}
+        <div className="flex items-center mb-6 space-x-2">
+          <span className="w-1.5 h-6 rounded-full bg-gradient-to-br from-blue-500 via-cyan-400 to-pink-500" />
+          <p className="text-2xl font-bold">Search</p>
         </div>
-        <form onSubmit={handleSearch} className="relative mb-8">
+
+        {/* Search Input */}
+        <form onSubmit={handleSearch} className="relative mb-10 max-w-2xl mx-auto">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search for anime..."
-            className="w-full bg-gray-800 text-white rounded-lg py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="
+              w-full
+              bg-[#13131a]
+              text-white
+              rounded-xl
+              py-3 pl-12 pr-4
+              border border-white/10
+              focus:outline-none focus:ring-2 focus:ring-pink-500
+              transition-all
+            "
           />
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
         </form>
 
+        {/* Loading */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <p className="text-xl">Loading...</p>
+            <p className="text-xl animate-pulse text-gray-300">Loading...</p>
           </div>
         ) : error ? (
           <div className="flex justify-center items-center h-64">
-            <p className="text-xl text-red-500">{error}</p>
+            <p className="text-xl text-red-400">{error}</p>
           </div>
         ) : results.length > 0 ? (
-          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {results.map((anime) => (
-              <Link href={`/anime/info/${anime.id}`} key={anime.id}>
-                <DiscoverCard
-                  title={anime.title.english || anime.title.romaji || "No title"}
-                  info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"}`}
-                  img={anime.coverImage.large}
-                  cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
-                  status={anime.status}
-                />
-              </Link>
-            ))}
-          </div>
+          <>
+            {/* Results grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {results.map((anime) => (
+                <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                  <DiscoverCard
+                    title={anime.title.english || anime.title.romaji || "No title"}
+                    info={`${anime.format} • ${anime.startDate?.year || "Unknown Year"}`}
+                    img={anime.coverImage.large}
+                    cardbadge={anime.averageScore ? `${anime.averageScore / 10}` : "N/A"}
+                    status={anime.status}
+                  />
+                </Link>
+              ))}
+            </div>
+          </>
         ) : (
           <div className="flex justify-center items-center h-64">
-            <p className="text-xl">No results found for "{initialQuery}".</p>
+            <p className="text-xl text-gray-400">No results found for "{initialQuery}".</p>
           </div>
         )}
       </div>
@@ -107,7 +127,11 @@ const SearchResults = () => {
 };
 
 const SearchPage = () => (
-  <Suspense fallback={<div className="bg-black text-white min-h-screen flex justify-center items-center"><p>Loading...</p></div>}>
+  <Suspense fallback={
+    <div className="bg-black text-white min-h-screen flex justify-center items-center">
+      <p className="text-gray-400">Loading...</p>
+    </div>
+  }>
     <SearchResults />
   </Suspense>
 );

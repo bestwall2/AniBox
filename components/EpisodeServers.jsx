@@ -60,7 +60,7 @@ export default function EpisodeServers({ animeName, episodeNumber }) {
                     setSelectedServer(server.name);
                     setSelectedUrl(server.url);
                   }}
-                  className="px-3 py-2 bg-black/60 text-white border border-white/20 rounded-lg text-sm backdrop-blur-md"
+                  className="px-1 py-2 bg-[#111] text-white rounded-md border border-gray-500 text-xs backdrop-blur-md"
                 >
                   {servers.map((s) => (
                     <option key={s.name} value={s.name}>
