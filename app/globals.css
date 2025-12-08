@@ -196,7 +196,7 @@ body {
 }
 
 .Listcontainer .Title {
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   font-weight: bold;
   bottom: 13px;
@@ -228,7 +228,7 @@ body {
       #00000000,
       #00000000,
       #00000000);
-  height: 49vh;
+  height: 52vh;
   width: 100%;
   margin-bottom: 0px;
   margin-top: auto;
@@ -274,7 +274,7 @@ body {
 }
 
 .Listcontainer {
-  height: 23vh;
+  height: 24vh;
   position: relative;
 }
 
