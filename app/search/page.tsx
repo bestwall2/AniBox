@@ -83,39 +83,62 @@ const SearchResults = () => {
 
   return (
     <div className="bg-black text-white min-h-screen pb-10">
-      {/* Navbar */}
-      <Navbar showSearch={false} hideOnScroll={false} />
+      {/* 🔹 Top Section with Rounded Bottom Only */}
+      <div className="bg-[#0b0b0e] border rounded-b-2xl   p-[1rem]  pt-[4.5rem]">
+        {/* Navbar */}
+        <Navbar showSearch={false} hideOnScroll={false} />
 
-      <div className="h-20 mt-4" />
-      <div className="container mx-auto px-4">
+        {/* Spacer */}
+
+        <div className="mx-[-1rem] relative overflow-hidden rounded-t-2xl">
+          {/* Top and bottom shadow overlays */}
+          <div className="absolute top-0 left-0 w-full h-14 bg-gradient-to-b from-[#0b0b0e] to-transparent pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-[#0b0b0e] to-transparent pointer-events-none"></div>
+          {/* Left shadow */}
+          <div className="absolute top-0 left-0 h-full w-14 bg-gradient-to-r from-[#0b0b0e] to-transparent pointer-events-none"></div>
+          {/* Right shadow */}
+          <div className="absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#0b0b0e] to-transparent pointer-events-none"></div>
+
+          <img
+            src="https://github.com/bestwall2/AniBox/blob/main/app/images/newShareSaveImage.jpg?raw=true"
+            alt="HH"
+            className="w-full object-cover rounded-t-2xl"
+          />
+        </div>
+
         {/* Title */}
-        <div className="flex items-center mb-[12px] space-x-2">
-          <span className="w-1.5 rounded-full h-6 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
+        <div className="flex items-center mt-1 mb-4 space-x-2">
+          <span className="w-1.5 h-6 rounded-full bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)]"></span>
           <p className="text-2xl font-bold">Search</p>
         </div>
 
         {/* Search Input */}
-        <div className="relative mb-[15px] max-w-2xl mx-auto">
+        <div className="relative max-w-2xl mx-auto">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search for anime..."
             className="
-              w-full
-              bg-[#13131a]
-              text-white
-              rounded-xl
-              py-3 pl-12 pr-4
-              border border-white/10
-              focus:outline-none focus:ring-2 focus:ring-gray-500
-              transition-all
-            "
+          w-full
+          bg-[#161622]
+          text-white
+          rounded-xl
+          py-3 pl-12 pr-4
+          border border-white/10
+          focus:outline-none focus:ring-2 focus:ring-gray-500
+          transition-all
+        "
           />
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
         </div>
+      </div>
 
-        {/* Loading Search */}
+      {/* 🔹 Space between top section and list */}
+      <div className="h-5 md:h-10"></div>
+
+      {/* 🔹 Anime List / Search Results */}
+      <div className="container mx-auto px-4">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <p className="text-xl animate-pulse text-gray-300">Searching...</p>
@@ -152,37 +175,30 @@ const SearchResults = () => {
               </p>
             </div>
           )
+        ) : loadingTrending ? (
+          <div className="flex justify-center items-center h-40">
+            <p className="text-gray-500">Loading anime...</p>
+          </div>
         ) : (
-          // ⭐ SHOW TRENDING WHEN NO SEARCH QUERY
-          <>
-            {loadingTrending ? (
-              <div className="flex justify-center items-center h-40">
-                <p className="text-gray-500">Loading anime...</p>
-              </div>
-            ) : (
-              <div className="grid gap-y-4 gap-x-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-                {trending.map((anime) => (
-                  <Link href={`/anime/info/${anime.id}`} key={anime.id}>
-                    <SearchCard
-                      title={
-                        anime.title.english ?? anime.title.romaji ?? "No title"
-                      }
-                      info={`${anime.format} • ${
-                        anime.startDate?.year || "Unknown Year"
-                      }`}
-                      img={anime.coverImage.extraLarge}
-                      cardbadge={
-                        anime.averageScore
-                          ? anime.averageScore / 10 + ""
-                          : "N/A"
-                      }
-                      status={anime.status}
-                    />
-                  </Link>
-                ))}
-              </div>
-            )}
-          </>
+          <div className="grid gap-y-4 gap-x-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+            {trending.map((anime) => (
+              <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                <SearchCard
+                  title={
+                    anime.title.english ?? anime.title.romaji ?? "No title"
+                  }
+                  info={`${anime.format} • ${
+                    anime.startDate?.year || "Unknown Year"
+                  }`}
+                  img={anime.coverImage.extraLarge}
+                  cardbadge={
+                    anime.averageScore ? anime.averageScore / 10 + "" : "N/A"
+                  }
+                  status={anime.status}
+                />
+              </Link>
+            ))}
+          </div>
         )}
       </div>
     </div>
