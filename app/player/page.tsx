@@ -202,15 +202,12 @@ const PlayerPageContent = () => {
       <div className="mt-5" />
 
       {/* Player */}
-      <div className="w-full h-[220px] rounded-xl overflow-hidden">
+      <div className="w-full h-[220px] border shadow-xl bg-black backdrop-blur-md rounded-xl overflow-hidden">
         {currentServer === "built-ar" ? (
           <EpisodeServers
             animeName={animeDetails?.title?.romaji}
             episodeNumber={episode}
-            malId={malId}
-            />
-
-
+          />
         ) : iframeUrl ? (
           <iframe
             src={iframeUrl}
@@ -304,16 +301,17 @@ const PlayerPageContent = () => {
             </div>
           )}
 
-          <div className="mt-6 bg-[#0f0f10] rounded-xl p-4 border border-white/5">
+          <div className="mt-6 bg-[#13131a] rounded-xl p-4 border border-white/5">
             <h2 className="text-lg font-semibold text-white mb-2">
               Description
             </h2>
 
-            <p className="text-gray-300 text-sm leading-relaxed line-clamp-[8]">
+            <p className="text-gray-300 text-sm leading-relaxed line-clamp-[9]">
               {animeDetails?.description ? (
                 parse(animeDetails.description)
               ) : (
-                <Skeleton className="h-20 w-full rounded" />
+               // <Skeleton className="h-20 w-full rounded" />
+                "No description available."
               )}
             </p>
           </div>
