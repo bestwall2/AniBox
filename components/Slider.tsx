@@ -65,83 +65,84 @@ const Slider = () => {
           slidesPerView={"auto"}
           effect="coverflow"
           spaceBetween={0}
-          
-
         >
           {animeList?.map((anime) => (
             <SwiperSlide key={`${anime.id}-${anime.title.romaji}`}>
-            
-  
-                <div className="container">
-                    <Image
-                    src={anime.coverImage.extraLarge}
-                    alt={
-                        anime.title.english || anime.title.romaji || "Unknown Title"
-                    }
-                    layout="responsive"
-                    width={500}
-                    height={300}
-    
-                    />
-                    <div className="ContainerLayout"></div>
-                    <div className="InfoContainer m-4 text-left">
-                        
-                        <h1 className="Title tex-xl t font-bold">
-                            {anime.title.english ||
-                            anime.title.romaji ||
-                            "Unknown Title"}
-                        </h1>
-                        <div className="flex items-center justify-start ">
-                            <FaStar size={15} style={{ color: "yellow" }} />
-                            <h2 className="Trending font-semibold pl-1 pt-1 text-yellow-400"> 
-                            {
-                                anime.averageScore ? `${anime.averageScore / 10}` : N/A
-                            }
-                            </h2>
-                        </div>
-                        <p className="Description  text-sm w-auto block-words pr-5 mt-1 mb-1  line-clamp-5 text-gray-400">
-                            {parse(anime.description)}
-                        </p>
-                        <div className="Addtion font-semibold mb-2 space-x-3 h-auto">
-                            <h1>
-                            <FaPlayCircle className="m-1 self-center" size={13} />
-                            {anime.format || "Unknown Format"}
-                            </h1>
-                            <h1
-                            className={`State ${anime.status === "RELEASING" ? "text-green-500" : "text-red-500"}`}
-                            >
-                            {anime.status || "Unknown Status"}
-                            </h1>
-                            <h1>
-                            <MdDateRange className="m-1 self-center" size={13} />
-                            {anime.startDate
-                                ? `${anime.startDate.year} ${anime.startDate.month}, ${anime.startDate.day}`
-                                : "Unknown Date"}     
-                            </h1>
-                        </div>
-                        <Button
-                            className="SliderButton pt-6 pb-6 p-4 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] font-semibold rounded-xl mr-2"
-                            variant="styled"
-                        >
-                            <FaPlay size={12} /> Play Now 
-                        </Button>
-                        
-                        <Link href={ `/anime/info/${anime.id}`} passHref>
-                            <Button
-                                className="SliderButton p-4 font-semibold rounded-xl "
-                                variant="outline" >
-                                <HiOutlineInformationCircle size={22} /> More Info 
-                            </Button>
-                        </Link>
-                    
-                    </div>
+              <div className="container">
+                <Image
+                  src={`/api/proxy?url=${encodeURIComponent(
+                    anime.coverImage.extraLarge
+                  )}`}
+                  alt={
+                    anime.title.english || anime.title.romaji || "Unknown Title"
+                  }
+                  layout="responsive"
+                  width={500}
+                  height={300}
+                />
+                <div className="ContainerLayout"></div>
+                <div className="InfoContainer m-4 text-left">
+                  <h1 className="Title tex-xl t font-bold">
+                    {anime.title.english ||
+                      anime.title.romaji ||
+                      "Unknown Title"}
+                  </h1>
+                  <div className="flex items-center justify-start ">
+                    <FaStar size={15} style={{ color: "yellow" }} />
+                    <h2 className="Trending font-semibold pl-1 pt-1 text-yellow-400">
+                      {anime.averageScore
+                        ? `${anime.averageScore / 10}`
+                        : "N/A"}
+                    </h2>
+                  </div>
+                  <p className="Description  text-sm w-auto block-words pr-5 mt-1 mb-1  line-clamp-5 text-gray-400">
+                    {parse(anime.description)}
+                  </p>
+                  <div className="Addtion font-semibold mb-2 space-x-3 h-auto">
+                    <h1>
+                      <FaPlayCircle className="m-1 self-center" size={13} />
+                      {anime.format || "Unknown Format"}
+                    </h1>
+                    <h1
+                      className={`State ${
+                        anime.status === "RELEASING"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {anime.status || "Unknown Status"}
+                    </h1>
+                    <h1>
+                      <MdDateRange className="m-1 self-center" size={13} />
+                      {anime.startDate
+                        ? `${anime.startDate.year} ${anime.startDate.month}, ${anime.startDate.day}`
+                        : "Unknown Date"}
+                    </h1>
+                  </div>
+                  <Link href={`/anime/info/${anime.id}#EPHASH`} passHref>
+                    <Button
+                      className="SliderButton pt-6 pb-6 p-4 bg-[linear-gradient(135deg,_#3888E7,_#04DFFF,_#FE1491)] font-semibold rounded-xl mr-2"
+                      variant="styled"
+                    >
+                      <FaPlay size={12} /> Play Now
+                    </Button>
+                  </Link>
+
+                  <Link href={`/anime/info/${anime.id}`} passHref>
+                    <Button
+                      className="SliderButton p-4 font-semibold rounded-xl "
+                      variant="outline"
+                    >
+                      <HiOutlineInformationCircle size={22} /> More Info
+                    </Button>
+                  </Link>
                 </div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
       )}
-      
-      </>   
+    </>
   );
 };
 export default Slider;

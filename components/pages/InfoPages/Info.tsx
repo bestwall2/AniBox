@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react"; // Removed useEffect
+import React, { useEffect, useState } from "react"; // Removed useEffect
 import { useQuery } from "@tanstack/react-query"; // Added useQuery
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaStar } from "react-icons/fa6";
@@ -41,6 +41,15 @@ const formatDate = (dateObj: {
   }
   return undefined;
 };
+
+ useEffect(() => {
+   if (window.location.hash) {
+     const el = document.querySelector(window.location.hash);
+     if (el) {
+       el.scrollIntoView({ behavior: "smooth" });
+     }
+   }
+ }, []);
 
 // Fetch function for anime details
 const fetchAnimeDetails = async (id: any) => {
@@ -482,12 +491,12 @@ function Info({ id }) {
             <TabsContent value="Characters" className="mt-4">
               {animeDetails?.characters?.edges && (
                 <Characters
-                  className="InfoListsForAni"
+                  
                   characters={animeDetails.characters.edges}
                 />
               )}
             </TabsContent>
-            <div className="flex flex-col gap-2">
+            <div className="EPHASH flex flex-col gap-2">
               <Episodes
                 episodes={processedEpisodes}
                 imgbackup={animeDetails?.coverImage?.extraLarge}
