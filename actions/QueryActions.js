@@ -326,6 +326,7 @@ query ($id: Int) {
                     episodes
                     chapters
                     status
+					
                     duration
                     genres
                     season

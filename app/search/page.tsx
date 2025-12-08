@@ -72,11 +72,22 @@ const SearchResults = () => {
 
     const delay = setTimeout(() => {
       fetchSearch(query.trim()).then(({ data, error }) => {
-        if (error) setError(error);
-        else setResults(data.Page.media);
+        if (error) {
+          setError(error);
+        } else {
+          const animeOnly = data.Page.media.filter((item: any) =>
+            ["TV", "MOVIE", "OVA", "ONA", "SPECIAL"].includes(
+              item.format
+            )
+          );
+
+          setResults(animeOnly);
+        }
+
         setLoading(false);
       });
     }, 400);
+
 
     return () => clearTimeout(delay);
   }, [query]);
@@ -84,7 +95,7 @@ const SearchResults = () => {
   return (
     <div className="bg-black text-white min-h-screen pb-10">
       {/* 🔹 Top Section with Rounded Bottom Only */}
-      <div className="bg-[#0b0b0e] border rounded-b-2xl   p-[1rem]  pt-[4.5rem]">
+      <div className="bg-[#0b0b0] border-b-[2.5px] border-gray shadow-white/20 rounded-b-3xl mx-2  p-[1rem]  pt-[3.5rem]">
         {/* Navbar */}
         <Navbar showSearch={false} hideOnScroll={false} />
 
@@ -92,12 +103,12 @@ const SearchResults = () => {
 
         <div className="mx-[-1rem] relative overflow-hidden rounded-t-2xl">
           {/* Top and bottom shadow overlays */}
-          <div className="absolute top-0 left-0 w-full h-14 bg-gradient-to-b from-[#0b0b0e] to-transparent pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-[#0b0b0e] to-transparent pointer-events-none"></div>
+          <div className="absolute top-0 left-0 w-full h-14 bg-gradient-to-b from-[#000000] to-transparent pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none"></div>
           {/* Left shadow */}
-          <div className="absolute top-0 left-0 h-full w-14 bg-gradient-to-r from-[#0b0b0e] to-transparent pointer-events-none"></div>
+          <div className="absolute top-0 left-0 h-full w-14 bg-gradient-to-r from-[#000000] to-transparent pointer-events-none"></div>
           {/* Right shadow */}
-          <div className="absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#0b0b0e] to-transparent pointer-events-none"></div>
+          <div className="absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#000000] to-transparent pointer-events-none"></div>
 
           <img
             src="https://github.com/bestwall2/AniBox/blob/main/app/images/newShareSaveImage.jpg?raw=true"
@@ -121,7 +132,7 @@ const SearchResults = () => {
             placeholder="Search for anime..."
             className="
           w-full
-          bg-[#161622]
+          bg-[#060607]
           text-white
           rounded-xl
           py-3 pl-12 pr-4

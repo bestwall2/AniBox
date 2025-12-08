@@ -20,7 +20,7 @@ const SearchCard: React.FC<SearchCardProps> = ({
   status,
 }) => {
   return (
-    <div className="searchCard relative overflow-hidden rounded-2x transition-all duration-300 hover:scale-[0.97]">
+    <div className="searchCard  relative overflow-hidden rounded-2x  transition-all duration-300 hover:scale-[0.97]">
       {/* Cover Image */}
       <Image
         src={`/api/proxy?url=${encodeURIComponent(img)}`}
@@ -36,9 +36,8 @@ const SearchCard: React.FC<SearchCardProps> = ({
         <p className="searchCardTitle absolute text-center line-clamp-2">
           {title}
         </p>
-
         {/* Info */}
-        <p className="searchCardInfo absolute bottom-0 text-gray-300 line-clamp-1">
+        <p className="searchCardInfo  absolute bottom-0 text-gray-300 line-clamp-1">
           {info}
         </p>
 

@@ -468,7 +468,13 @@ function Info({ id }) {
             <TabsContent value="Relations" className="mt-4">
               <RecommendList
                 geners="Chronology"
-                data={animeDetails?.relations?.edges || []}
+                data={(animeDetails?.relations?.edges || []).filter(
+                  (rel: any) =>
+                    rel?.node?.format &&
+                    ["TV", "MOVIE", "ONA", "OVA", "SPECIAL"].includes(
+                      rel.node.format
+                    ) // ✅ Only anime formats allowed
+                )}
                 param="font-semibold text-md"
                 className="InfoListsForAni"
               />
@@ -491,12 +497,18 @@ function Info({ id }) {
 
               <RecommendList
                 geners="Recommended"
-                data={
-                  animeDetails?.recommendations?.nodes?.map((rec) => ({
+                data={(animeDetails?.recommendations?.nodes || [])
+                  .map((rec: any) => ({
                     relationType: "RECOMMENDATION",
                     node: rec.mediaRecommendation,
-                  })) || []
-                }
+                  }))
+                  .filter(
+                    (item: any) =>
+                      item?.node?.format &&
+                      ["TV", "MOVIE", "OVA", "ONA", "SPECIAL"].includes(
+                        item.node.format
+                      ) // ✅ Keep anime only
+                  )}
                 param="font-semibold text-md"
                 className="InfoListsForAni"
               />
