@@ -59,10 +59,6 @@ const PlayerPageContent = () => {
   const anilistId = searchParams.get("anilistId");
   const malId = searchParams.get("malId");
 
-
-    console.log("THIS MY MAL ID:", malId);
-
-
   // 🔥 ADDED — server list
   const serverLinks = {
     server1: (id: string, s: string, e: string, type: string = "TV") =>
@@ -209,7 +205,9 @@ const PlayerPageContent = () => {
       <div className="w-full h-[220px] border shadow-xl bg-black backdrop-blur-md rounded-xl overflow-hidden">
         {currentServer === "built-ar" ? (
           <EpisodeServers
-            animeName={animeDetails?.title?.romaji}
+            animeName= {malId}
+            
+            //{animeDetails?.title?.romaji}
             episodeNumber={episode}
           />
         ) : iframeUrl ? (

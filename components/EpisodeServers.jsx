@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-export default function EpisodeServers({ animeName, episodeNumber }) {
+export default function EpisodeServers({ animeName, episodeNumber}) {
   const [servers, setServers] = useState([]);
   const [loading, setLoading] = useState(true);
 
