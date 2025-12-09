@@ -108,48 +108,43 @@ export async function GET(req: NextRequest) {
       const links = await extractEpisodeLinks(animeUrl);
       const episodeUrl = links[Number(ep) - 1];
 
+      if (episodeUrl) {
+        const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
+          episodeUrl
+        )}`;
 
-      if (!episodeUrl) {
-        return NextResponse.json(
-          { error: "Episode URL not found", slug, ep },
-          { status: 404 }
-        );
-      }
+        const res = await fetch(workerUrl);
+        if (res.ok) {
+          const html = await res.text();
 
-      const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
-        episodeUrl
-      )}`;
+          if (html && !html.includes("404")) {
+            // Extract <ul class="server-list"> block
+            const ulMatch = html.match(
+              /<ul class="server-list">([\s\S]*?)<\/ul>/
+            );
+            if (ulMatch) {
+              const ulContent = ulMatch[1];
+              const linkRegex = new RegExp('data-url=\\"([^\\"]+)', "g");
 
-      const res = await fetch(workerUrl);
-      if (res.ok) {
-        const html = await res.text();
+              let match;
+              while ((match = linkRegex.exec(ulContent)) !== null) {
+                try {
+                  const decoded = Buffer.from(match[1], "base64").toString(
+                    "utf-8"
+                  );
 
-        if (html && !html.includes("404")) {
-          // Extract <ul class="server-list"> block
-          const ulMatch = html.match(
-            /<ul class="server-list">([\s\S]*?)<\/ul>/
-          );
-          if (ulMatch) {
-            const ulContent = ulMatch[1];
-            const linkRegex = new RegExp('data-url=\\"([^\\"]+)', "g");
+                  // Extract domain name from URL (e.g., https://mega.nz/ → mega)
+                  let serverName = "unknown";
+                  const urlObj = new URL(decoded);
+                  const hostParts = urlObj.hostname.split(".");
+                  if (hostParts.length > 0) {
+                    serverName =
+                      hostParts[hostParts.length - 2] || hostParts[0];
+                  }
 
-            let match;
-            while ((match = linkRegex.exec(ulContent)) !== null) {
-              try {
-                const decoded = Buffer.from(match[1], "base64").toString(
-                  "utf-8"
-                );
-
-                // Extract domain name from URL (e.g., https://mega.nz/ → mega)
-                let serverName = "unknown";
-                const urlObj = new URL(decoded);
-                const hostParts = urlObj.hostname.split(".");
-                if (hostParts.length > 0) {
-                  serverName = hostParts[hostParts.length - 2] || hostParts[0];
-                }
-
-                servers.push({ name: serverName, url: decoded });
-              } catch {}
+                  servers.push({ name: serverName, url: decoded });
+                } catch {}
+              }
             }
           }
         }
