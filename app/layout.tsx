@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "AniBox",
     images: [
       {
-        url: "/images/anibox_og_default.png",
+        url: "/images/logo.png",
         width: 1200,
         height: 630,
         alt: "AniBox Logo"
