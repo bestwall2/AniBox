@@ -42,14 +42,14 @@ export const metadata: Metadata = {
     description:
       "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
     images: [
-      "https://github.com/bestwall2/AniBox/blob/main/app/images/anibox_og_default.png?raw=true",
+      "https://github.com/bestwall2/AniBox/blob/main/app/images/logo.png?raw=true",
     ],
   },
   icons: {
-    icon: "https://github.com/bestwall2/AniBox/blob/main/app/images/anibox_og_default.png?raw=true",
+    icon: "https://github.com/bestwall2/AniBox/blob/main/app/images/logo.png?raw=true",
     shortcut: "/favicon.ico",
     apple:
-      "https://github.com/bestwall2/AniBox/blob/main/app/images/anibox_og_default.png?raw=true",
+      "https://github.com/bestwall2/AniBox/blob/main/app/images/logo.png?raw=true",
   },
 };
 
