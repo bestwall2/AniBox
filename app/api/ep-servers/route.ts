@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 async function fetchJikanTitle(malId: number) {
   try {
     const response = await fetch(`https://api.jikan.moe/v4/anime/${malId}`);
-
+    
     if (!response.ok) {
       throw new Error("Failed to fetch from Jikan API");
     }
