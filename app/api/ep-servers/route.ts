@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
 
     if (!jikanTitle) {
       return NextResponse.json(
-        { error: "Cannot fetch title from Jikan" },
+        { error: "Cannot fetch title from Jikan API", jikanTitle},
         { status: 500 }
       );
     }
