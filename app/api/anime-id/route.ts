@@ -4,7 +4,8 @@
 import { NextResponse } from "next/server";
 
 // ⚠️ Move API keys to .env.local in production
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const TMDB_API_KEY = "90a823390bd37b5c1ba175bef7e2d5a8";
+// process.env.TMDB_API_KEY;
 const ANIME_LIST_URL =
   "https://raw.githubusercontent.com/Fribb/anime-lists/refs/heads/master/anime-list-full.json";
 
@@ -26,8 +27,11 @@ export async function GET(request: Request) {
       );
     }
 
-    const animeList: Array<{ anilist_id: number; themoviedb_id?: number }> =
-      await listRes.json();
+    const animeList: Array<{
+      anilist_id: number;
+      themoviedb_id?: number;
+      mal_id: number;  
+    }> = await listRes.json();
 
     const anime = animeList.find(
       (a) => a.anilist_id === Number(anilistId)
@@ -38,7 +42,8 @@ export async function GET(request: Request) {
     }
 
     const tmdbId = anime.themoviedb_id;
-
+    const malId = anime.mal_id;
+    console.log("MAL ID found:", malId);
     // 2️⃣ Fetch AniList anime details
     const aniRes = await fetch(
       `${url.origin}/api/anime-info?id=${anilistId}`
@@ -128,6 +133,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       tmdb_id: tmdbId,
       current_season: currentSeason,
+      mal_id: malId,
     });
   } catch (err: any) {
     console.error("Error fetching TMDB & season:", err);

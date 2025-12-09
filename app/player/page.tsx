@@ -36,7 +36,7 @@ const fetchAnimeDetails = async (id: string) => {
   const data = await response.json();
   return data.Media;
 };
-
+ 
 function getSeasonNumberFromTitle(title: string | null | undefined): number {
   if (!title) return 1;
   const match = title.match(/Season\s+(\d+)/i);
@@ -58,6 +58,10 @@ const PlayerPageContent = () => {
   const episode = searchParams.get("episode");
   const anilistId = searchParams.get("anilistId");
   const malId = searchParams.get("malId");
+
+
+    console.log("THIS MY MAL ID:", malId);
+
 
   // 🔥 ADDED — server list
   const serverLinks = {

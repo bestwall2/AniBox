@@ -29,6 +29,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
   const [searchValue, setSearchValue] = useState("");
   const [tmdbId, setTmdbId] = useState<number | null>(null);
   const [season, setSeason] = useState<number | null>(null);
+  const [malId, setMalId] = useState<number | null>(null);
   useEffect(() => {
     const fetchTmdbId = async () => {
       try {
@@ -38,6 +39,7 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
         if (!res.ok) throw new Error("Failed to fetch TMDB ID");
         const data = await res.json();
         setTmdbId(data.tmdb_id);
+        setMalId(data.mal_id);
         setSeason(data.current_season); 
       } catch (error) {
         console.error(error);
@@ -103,11 +105,15 @@ const Episodes: React.FC<EpisodesProps> = ({ episodes, imgbackup, anilistId, typ
                 imgb: episodes?.[0]?.imgb || "",
                 season: 1,
               },
-            ]
+            ] 
           : filteredEpisodes
         ).map((episode) => {
           const href = tmdbId
-            ? `/player?tmdbId=${tmdbId}&type=${type}&season=${season || 1}&episode=${episode.number}&anilistId=${anilistId}`
+            ? `/player?tmdbId=${tmdbId}&type=${type}&season=${
+                season || 1
+              }&episode=${
+                episode.number
+              }&anilistId=${anilistId}&malId=${malId}`
             : undefined;
 
           const card = (
