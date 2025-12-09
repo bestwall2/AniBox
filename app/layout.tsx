@@ -18,34 +18,41 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "AniBox",
-  description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
+  description:
+    "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
   openGraph: {
     title: "AniBox",
-    description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
+    description:
+      "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
     url: "https://ani-box-nine.vercel.app",
     siteName: "AniBox",
     images: [
       {
-        url: "/images/logo.png",
+        url: "https://github.com/bestwall2/AniBox/blob/main/app/images/logo.png?raw=true",
         width: 1200,
         height: 630,
-        alt: "AniBox Logo"
-      }
+        alt: "AniBox Logo",
+      },
     ],
-    type: "website"
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "AniBox",
-    description: "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
-    images: ["/images/anibox_og_default.png"]
+    description:
+      "AniBox: Your ultimate destination for discovering and watching a vast collection of anime series and movies for free. Stream the latest episodes and timeless classics.",
+    images: [
+      "https://github.com/bestwall2/AniBox/blob/main/app/images/anibox_og_default.png?raw=true",
+    ],
   },
   icons: {
-    icon: "/images/anibox_og_default.png",
+    icon: "https://github.com/bestwall2/AniBox/blob/main/app/images/anibox_og_default.png?raw=true",
     shortcut: "/favicon.ico",
-    apple: "/images/anibox_og_default.png"
-  }
+    apple:
+      "https://github.com/bestwall2/AniBox/blob/main/app/images/anibox_og_default.png?raw=true",
+  },
 };
+
 
 export default function RootLayout({
   children,
