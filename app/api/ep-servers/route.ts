@@ -25,6 +25,29 @@ async function fetchJikanTitle(malId: number) {
 }
 // --------------------------------------------------
 
+async function extractEpisodeLinks(url: string) {
+  const res = await fetch(url);
+  const html = await res.text();
+
+  // استخراج محتوى ul.episodes-lists
+  const ulMatch = html.match(
+    /<ul class="episodes-lists"[^>]*>([\s\S]*?)<\/ul>/
+  );
+  if (!ulMatch) return [];
+
+  const ulContent = ulMatch[1];
+
+  // استخراج روابط الحلقات من <li> → <a class="title" href="...">
+  const liRegex = /<li>[\s\S]*?<a href="([^"]+)" class="title">/g;
+  const links: string[] = [];
+  let match;
+
+  while ((match = liRegex.exec(ulContent)) !== null) {
+    links.push(match[1]);
+  }
+ 
+  return links;
+}
 
 
 export async function GET(req: NextRequest) {
@@ -62,8 +85,11 @@ export async function GET(req: NextRequest) {
     // --------------------------------------------------
     const slug = jikanTitle
       .toLowerCase()
+      .replace(/\s[^a-zA-Z0-9\s]\s/g, " ")
       .normalize("NFKD")
-      .replace(/[^a-z0-9\s]+/g, "")
+      .replace(/\s+/g, "-")
+      //.replace(/[^a-z0-9\s]+/g, "")
+      .replace(/[^a-z0-9-]/g, "")
       .trim()
       .replace(/\s+/g, "-");
 
@@ -77,7 +103,19 @@ export async function GET(req: NextRequest) {
 
     // Try animeluxe.org (existing source)
     try {
-      const episodeUrl = `https://wb.animeluxe.org/episodes/${slug}-%D8%A7%D9%84%D8%AD%D9%84%D9%82%D8%A9-${ep}/`;
+
+      const animeUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=https://wb.animeluxe.org/${slug}`;
+      const links = await extractEpisodeLinks(animeUrl);
+      const episodeUrl = links[Number(ep) - 1];
+
+
+      if (!episodeUrl) {
+        return NextResponse.json(
+          { error: "Episode URL not found", slug, ep },
+          { status: 404 }
+        );
+      }
+
       const workerUrl = `https://epservers.ahmed-dikha26.workers.dev/?url=${encodeURIComponent(
         episodeUrl
       )}`;
