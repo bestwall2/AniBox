@@ -62,14 +62,14 @@ export async function GET(request: Request) {
 
     if (!media) {
       return NextResponse.json(
-        { error: "AniList media not found" },
+        { error: "AniList media not found", mal_id: malId },
         { status: 404 }
       );
     }
 
     // 3️⃣ Movie
     if (media.format === "MOVIE") {
-      return NextResponse.json({ tmdb_id: tmdbId, current_season: null });
+      return NextResponse.json({ tmdb_id: tmdbId, current_season: null, mal_id: malId });
     }
 
     // 4️⃣ Fetch TMDB TV show details
