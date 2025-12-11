@@ -1,3 +1,6 @@
+import Image from "next/image";
+import logo from "../app/images/logo.png";
+
 export default function Footer() {
   return (
     <div id="footer" className="pl-5 pr-5">
@@ -12,10 +15,11 @@ export default function Footer() {
         >
           <p>Welcome to</p>
           <div id="footer-logo">
-            <img
-              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
-              style={{ width: "90px" }}
+            <Image
+              src={logo}
               alt="Logo"
+              width={90}
+              height={25}
             />
           </div>
         </div>

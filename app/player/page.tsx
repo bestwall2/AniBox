@@ -11,7 +11,8 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { Skeleton } from "./../../components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import EpisodeServers from "./../../components/EpisodeServers";
-const fetchAnimeEpisodes = async (id: string) => {
+import profile from "./../images/profile.jpg";
+const fetchAnimeEpisodes = async (id:string) => {
   const response = await fetch(`/api/anime-episodes?id=${id}`);
   if (!response.ok) throw new Error("Failed to fetch episodes");
   const data = await response.json();
@@ -191,10 +192,12 @@ const PlayerPageContent = () => {
         </select>
 
         {/* Profile */}
-        <img
+        <Image
           className="w-9 h-9 rounded-full border-gray-600 border-2 transition-all duration-300 ease-out hover:scale-90"
-          src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
+          src={profile}
           alt="User"
+          width={36}
+          height={36}
         />
       </div>
 
@@ -263,9 +266,11 @@ const PlayerPageContent = () => {
             <div className="flex flex-row gap-4">
               <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
                 {animeDetails?.coverImage?.extraLarge ? (
-                  <img
+                  <Image
                     src={animeDetails.coverImage.extraLarge}
                     alt="Cover"
+                    width={140}
+                    height={210}
                     className="min-h-[21vh] min-w-[14vh] max-h-[21vh] max-w-[14vh] rounded-xl object-cover"
                   />
                 ) : (

@@ -12,6 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FaSearch } from "react-icons/fa";
+import Image from "next/image";
+import logo from "../app/images/logo.png";
+import profile from "../app/images/profile.jpg";
 
 const Navbar = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -42,10 +45,12 @@ const Navbar = () => {
           <a
             href="/"
             className="flex items-center -translate-x-5 transform space-x-0 rtl:space-x-reverse ml-0">
-            <img
-              src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/logo.png"
-              className="h-14"
+            <Image
+              src={logo}
               alt="AniBox"
+              height={56}
+              width={150}
+              priority
             />
           </a>
           <div className="flex items-center md:order-0 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -62,10 +67,12 @@ const Navbar = () => {
                   <FaSearch size={20} />
                 </div>
 
-                <img
+                <Image
                   className="w-10 h-10 transition-all duration-300 ease-out hover:scale-[0.97] rounded-full border-gray-600 border-2"
-                  src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
+                  src={profile}
                   alt="user photo"
+                  width={40}
+                  height={40}
                 />
               </div>
             </button>

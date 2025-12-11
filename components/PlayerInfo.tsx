@@ -4,6 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 const fetchAnimeDetails = async (id: string) => {
   const response = await fetch(`/api/anime-info?id=${id}`);
@@ -42,9 +43,11 @@ const PlayerInfo = ({ anilistId }: { anilistId: string }) => {
           {animeDetails?.relations?.edges?.map((relation: any) => (
             <Link href={`/anime/info/${relation.node.id}`} key={relation.id}>
               <div className="cursor-pointer">
-                <img
+                <Image
                   src={relation.node.coverImage.large}
                   alt={relation.node.title.romaji}
+                  width={200}
+                  height={300}
                   className="w-full h-auto rounded-lg"
                 />
                 <p className="mt-2 text-center">{relation.node.title.romaji}</p>

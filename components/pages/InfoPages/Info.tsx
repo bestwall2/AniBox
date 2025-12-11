@@ -21,6 +21,8 @@ import Episodes from "../../Episodes";
 import Characters from "../../Characters";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import profile from "../../app/images/profile.jpg";
 
 // Helper function to strip HTML tags
 const stripHtmlTags = (html: string): string => {
@@ -181,13 +183,15 @@ function Info({ id }) {
           <div className="h-[210px] overflow-hidden absolute inset-0 z-0">
             {animeDetails?.bannerImage ||
             animeDetails?.coverImage?.extraLarge ? (
-              <img
+              <Image
                 src={
                   animeDetails.bannerImage || animeDetails.coverImage.extraLarge
                 }
                 alt="Banner Image"
-                className="w-full h-full object-cover opacity-60"
-                loading="lazy"
+                layout="fill"
+                objectFit="cover"
+                className="opacity-60"
+                priority
               />
             ) : (
               <Skeleton className="SkeletonCard w-full h-full " />
@@ -211,21 +215,24 @@ function Info({ id }) {
           </button>
         </div>
         <div className="fixed m-1 top-4 right-4 z-20 flex items-center space-x-3">
-          <img
+          <Image
             className="w-9 h-9 transition-all duration-300 ease-out hover:scale-[0.90] rounded-full border-gray-600 border-2"
-            src="https://raw.githubusercontent.com/bestwall2/AniBox/refs/heads/main/app/images/profile.jpg"
+            src={profile}
             alt="user photo"
+            width={36}
+            height={36}
           />
         </div>
         <div className="relative z-10 flex flex-row items-left  px-4 pt-24 space-y-6">
           {/* Cover Image */}
           <div className="rounded-xl mt-5 shadow-xl bg-black backdrop-blur-sm">
             {animeDetails?.coverImage?.extraLarge ? (
-              <img
+              <Image
                 src={animeDetails.coverImage.extraLarge}
                 alt="Cover Image"
+                width={140}
+                height={230}
                 className="min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl object-cover"
-                loading="lazy"
               />
             ) : (
               <Skeleton className="SkeletonCard min-h-[23vh] min-w-[14vh] max-h-[23vh] max-w-[14vh] rounded-xl " />

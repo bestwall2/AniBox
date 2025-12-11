@@ -79,10 +79,9 @@ const Slider = () => {
                     alt={
                         anime.title.english || anime.title.romaji || "Unknown Title"
                     }
-                    layout="responsive"
-                    width={500}
-                    height={300}
-    
+                    layout="fill"
+                    objectFit="cover"
+                    priority
                     />
                     <div className="ContainerLayout"></div>
                     <div className="InfoContainer m-4 text-left">
