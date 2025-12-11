@@ -22,7 +22,7 @@ import Characters from "../../Characters";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import profile from "../../app/images/profile.jpg";
+import profile from "../../../app/images/profile.jpg";
 
 // Helper function to strip HTML tags
 const stripHtmlTags = (html: string): string => {
