@@ -1,13 +1,29 @@
-"use server";
+export const PATCH_URL = "https://www.npoint.io/documents/d97c2498562fa60d8693";
+export const GET_URL = "https://api.npoint.io/d97c2498562fa60d8693";
 
-import { getStore } from "@netlify/blobs";
+// GET endpoint → fetch data from nPoint
+export async function GET() {
+  try {
+    const res = await fetch(GET_URL);
+    if (!res.ok) throw new Error("Failed to fetch data");
 
-const store = getStore("my-data");
-const BLOB_KEY = "data.json"; // اسم الملف الدائم
+    const data = await res.json();
 
+    return new Response(JSON.stringify({ success: true, data }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ success: false, error: (err as Error).message }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
+}
+
+// POST endpoint → send new data to nPoint
 export async function POST(req: Request) {
   try {
-    // قراءة data من query params
     const url = new URL(req.url);
     const rawData = url.searchParams.get("data");
 
@@ -18,10 +34,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // تحويل النص إلى JSON
-    let parsedData;
+    // تحويل البيانات المرسلة
+    let parsed;
     try {
-      parsedData = JSON.parse(rawData);
+      parsed = JSON.parse(rawData);
     } catch {
       return new Response(
         JSON.stringify({ success: false, error: "Invalid JSON format" }),
@@ -29,45 +45,34 @@ export async function POST(req: Request) {
       );
     }
 
-    // قراءة البيانات الحالية من Blob
-    const currentData = (await store.get(BLOB_KEY, { type: "json" })) || [];
-
-    // إضافة البيانات الجديدة
-    currentData.push({
-      id: Date.now(),
-      ...parsedData,
+    // إرسال PATCH إلى nPoint
+    const res = await fetch(PATCH_URL, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "x-csrf-token":
+          "0NAYobk6OuwpOF4gPIqHjK5zHrMvaGuPgL665BjFu15Ihd8UlTgjUVI/zPJ1hlKgYE65GtMPFWxFLLcxUQcsdw==",
+        accept: "application/json, text/plain, */*",
+      },
+      body: JSON.stringify({
+        contents: JSON.stringify([parsed]), // تضيف البيانات الجديدة
+        original_contents: "[]",
+        schema: null,
+        original_schema: "",
+      }),
     });
 
-    // حفظ البيانات مرة أخرى في Blob
-    await store.set(BLOB_KEY, currentData);
+    if (!res.ok) throw new Error("Failed to update nPoint");
+
+    const responseData = await res.json();
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        message: "JSON saved successfully",
-        data: currentData,
-      }),
+      JSON.stringify({ success: true, message: "Saved successfully", responseData }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
     return new Response(
-      JSON.stringify({ success: false, error: "Server error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
-  }
-}
-
-export async function GET() {
-  try {
-    const data = (await store.get(BLOB_KEY, { type: "json" })) || [];
-
-    return new Response(
-      JSON.stringify({ success: true, data }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ success: false, error: "Failed to read data" }),
+      JSON.stringify({ success: false, error: (err as Error).message }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
