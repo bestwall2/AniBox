@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
     const itemId = oldJson.data.length ? oldJson.data[0].id : null;
 
-    const method = itemId ? "PUT" : "POST";
+    const method = "PUT";
     const patchUrl = itemId ? `${SHEETY_URL}/${itemId}` : SHEETY_URL;
 
     const res = await fetch(patchUrl, {
