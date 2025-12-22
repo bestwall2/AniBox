@@ -1,70 +1,60 @@
-const SHEETY_URL = "https://api.sheety.co/cd425ccdc45111cd97f9d05d3316af2e/serverData/data";
+const SHEETY_URL =
+  "https://api.sheety.co/cd425ccdc45111cd97f9d05d3316af2e/serverData/data";
 
-// GET → جلب العنصر الحالي
+/* ================= GET ================= */
 export async function GET() {
-  try {
-    const res = await fetch(SHEETY_URL);
-    const json = await res.json(); // { data: [...] }
+  const res = await fetch(SHEETY_URL);
+  const json = await res.json();
 
-    // نأخذ العنصر الأول فقط إذا موجود
-    const dataOnly = json.data.length ? json.data[0] : null;
-
-    return new Response(JSON.stringify({
+  // نعيد صف واحد فقط
+  return new Response(
+    JSON.stringify({
       success: true,
-      data: dataOnly ? [dataOnly] : []
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
-
-  } catch (err) {
-    return new Response(JSON.stringify({ success: false, error: (err as Error).message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
-  }
+      data: json.data.length ? [json.data[0]] : [],
+    }),
+    { headers: { "Content-Type": "application/json" } }
+  );
 }
 
-// POST → استبدال العنصر الحالي بالبيانات الجديدة
+/* ================= POST (REPLACE) ================= */
 export async function POST(req: Request) {
-  try {
-    const url = new URL(req.url);
-    const rawData = url.searchParams.get("data");
-    if (!rawData) throw new Error("Missing data param");
-
-    const parsed = JSON.parse(rawData); 
-    // parsed يجب أن يكون بهذا الشكل:
-    // { id, img, name, token, source }
-
-    // جلب العنصر القديم لمعرفة الـ id
-    const oldRes = await fetch(SHEETY_URL);
-    const oldJson = await oldRes.json();
-
-    const itemId = oldJson.data.length ? oldJson.data[0].id : null;
-
-    const method = "PUT";
-    const patchUrl = itemId ? `${SHEETY_URL}/${itemId}` : SHEETY_URL;
-
-    const res = await fetch(patchUrl, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: parsed })
-    });
-
-    const responseData = await res.json();
-
-    return new Response(JSON.stringify({
-      success: true,
-      data: [responseData.data]
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
-
-  } catch (err) {
-    return new Response(JSON.stringify({ success: false, error: (err as Error).message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
+  const url = new URL(req.url);
+  const raw = url.searchParams.get("data");
+  if (!raw) {
+    return Response.json({ success: false, error: "Missing data" }, { status: 400 });
   }
+
+  const newData = JSON.parse(raw);
+
+  // 1️⃣ جلب الصف الحالي
+  const oldRes = await fetch(SHEETY_URL);
+  const oldJson = await oldRes.json();
+
+  // 2️⃣ لو لا يوجد صف → أنشئ واحد
+  if (!oldJson.data.length) {
+    const create = await fetch(SHEETY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: newData }),
+    });
+
+    const created = await create.json();
+    return Response.json({ success: true, data: [created.data] });
+  }
+
+  // 3️⃣ لو يوجد صف → استبدله
+  const rowId = oldJson.data[0].id;
+
+  const update = await fetch(`${SHEETY_URL}/${rowId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ data: newData }),
+  });
+
+  const updated = await update.json();
+
+  return Response.json({
+    success: true,
+    data: [updated.data],
+  });
 }
