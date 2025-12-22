@@ -1,79 +1,67 @@
-export const PATCH_URL = "https://www.npoint.io/documents/d97c2498562fa60d8693";
-export const GET_URL = "https://api.npoint.io/d97c2498562fa60d8693";
+const SHEETY_URL = "https://api.sheety.co/cd425ccdc45111cd97f9d05d3316af2e/serverData/data";
 
-// GET endpoint → fetch data from nPoint
+// GET → جلب العنصر الحالي
 export async function GET() {
   try {
-    const res = await fetch(GET_URL);
-    if (!res.ok) throw new Error("Failed to fetch data");
+    const res = await fetch(SHEETY_URL);
+    const json = await res.json(); // { data: [...] }
 
-    const data = await res.json();
+    // أخذ العنصر الأول فقط إذا موجود
+    const dataOnly = json.data.length ? { data: json.data[0].data } : null;
 
-    return new Response(JSON.stringify({ success: true, data }), {
+    return new Response(JSON.stringify({
+      success: true,
+      data: dataOnly
+    }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     });
   } catch (err) {
-    return new Response(
-      JSON.stringify({ success: false, error: (err as Error).message }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ success: false, error: (err as Error).message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
 
-// POST endpoint → send new data to nPoint
+// POST → استبدال العنصر الحالي بالبيانات الجديدة
 export async function POST(req: Request) {
   try {
     const url = new URL(req.url);
     const rawData = url.searchParams.get("data");
+    if (!rawData) throw new Error("Missing data param");
 
-    if (!rawData) {
-      return new Response(
-        JSON.stringify({ success: false, error: "Missing data param" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
-    }
+    const parsed = JSON.parse(rawData);
 
-    // تحويل البيانات المرسلة
-    let parsed;
-    try {
-      parsed = JSON.parse(rawData);
-    } catch {
-      return new Response(
-        JSON.stringify({ success: false, error: "Invalid JSON format" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
-    }
+    // جلب العنصر القديم لمعرفة الـ id
+    const oldRes = await fetch(SHEETY_URL);
+    const oldJson = await oldRes.json();
 
-    // إرسال PATCH إلى nPoint
-    const res = await fetch(PATCH_URL, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        "x-csrf-token":
-          "0NAYobk6OuwpOF4gPIqHjK5zHrMvaGuPgL665BjFu15Ihd8UlTgjUVI/zPJ1hlKgYE65GtMPFWxFLLcxUQcsdw==",
-        accept: "application/json, text/plain, */*",
-      },
-      body: JSON.stringify({
-        contents: JSON.stringify([parsed]), // تضيف البيانات الجديدة
-        original_contents: "[]",
-        schema: null,
-        original_schema: "",
-      }),
+    let itemId = oldJson.data.length ? oldJson.data[0].id : null;
+
+    let method = itemId ? "PUT" : "POST";
+    let patchUrl = itemId ? `${SHEETY_URL}/${itemId}` : SHEETY_URL;
+
+    const res = await fetch(patchUrl, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: parsed })
     });
-
-    if (!res.ok) throw new Error("Failed to update nPoint");
 
     const responseData = await res.json();
 
-    return new Response(
-      JSON.stringify({ success: true, message: "Saved successfully", responseData }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({
+      success: true,
+      data: responseData.data
+    }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+
   } catch (err) {
-    return new Response(
-      JSON.stringify({ success: false, error: (err as Error).message }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ success: false, error: (err as Error).message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
