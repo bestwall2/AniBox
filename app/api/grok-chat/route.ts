@@ -1,38 +1,45 @@
 "use server";
 
-let savedJSON = null; // in-memory JSON storage
+let savedJSON: any = null; // in-memory JSON storage
 
-export default function handler(req, res) {
-  res.setHeader("Content-Type", "application/json");
+export async function POST(req: Request) {
+  try {
+    const data = await req.json();
 
-  // POST → save JSON
-  if (req.method === "POST") {
-    if (!req.body || typeof req.body !== "object") {
-      return res.status(400).json({
-        success: false,
-        error: "JSON body is required",
-      });
+    if (!data || typeof data !== "object") {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "JSON body is required",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
     }
 
-    savedJSON = req.body;
+    savedJSON = data;
 
-    return res.status(200).json({
-      success: true,
-      message: "JSON saved successfully",
-      data: savedJSON,
-    });
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "JSON saved successfully",
+        data: savedJSON,
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Invalid JSON" }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
   }
+}
 
-  // GET → return saved JSON
-  if (req.method === "GET") {
-    return res.status(200).json({
+export async function GET() {
+  return new Response(
+    JSON.stringify({
       success: true,
       data: savedJSON,
-    });
-  }
-
-  return res.status(405).json({
-    success: false,
-    error: "Method not allowed",
-  });
+    }),
+    { status: 200, headers: { "Content-Type": "application/json" } }
+  );
 }
