@@ -6,16 +6,17 @@ export async function GET() {
     const res = await fetch(SHEETY_URL);
     const json = await res.json(); // { data: [...] }
 
-    // أخذ العنصر الأول فقط إذا موجود
-    const dataOnly = json.data.length ? { data: json.data[0].data } : null;
+    // نأخذ العنصر الأول فقط إذا موجود
+    const dataOnly = json.data.length ? json.data[0] : null;
 
     return new Response(JSON.stringify({
       success: true,
-      data: dataOnly
+      data: dataOnly ? [dataOnly] : []
     }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });
+
   } catch (err) {
     return new Response(JSON.stringify({ success: false, error: (err as Error).message }), {
       status: 500,
@@ -31,16 +32,18 @@ export async function POST(req: Request) {
     const rawData = url.searchParams.get("data");
     if (!rawData) throw new Error("Missing data param");
 
-    const parsed = JSON.parse(rawData);
+    const parsed = JSON.parse(rawData); 
+    // parsed يجب أن يكون بهذا الشكل:
+    // { id, img, name, token, source }
 
     // جلب العنصر القديم لمعرفة الـ id
     const oldRes = await fetch(SHEETY_URL);
     const oldJson = await oldRes.json();
 
-    let itemId = oldJson.data.length ? oldJson.data[0].id : null;
+    const itemId = oldJson.data.length ? oldJson.data[0].id : null;
 
-    let method = itemId ? "PUT" : "POST";
-    let patchUrl = itemId ? `${SHEETY_URL}/${itemId}` : SHEETY_URL;
+    const method = itemId ? "PUT" : "POST";
+    const patchUrl = itemId ? `${SHEETY_URL}/${itemId}` : SHEETY_URL;
 
     const res = await fetch(patchUrl, {
       method,
@@ -52,7 +55,7 @@ export async function POST(req: Request) {
 
     return new Response(JSON.stringify({
       success: true,
-      data: responseData.data
+      data: [responseData.data]
     }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
