@@ -1,45 +1,74 @@
 "use server";
 
-let savedJSON: any = null; // in-memory JSON storage
+import { getStore } from "@netlify/blobs";
+
+const store = getStore("my-data");
+const BLOB_KEY = "data.json"; // اسم الملف الدائم
 
 export async function POST(req: Request) {
   try {
-    const data = await req.json();
+    // قراءة data من query params
+    const url = new URL(req.url);
+    const rawData = url.searchParams.get("data");
 
-    if (!data || typeof data !== "object") {
+    if (!rawData) {
       return new Response(
-        JSON.stringify({
-          success: false,
-          error: "JSON body is required",
-        }),
+        JSON.stringify({ success: false, error: "Missing data param" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    savedJSON = data;
+    // تحويل النص إلى JSON
+    let parsedData;
+    try {
+      parsedData = JSON.parse(rawData);
+    } catch {
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid JSON format" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // قراءة البيانات الحالية من Blob
+    const currentData = (await store.get(BLOB_KEY, { type: "json" })) || [];
+
+    // إضافة البيانات الجديدة
+    currentData.push({
+      id: Date.now(),
+      ...parsedData,
+    });
+
+    // حفظ البيانات مرة أخرى في Blob
+    await store.set(BLOB_KEY, currentData);
 
     return new Response(
       JSON.stringify({
         success: true,
         message: "JSON saved successfully",
-        data: savedJSON,
+        data: currentData,
       }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
     return new Response(
-      JSON.stringify({ success: false, error: "Invalid JSON" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
+      JSON.stringify({ success: false, error: "Server error" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }
 
 export async function GET() {
-  return new Response(
-    JSON.stringify({
-      success: true,
-      data: savedJSON,
-    }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
-  );
+  try {
+    const data = (await store.get(BLOB_KEY, { type: "json" })) || [];
+
+    return new Response(
+      JSON.stringify({ success: true, data }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Failed to read data" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
 }
