@@ -38,7 +38,7 @@ export async function GET() {
   }
 }
 
-// ===== PUT =====
+// ===== PUT (Replace all data) =====
 export async function PUT(req) {
   try {
     const body = await req.json();
@@ -50,18 +50,26 @@ export async function PUT(req) {
       }), { status: 400 });
     }
 
-    // إدراج بيانات جديدة في الجدول
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
+    // 1️⃣ حذف كل الصفوف القديمة
+    const deleteRes = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}?`, {
+      method: "DELETE",
+      headers,
+    });
+
+    if (!deleteRes.ok) throw new Error("Failed to clear old data");
+
+    // 2️⃣ إدخال البيانات الجديدة
+    const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
       method: "POST",
       headers,
       body: JSON.stringify([{ data: body.data }]),
     });
 
-    if (!res.ok) throw new Error("Failed to insert data");
+    if (!insertRes.ok) throw new Error("Failed to insert new data");
 
     return new Response(JSON.stringify({
       success: true,
-      message: "Data inserted successfully",
+      message: "Data replaced successfully",
     }), { status: 200 });
 
   } catch (err) {
