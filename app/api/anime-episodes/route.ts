@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
   try {
     // Fetch anime episodes from the API using your provided URL and headers
-    const res = await fetch(`https://backend.animetsu.to/api/anime/eps/${id}`, {
+    const res = await fetch(`https://backend.animetsu.net/api/anime/eps/${id}`, {
       credentials: "include",
       headers: {
         "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
         "Sec-Fetch-Site": "same-origin",
         "Priority": "u=0"
       },
-      referrer: `https://animetsu.to/anime/${id}`,
+      referrer: `https://animetsu.net/anime/${id}`,
       method: "GET",
       mode: "cors"
     });
