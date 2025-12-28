@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Slider from "./Slider";
 import ListItems from "./ListItems";
 import Navbar from "./NavBar";
@@ -12,7 +12,10 @@ const FirstPage = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
+    // Open modal automatically when page loads
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
   return (
     <>
       {/* Outer wrapper to control scrolling */}
