@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+"use client";
 
+import React, { useState } from "react";
 import Slider from "./Slider";
 import ListItems from "./ListItems";
 import Navbar from "./NavBar";
