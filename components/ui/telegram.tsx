@@ -6,7 +6,7 @@ ModalHeader,
 ModalBody,
 ModalFooter,
 Button,
-} from “@heroui/modal”;
+} from “@heroui/react”;
 
 // Telegram Invitation Modal Component
 function TelegramInviteModal({ isOpen, onClose, telegramLink = “https://t.me/your_group_name” }) {
