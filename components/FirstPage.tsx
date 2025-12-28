@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Slider from "./Slider";
 import ListItems from "./ListItems";
 import Navbar from "./NavBar";
 import Footer from "./Footer";
+import { TelegramInviteModal } from "./ui/telegram"; // Import the component
+
 const FirstPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <>
       {/* Outer wrapper to control scrolling */}
-      <div className=" min-h-screen flex flex-col mb-4">
+      <div className="min-h-screen flex flex-col mb-4">
+        <TelegramInviteModal 
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          telegramLink="https://t.me/ahmeddie"
+        />
+        
         {/* Navbar (Static at the top) */}
         <Navbar />
+        
         {/* Main content area */}
         <div className="flex-1 overflow-auto">
           <Slider />
