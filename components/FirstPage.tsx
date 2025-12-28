@@ -5,7 +5,7 @@ import Slider from "./Slider";
 import ListItems from "./ListItems";
 import Navbar from "./NavBar";
 import Footer from "./Footer";
-import { TelegramInviteModal } from "./ui/telegram"; // Import the component
+import { TelegramInviteModal } from "./ui/telegram";
 
 const FirstPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
