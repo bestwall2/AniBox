@@ -10,7 +10,7 @@ import {
   Button,
 } from "@heroui/react";
 
-export default function TelegramModal() {
+export  function TelegramModal() {
   const [isOpen, setIsOpen] = useState(true); // Open automatically on page load
 
   const closeModal = () => setIsOpen(false);
