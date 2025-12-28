@@ -31,7 +31,8 @@ export function TelegramInviteModal({
       onOpenChange={onClose}
       backdrop="blur"
     >
-      <ModalContent>
+      {/* ModalContent with center alignment, max width, and margin */}
+      <ModalContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 mx-4 my-8 rounded-lg max-w-lg w-full shadow-lg">
         {(onCloseModal: () => void) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
@@ -55,7 +56,7 @@ export function TelegramInviteModal({
                   Connect with our community on Telegram! Get instant updates,
                   exclusive content, and engage with fellow members.
                 </p>
-                <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg">
+                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
                   <h4 className="font-semibold mb-2 text-sm">What you’ll get:</h4>
                   <ul className="text-sm space-y-1 ml-4">
                     <li>• Real-time updates and announcements</li>
@@ -67,8 +68,8 @@ export function TelegramInviteModal({
               </div>
             </ModalBody>
 
-            <ModalFooter>
-              <Button color="default" variant="light" onPress={onCloseModal}>
+            <ModalFooter className="flex justify-end gap-2">
+              <Button variant="outline" color="default" onPress={onCloseModal}>
                 Maybe Later
               </Button>
               <Button
@@ -77,7 +78,6 @@ export function TelegramInviteModal({
                   handleJoinTelegram();
                   onCloseModal();
                 }}
-                className="bg-blue-500"
               >
                 Join on Telegram
               </Button>
@@ -86,27 +86,5 @@ export function TelegramInviteModal({
         )}
       </ModalContent>
     </Modal>
-  );
-}
-
-// Example usage in App component
-export default function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  return (
-    <div className="flex px-10 min-h-screen justify-center items-center">
-      <Button className="max-w-fit" color="primary" size="lg" onPress={openModal}>
-        Join Our Community
-      </Button>
-
-      <TelegramInviteModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        telegramLink="https://t.me/your_group_name"
-      />
-    </div>
   );
 }
