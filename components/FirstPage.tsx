@@ -5,7 +5,7 @@ import Slider from "./Slider";
 import ListItems from "./ListItems";
 import Navbar from "./NavBar";
 import Footer from "./Footer";
-import { TelegramInviteModal } from "./ui/telegram";
+import { TelegramModal } from "./ui/telegram";
 
 const FirstPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +20,7 @@ const FirstPage = () => {
     <>
       {/* Outer wrapper to control scrolling */}
       <div className="min-h-screen flex flex-col mb-4">
-        <TelegramInviteModal 
+        <TelegramModal 
           isOpen={isModalOpen}
           onClose={closeModal}
           telegramLink="https://t.me/ahmeddie"
